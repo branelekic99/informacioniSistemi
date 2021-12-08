@@ -7,6 +7,7 @@ import {
 import Home from "./pages/Home";
 import Login from "./pages/Login";
 import Nav from "./pages/Nav";
+import 'antd/dist/antd.css'; // or 'antd/dist/antd.less'
 
 function App() {
     return (
@@ -15,7 +16,7 @@ function App() {
                 <Nav/>
                 <Routes>
                     <Route path={"/"} element={<Home/>}/>
-                    <Route path={"/login"} element={<Login/>}/>
+                    <Route path={"/login"} element={<Login />}/>
                 </Routes>
             </BrowserRouter>
         </>
