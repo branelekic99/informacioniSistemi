@@ -16,7 +16,7 @@ function App() {
                 <Nav/>
                 <Routes>
                     <Route path={"/"} element={<Home/>}/>
-                    <Route path={"/login"} element={<Login username={"brane"} password={"neki passsword"} />}/>
+                    <Route path={"/login"} element={<Login />}/>
                 </Routes>
             </BrowserRouter>
         </>
