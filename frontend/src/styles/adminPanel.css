@@ -1,0 +1,30 @@
+.AdminPanel{
+    margin:0;
+    overflow:scroll;
+}
+.ant-table-thead > tr >th{
+    color: white;
+    background: #2b5c90 !important;
+    text-transform: uppercase;
+    text-align: center;
+    -moz-text-size-adjust: auto;
+    border-left: #1d1d1d;
+    border-right: #1d1d1d;
+
+}
+
+
+   .ant-table-tbody > tr >th{
+       color: white;
+       background: #2b5c90 !important;
+       text-align: center;
+       border-left: #1d1d1d;
+       border-right: #1d1d1d;
+   }
+    .rows{
+        text-align: center;
+    }
+
+    .yearColumn{
+        color: brown;
+    }

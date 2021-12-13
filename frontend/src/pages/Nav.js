@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react';
-import { useNavigate,Link } from 'react-router-dom';
+import {useNavigate,Link } from 'react-router-dom';
 
 import {MenuOutlined,CloseCircleOutlined} from "@ant-design/icons";
 import logo from "../styles/icons/logo-sr.png";
@@ -61,12 +61,17 @@ const Nav = () => {
                         </li>
                         <li>
                             <Link to="/user-form" onClick={menuToggleHandler}>
-                                Obrazac
+                                User-form
                             </Link>
                         </li>
                         <li>
                             <Link to="/about" onClick={menuToggleHandler}>
                                 O nama
+                            </Link>
+                        </li>
+                        <li>
+                            <Link to="/adminPanel" onClick={menuToggleHandler}>
+                                AdminPanel
                             </Link>
                         </li>
                     </ul>
