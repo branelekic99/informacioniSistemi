@@ -2,6 +2,8 @@ package com.example.backend.controllers;
 
 import com.example.backend.models.entities.CitizenEntity;
 import com.example.backend.repositories.CitizenEntityRepository;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -19,12 +21,13 @@ public class CitizenController {
     }
 
     @GetMapping
-    List<CitizenEntity> findAll()
-    {
+    List<CitizenEntity> findAll() {
         return citizenEntityRepository.findAll();
     }
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    CitizenEntity save(@RequestBody CitizenEntity citizen) { return citizenEntityRepository.save(citizen); }
+    CitizenEntity save(@RequestBody CitizenEntity citizen) {
+        return citizenEntityRepository.save(citizen);
+    }
 }
