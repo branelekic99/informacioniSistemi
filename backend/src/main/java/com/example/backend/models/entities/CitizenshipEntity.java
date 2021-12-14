@@ -2,7 +2,6 @@ package com.example.backend.models.entities;
 
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import lombok.Data;
 
 import javax.persistence.*;
@@ -22,5 +21,13 @@ public class CitizenshipEntity {
     @OneToMany(mappedBy = "citizenshipEntity")
     @JsonIgnore
     private List<CitizenEntity> citizenEntities;
+
+    public CitizenshipEntity(){
+    }
+
+    public CitizenshipEntity(Integer id, String country){
+        this.id = id;
+        this.country = country;
+    }
 
 }
