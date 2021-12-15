@@ -61,7 +61,7 @@ const Nav = () => {
                         </li>
                         <li>
                             <Link to="/user-form" onClick={menuToggleHandler}>
-                                Forma
+                                Obrazac
                             </Link>
                         </li>
                         <li>
