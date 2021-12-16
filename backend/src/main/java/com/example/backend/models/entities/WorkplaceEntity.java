@@ -12,6 +12,7 @@ import java.util.List;
 @Entity(name = "workplace")
 public class WorkplaceEntity {
 
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
@@ -22,4 +23,12 @@ public class WorkplaceEntity {
     @OneToMany(mappedBy = "workplaceEntity")
     @JsonIgnore
     private List<CitizenEntity> citizenEntities;
+
+    public WorkplaceEntity(){
+
+    }
+    public WorkplaceEntity(Integer id, String name){
+        this.id = id;
+        this.name = name;
+    }
 }

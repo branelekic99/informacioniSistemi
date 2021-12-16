@@ -1,0 +1,14 @@
+{
+  "rules": [
+    {
+      "methods": ["GET"],
+      "pattern": "/citizens",
+      "roles": ["ADMIN","USER"]
+    },
+    {
+      "methods": ["POST"],
+      "pattern": "/citizens",
+      "roles": ["ADMIN","USER"]
+    }
+  ]
+}
