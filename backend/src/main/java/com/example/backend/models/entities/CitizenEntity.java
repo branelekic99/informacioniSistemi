@@ -38,9 +38,9 @@ public class CitizenEntity {
     @Column(name = "num_of_family_members", nullable = false)
     private String num_of_family_members;
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "workplace_id", referencedColumnName = "id", nullable = false)
+    @JoinColumn(name = "workplace_id", referencedColumnName = "id", nullable = true)
     private WorkplaceEntity workplaceEntity;
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "citizenship_id", referencedColumnName = "id", nullable = false)
+    @JoinColumn(name = "citizenship_id", referencedColumnName = "id", nullable = true)
     private CitizenshipEntity citizenshipEntity;
 }
