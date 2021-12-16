@@ -5,17 +5,15 @@ import com.example.backend.models.dto.LoginResponse;
 import com.example.backend.models.requests.LoginRequest;
 import com.example.backend.services.AuthService;
 import com.example.backend.services.UserService;
-
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
 import org.springframework.security.core.Authentication;
+//import org.springframework.security.core.Authentication;
+import org.springframework.web.bind.annotation.*;
 
 
 import javax.validation.Valid;
 
 @RestController
+@ControllerAdvice("AuthControllerAdvisor.class")
 public class AuthController {
 
     private final AuthService service;

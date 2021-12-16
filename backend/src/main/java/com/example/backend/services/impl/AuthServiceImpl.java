@@ -1,6 +1,7 @@
 package com.example.backend.services.impl;
 
 
+import com.example.backend.exceptions.CredentialsMissingException;
 import com.example.backend.exceptions.UnauthorizedException;
 import com.example.backend.models.dto.JwtUser;
 import com.example.backend.models.dto.LoginResponse;
@@ -38,6 +39,8 @@ public class AuthServiceImpl implements AuthService {
     public LoginResponse login(LoginRequest request) {
         LoginResponse response = null;
         try {
+            if(request.getUsername() == null || request.getPassword() == null)
+                throw new CredentialsMissingException("Some of the credentials are missig.");
             Authentication authenticate = authenticationManager
                     .authenticate(
                             new UsernamePasswordAuthenticationToken(
@@ -47,8 +50,8 @@ public class AuthServiceImpl implements AuthService {
             JwtUser user = (JwtUser) authenticate.getPrincipal();
             response = userService.findById(user.getId(), LoginResponse.class);
             response.setToken(generateJwt(user));
-        } catch (Exception ex) {
-            throw new UnauthorizedException();
+        } catch (UnauthorizedException ex) {
+            throw new UnauthorizedException("Wrong credentials.");
         }
         return response;
     }

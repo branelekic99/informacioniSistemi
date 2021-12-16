@@ -5,15 +5,15 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 
 @ResponseStatus(
         value = HttpStatus.UNAUTHORIZED,
-        reason = "Unauthorized access"
+        reason = "Some of the credentials are missing."
 )
-public class UnauthorizedException extends HttpException {
+public class CredentialsMissingException extends HttpException {
 
-    public UnauthorizedException() {
+    public CredentialsMissingException() {
         super(HttpStatus.UNAUTHORIZED, null);
     }
 
-    public UnauthorizedException(Object data) {
+    public CredentialsMissingException(Object data) {
         super(HttpStatus.UNAUTHORIZED, data);
     }
 }

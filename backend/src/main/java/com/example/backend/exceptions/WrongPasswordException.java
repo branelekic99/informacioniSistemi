@@ -5,15 +5,15 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 
 @ResponseStatus(
         value = HttpStatus.UNAUTHORIZED,
-        reason = "Unauthorized access"
+        reason = "Wrong password."
 )
-public class UnauthorizedException extends HttpException {
+public class WrongPasswordException extends HttpException {
 
-    public UnauthorizedException() {
+    public WrongPasswordException() {
         super(HttpStatus.UNAUTHORIZED, null);
     }
 
-    public UnauthorizedException(Object data) {
+    public WrongPasswordException(Object data) {
         super(HttpStatus.UNAUTHORIZED, data);
     }
 }
