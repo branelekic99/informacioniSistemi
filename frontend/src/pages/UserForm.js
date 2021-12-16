@@ -1,23 +1,25 @@
 import React, {useState, useEffect, useMemo} from 'react';
-import {Form, Input, Select, DatePicker, InputNumber,Button} from "antd";
+import {Form, Input, Select, DatePicker, InputNumber, Button} from "antd";
 import {municipalities} from "../constants/siMunicipalities";
+import SuccessfullySumbited from "../components/SuccessfullySumbited";
 
 import "../styles/user-form.css";
 
 const {Option} = Select;
 
 const UserForm = () => {
+    const [formSubmitted,setFormSubmitted] = useState(false);
 
-
-
-    const onFinish = (values)=>{
+    const onFinish = (values) => {
         console.log(values);
+        setFormSubmitted(true);
     }
     let municipalitiesOptions = [];
-    for(const[key,value] of Object.entries(municipalities)){
+    for (const [key, value] of Object.entries(municipalities)) {
         municipalitiesOptions.push(<Option value={value} key={key}>{value}</Option>)
     }
-
+    if(formSubmitted)
+        return <SuccessfullySumbited />
     return (
         <div className={"container"}>
             <div className={"form-title"}>
@@ -30,19 +32,23 @@ const UserForm = () => {
                     onFinish={onFinish}
                 >
                     <Form.Item className={"item-box"}>
-                        <Form.Item label={"Ime"} className={"inline-item"} name={"firstName"} rules={[{required:true,message:"Unesite vase ime."}]}>
+                        <Form.Item label={"Ime"} className={"inline-item"} name={"firstName"}
+                                   rules={[{required: true, message: "Unesite vase ime."}]}>
                             <Input/>
                         </Form.Item>
-                        <Form.Item label={"Prezime"} className={"inline-item"} name={"lastName"} rules={[{required:true,message:"Unesite vase prezime."}]}>
+                        <Form.Item label={"Prezime"} className={"inline-item"} name={"lastName"}
+                                   rules={[{required: true, message: "Unesite vase prezime."}]}>
                             <Input/>
                         </Form.Item>
                     </Form.Item>
 
                     <Form.Item className={"item-box"}>
-                        <Form.Item label={"Email"} className={"inline-item"} name={"email"} rules={[{required:true,message:"Unesite vasu email adresu."}]}>
+                        <Form.Item label={"Email"} className={"inline-item"} name={"email"}
+                                   rules={[{required: true, message: "Unesite vasu email adresu."}]}>
                             <Input/>
                         </Form.Item>
-                        <Form.Item label={"Broj telefona"} className={"inline-item"} name={"phoneNumber"} rules={[{required:true,message:"Unesite vas broj telefona."}]}>
+                        <Form.Item label={"Broj telefona"} className={"inline-item"} name={"phoneNumber"}
+                                   rules={[{required: true, message: "Unesite vas broj telefona."}]}>
                             <Input/>
                         </Form.Item>
                     </Form.Item>
@@ -56,7 +62,7 @@ const UserForm = () => {
                         </Form.Item>
                         <Form.Item label={"Grad/Mjesto zivljenja"} className={"inline-item"} name={"place"}>
                             <Select placeholder={"Izaberite mjesto zivljenja"} showSearch allowClear>
-                                {municipalitiesOptions.map((item)=>item)}
+                                {municipalitiesOptions.map((item) => item)}
                             </Select>
                         </Form.Item>
                     </Form.Item>
