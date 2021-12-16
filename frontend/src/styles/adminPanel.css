@@ -1,6 +1,6 @@
 .AdminPanel{
-    margin:0;
-    overflow:scroll;
+    margin:0%;
+
 }
 .ant-table-thead > tr >th{
     color: white;
@@ -28,3 +28,12 @@
     .yearColumn{
         color: brown;
     }
+
+
+@media (min-width: 48em) {
+    .AdminPanel{
+        margin-top:0px;
+        margin-left: 2px;
+        margin-right: 2px;
+    }
+}
