@@ -282,12 +282,7 @@ const AdminPanel = () => {
             key: 'comingYear',
             width:15,
         },
-        {
-            title: 'Broj clanova domacinstva',
-            dataIndex: 'numOfHouseholdMembers',
-            key: 'numOfHouseholdMembers',
-            width:15,
-        },
+
         {
             title: 'Broj clanova domacinstva',
             dataIndex: 'numOfHouseholdMembers',
