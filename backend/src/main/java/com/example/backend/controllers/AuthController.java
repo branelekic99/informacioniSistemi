@@ -1,21 +1,21 @@
 package com.example.backend.controllers;
 
+import com.example.backend.controllers.advice.AuthControllerAdvisor;
+import com.example.backend.exceptions.UnauthorizedException;
 import com.example.backend.models.dto.JwtUser;
 import com.example.backend.models.dto.LoginResponse;
 import com.example.backend.models.requests.LoginRequest;
 import com.example.backend.services.AuthService;
 import com.example.backend.services.UserService;
 
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.security.core.Authentication;
 
 
 import javax.validation.Valid;
 
 @RestController
+@ControllerAdvice("AuthControllerAdvisor.class")
 public class AuthController {
 
     private final AuthService service;
@@ -27,6 +27,7 @@ public class AuthController {
     }
 
     @PostMapping("login")
+    @ExceptionHandler(UnauthorizedException.class)
     public LoginResponse login(@RequestBody @Valid LoginRequest request) {
         return service.login(request);
     }
