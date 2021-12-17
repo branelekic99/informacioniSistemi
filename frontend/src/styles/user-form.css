@@ -3,14 +3,20 @@
     width:70%;
     margin:20px auto;
     padding-bottom: 10px;
+
 }
 .form-title{
     text-align: center;
+}
+.form-title h2{
+    margin: 0px;
 }
 .form-container{
     padding: 20px;
     background: #b7b5b5;
     border-radius: 10px;
+    margin-top: 10px;
+
 }
 .item-box{
     margin-bottom: 0px;
@@ -28,6 +34,12 @@
 .form-submit-box{
     width:50%;
     margin: auto;
+    background-color: red;
+}
+.muted-text{
+    font-size: 11px;
+    color: gray;
+    margin: 0px;
 }
 @media(max-width: 48em) {
     .container{

@@ -61,12 +61,7 @@ const Nav = () => {
                         </li>
                         <li>
                             <Link to="/user-form" onClick={menuToggleHandler}>
-                                User-form
-                            </Link>
-                        </li>
-                        <li>
-                            <Link to="/about" onClick={menuToggleHandler}>
-                                O nama
+                                Obrazac
                             </Link>
                         </li>
                         <li>
