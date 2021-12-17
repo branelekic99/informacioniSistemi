@@ -1,6 +1,5 @@
 package com.example.backend.controllers;
 
-import com.example.backend.controllers.advice.AuthControllerAdvisor;
 import com.example.backend.exceptions.UnauthorizedException;
 import com.example.backend.models.dto.JwtUser;
 import com.example.backend.models.dto.LoginResponse;
