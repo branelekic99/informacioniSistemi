@@ -1,6 +1,5 @@
 package com.example.backend.models.entities;
 
-import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import lombok.*;
 
 import javax.persistence.*;
@@ -33,7 +32,16 @@ public class CitizenEntity {
     private String company;
     @Basic
     @Column(name = "birth_year", nullable = false, length = 45)
-    private String year;
+    private String birth_year;
+    @Basic
+    @Column(name = "coming_year", nullable = false, length = 45)
+    private String coming_year;
+    @Basic
+    @Column(name = "education", nullable = false, length = 100)
+    private String education;
+    @Basic
+    @Column(name = "workplace", nullable = false, length = 100)
+    private String workplace;
     @Basic
     @Column(name = "num_of_family_members", nullable = false)
     private String num_of_family_members;

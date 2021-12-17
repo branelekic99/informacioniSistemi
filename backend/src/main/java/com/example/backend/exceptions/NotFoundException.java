@@ -1,6 +1,5 @@
 package com.example.backend.exceptions;
 
-import com.example.backend.exceptions.HttpException;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
