@@ -3,6 +3,7 @@ import {Form, Input, Select, DatePicker, InputNumber, Button} from "antd";
 import axios from "axios";
 import {municipalities} from "../constants/siMunicipalities";
 import SuccessfullySumbited from "../components/SuccessfullySumbited";
+import moment from "moment";
 
 import "../styles/user-form.css";
 
@@ -78,22 +79,31 @@ const UserForm = () => {
                             <Input/>
                         </Form.Item>
                     </Form.Item>
+
                     <Form.Item className={"item-box"}>
                         <Form.Item label={"Godina dolaska"} className={"inline-item"}>
-                            <Input/>
+                            <DatePicker picker={"year"} className={"bl-datepicker"} disabledDate={(current)=>current > moment(new Date())}/>
                         </Form.Item>
                         <Form.Item label={"Broj clanova domacinstva"} className={"inline-item"}>
                             <Input/>
                         </Form.Item>
                     </Form.Item>
-                    <Form.Item label={"Kompanija"} className={"block-item"}>
-                        <Input/>
+
+                    <Form.Item className={"item-box"}>
+                        <Form.Item label={"Kompanija"} className={"inline-item"}>
+                            <Input/>
+                        </Form.Item>
+                        <Form.Item label={"Godina rodjenja"} className={"inline-item"}>
+                            <DatePicker picker={"year"} className={"bl-datepicker"} disabledDate={(current)=>current > moment(new Date())}/>
+                        </Form.Item>
                     </Form.Item>
+
                     <Form.Item className={"form-submit-box"}>
                         <Button type={"primary"} htmlType={"submit"} block={true} size={"large"}>
                             Potvrdi
                         </Button>
                     </Form.Item>
+
                 </Form>
             </div>
 

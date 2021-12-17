@@ -13,7 +13,7 @@
 }
 .form-container{
     padding: 20px;
-    background: #b7b5b5;
+    background: #afafaf;
     border-radius: 10px;
     margin-top: 10px;
 
@@ -40,6 +40,9 @@
     font-size: 11px;
     color: gray;
     margin: 0px;
+}
+.bl-datepicker{
+    width: 100%;
 }
 @media(max-width: 48em) {
     .container{
