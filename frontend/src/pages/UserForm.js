@@ -1,5 +1,6 @@
 import React, {useState, useEffect, useMemo} from 'react';
 import {Form, Input, Select, DatePicker, InputNumber, Button} from "antd";
+import axios from "axios";
 import {municipalities} from "../constants/siMunicipalities";
 import SuccessfullySumbited from "../components/SuccessfullySumbited";
 
@@ -23,7 +24,8 @@ const UserForm = () => {
     return (
         <div className={"container"}>
             <div className={"form-title"}>
-                <h2>Obrazac popisa</h2>
+                <h2>Popunite obrazac sa vasim licnim podacima</h2>
+                <p className={"muted-text"}>*Podaci ce biti koristeni iskljucivo od strane Saveza Srba Slovenije</p>
             </div>
             <div className={"form-container"}>
                 <Form
@@ -58,6 +60,8 @@ const UserForm = () => {
                             <Select placeholder={"Izaberite drzavljanstvo"}>
                                 <Option value={1}>BiH</Option>
                                 <Option value={2}>Srbija</Option>
+                                <Option value={3}>Hrvatska</Option>
+                                <Option value={4}>Makedonija</Option>
                             </Select>
                         </Form.Item>
                         <Form.Item label={"Grad/Mjesto zivljenja"} className={"inline-item"} name={"place"}>
@@ -66,10 +70,9 @@ const UserForm = () => {
                             </Select>
                         </Form.Item>
                     </Form.Item>
-
                     <Form.Item className={"item-box"}>
                         <Form.Item label={"Strucna sprema"} className={"inline-item"}>
-                            <Select></Select>
+                            <Input/>
                         </Form.Item>
                         <Form.Item label={"Radno mjesto"} className={"inline-item"}>
                             <Input/>
@@ -79,7 +82,7 @@ const UserForm = () => {
                         <Form.Item label={"Godina dolaska"} className={"inline-item"}>
                             <Input/>
                         </Form.Item>
-                        <Form.Item label={"Broj clanova u domacinstvu"} className={"inline-item"}>
+                        <Form.Item label={"Broj clanova domacinstva"} className={"inline-item"}>
                             <Input/>
                         </Form.Item>
                     </Form.Item>
