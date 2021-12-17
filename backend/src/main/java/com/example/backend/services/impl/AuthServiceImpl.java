@@ -36,7 +36,7 @@ public class AuthServiceImpl implements AuthService {
 
     @Override
     public LoginResponse login(LoginRequest request) {
-        LoginResponse response = null;
+        LoginResponse response;
         try {
             Authentication authenticate = authenticationManager
                     .authenticate(
