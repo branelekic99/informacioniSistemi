@@ -106,13 +106,14 @@ const AdminPanel = () => {
     return (
         <div className="AdminPanel">
             <div className= "table-component">
-                <Table pagination={{pageSize: 7}}
-                       dataSource={data}
-                       columns={columns}
-                       onRow={record => ({
+                <Table className="table"
+                        pagination={{pageSize: 7}}
+                        dataSource={data}
+                        columns={columns}
+                        onRow={record => ({
                            onClick: (e) => onSelect(e)
-                       })}
-                       rowClassName={"rows"}
+                        })}
+                        rowClassName={"rows"}
                 />
             </div>
 
