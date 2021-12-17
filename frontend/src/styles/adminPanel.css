@@ -31,8 +31,11 @@
 
 @media (max-width: 48em) {
     .AdminPanel{
-        margin-top:0px;
+        margin-top:10px;
         margin-left: 2px;
         margin-right: 2px;
     }
+}
+.table-component{
+    margin: 50px;
 }
