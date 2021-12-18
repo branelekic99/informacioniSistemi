@@ -12,13 +12,25 @@ const {Option} = Select;
 const UserForm = () => {
     const [formSubmitted,setFormSubmitted] = useState(false);
 
-    const onFinish = (values) => {
+    const onFinish = async(values) => {
+        try{
+            if(values.birth_year)
+                values.birth_year = values.birth_year.year();
+            if(values.coming_year)
+                values.coming_year = values.coming_year.year();
+            const result = await axios.post("/citizens",{values});
+            console.log(result);
+        }catch (err){
+            console.log(err);
+        }
         console.log(values);
-        setFormSubmitted(true);
     }
     let municipalitiesOptions = [];
     for (const [key, value] of Object.entries(municipalities)) {
         municipalitiesOptions.push(<Option value={value} key={key}>{value}</Option>)
+    }
+    const handleRedirect = ()=>{
+        window.location.href = "https://sss-zss.si/";
     }
     if(formSubmitted)
         return <SuccessfullySumbited />
@@ -26,7 +38,7 @@ const UserForm = () => {
         <div className={"container"}>
             <div className={"form-title"}>
                 <h2>Popunite obrazac sa vasim licnim podacima</h2>
-                <p className={"muted-text"}>*Podaci ce biti koristeni iskljucivo od strane Saveza Srba Slovenije</p>
+                <p className={"muted-text"}>*Podaci ce biti koristeni iskljucivo od strane <a onClick={handleRedirect}>Saveza Srba Slovenije</a></p>
             </div>
             <div className={"form-container"}>
                 <Form
@@ -35,11 +47,11 @@ const UserForm = () => {
                     onFinish={onFinish}
                 >
                     <Form.Item className={"item-box"}>
-                        <Form.Item label={"Ime"} className={"inline-item"} name={"firstName"}
+                        <Form.Item label={"Ime"} className={"inline-item"} name={"firstname"}
                                    rules={[{required: true, message: "Unesite vase ime."}]}>
                             <Input/>
                         </Form.Item>
-                        <Form.Item label={"Prezime"} className={"inline-item"} name={"lastName"}
+                        <Form.Item label={"Prezime"} className={"inline-item"} name={"lastname"}
                                    rules={[{required: true, message: "Unesite vase prezime."}]}>
                             <Input/>
                         </Form.Item>
@@ -50,50 +62,52 @@ const UserForm = () => {
                                    rules={[{required: true, message: "Unesite vasu email adresu."}]}>
                             <Input/>
                         </Form.Item>
-                        <Form.Item label={"Broj telefona"} className={"inline-item"} name={"phoneNumber"}
+                        <Form.Item label={"Broj telefona"} className={"inline-item"} name={"phone"}
                                    rules={[{required: true, message: "Unesite vas broj telefona."}]}>
                             <Input/>
                         </Form.Item>
                     </Form.Item>
 
                     <Form.Item className={"item-box"}>
-                        <Form.Item label={"Drzavljanstvo"} className={"inline-item"} name={"status"}>
+                        <Form.Item label={"Drzavljanstvo"} className={"inline-item"} name={"citizenshipEntity"}>
                             <Select placeholder={"Izaberite drzavljanstvo"}>
-                                <Option value={1}>BiH</Option>
-                                <Option value={2}>Srbija</Option>
-                                <Option value={3}>Hrvatska</Option>
-                                <Option value={4}>Makedonija</Option>
+                                <Option value={3}>BiH</Option>
+                                <Option value={1}>Srbija</Option>
+                                <Option value={2}>Hrvatska</Option>
+                                <Option value={4}>Crna Gora</Option>
+                                <Option value={5}>Slovenija</Option>
+                                <Option value={6}>Makedonija</Option>
                             </Select>
                         </Form.Item>
-                        <Form.Item label={"Grad/Mjesto zivljenja"} className={"inline-item"} name={"place"}>
+                        <Form.Item label={"Grad/Mjesto zivljenja"} className={"inline-item"} name={"city"}>
                             <Select placeholder={"Izaberite mjesto zivljenja"} showSearch allowClear>
                                 {municipalitiesOptions.map((item) => item)}
                             </Select>
                         </Form.Item>
                     </Form.Item>
                     <Form.Item className={"item-box"}>
-                        <Form.Item label={"Strucna sprema"} className={"inline-item"}>
+                        <Form.Item label={"Strucna sprema"} className={"inline-item"} name={"education"}>
                             <Input/>
                         </Form.Item>
-                        <Form.Item label={"Radno mjesto"} className={"inline-item"}>
+                        <Form.Item label={"Radno mjesto"} className={"inline-item"} name={"workplace"}>
                             <Input/>
                         </Form.Item>
                     </Form.Item>
 
                     <Form.Item className={"item-box"}>
-                        <Form.Item label={"Godina dolaska"} className={"inline-item"}>
+                        <Form.Item label={"Godina dolaska"} className={"inline-item"} name={"coming_year"} >
                             <DatePicker picker={"year"} className={"bl-datepicker"} disabledDate={(current)=>current > moment(new Date())}/>
                         </Form.Item>
-                        <Form.Item label={"Broj clanova domacinstva"} className={"inline-item"}>
+                        <Form.Item label={"Broj clanova domacinstva"} className={"inline-item"} name={"num_of_family_members"}>
                             <Input/>
                         </Form.Item>
                     </Form.Item>
 
                     <Form.Item className={"item-box"}>
-                        <Form.Item label={"Kompanija"} className={"inline-item"}>
+                        <Form.Item label={"Kompanija"} className={"inline-item"} name={"company"}>
                             <Input/>
                         </Form.Item>
-                        <Form.Item label={"Godina rodjenja"} className={"inline-item"}>
+                        <Form.Item label={"Godina rodjenja"} className={"inline-item"} name={"birth_year"}>
                             <DatePicker picker={"year"} className={"bl-datepicker"} disabledDate={(current)=>current > moment(new Date())}/>
                         </Form.Item>
                     </Form.Item>
