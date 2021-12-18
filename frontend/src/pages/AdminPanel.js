@@ -26,7 +26,7 @@ const AdminPanel = () => {
 
     const fetchData = async () => {
         try {
-            const result = await axios.get("/citizens", {headers: {"Authorization": `Bearer ${token}`}});
+            const result = await axios.get("/citizens", {headers: {"Authorization": `Bearer ${localStorage.getItem("token")}`}});
             setData(result.data);
             setIsLoaded(true);
             console.log(result.data);
