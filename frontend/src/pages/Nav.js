@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react';
-import {useNavigate,Link } from 'react-router-dom';
+import {useNavigate, Link, useLocation} from 'react-router-dom';
 
 import {MenuOutlined,CloseCircleOutlined} from "@ant-design/icons";
 import logo from "../styles/icons/logo-sr.png";
@@ -8,6 +8,19 @@ import "../styles/nav.css";
 
 const Nav = () => {
     const navigate = useNavigate();
+    const location = useLocation();
+    const [isLogin, setIsLogin] = useState(false);
+
+    useEffect(() => {
+
+        const {pathname} = location;
+        console.log(location);
+        if (pathname === "/login") {
+            setIsLogin(true);
+        } else {
+            setIsLogin(false);
+        }
+    }, [location]);
 
     const [menuOpen, setMenuOpen] = useState(false);
     const [size, setSize] = useState({
@@ -42,11 +55,15 @@ const Nav = () => {
         navigate("/login");
     };
 
+    if (isLogin) {
+        return "";
+    }
+
     return (
         <header className={"header"}>
             <div className={"header__content"}>
                 <Link to={"/"} className={"header__content__logo"}>
-                    <img src={logo} alt={"Logo"} />
+                    <img src={logo} alt={"Logo"}/>
                 </Link>
                 <nav
                     className={`${"header__content__nav"} ${
@@ -74,9 +91,9 @@ const Nav = () => {
                 </nav>
                 <div className={"header__content__toggle"}>
                     {!menuOpen ? (
-                        <MenuOutlined onClick={menuToggleHandler} />
+                        <MenuOutlined onClick={menuToggleHandler}/>
                     ) : (
-                        <CloseCircleOutlined onClick={menuToggleHandler} />
+                        <CloseCircleOutlined onClick={menuToggleHandler}/>
                     )}
                 </div>
             </div>
