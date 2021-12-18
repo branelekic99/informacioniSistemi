@@ -14,10 +14,10 @@ const UserForm = () => {
 
     const onFinish = async(values) => {
         try{
-            if(values.birth_year)
-                values.birth_year = values.birth_year.year();
-            if(values.coming_year)
-                values.coming_year = values.coming_year.year();
+            if(values.year_of_birth)
+                values.year_of_birth = values.year_of_birth.year();
+            if(values.year_of_arrival)
+                values.year_of_arrival = values.year_of_arrival.year();
             const result = await axios.post("/citizens",{values});
             console.log(result);
         }catch (err){
@@ -95,7 +95,7 @@ const UserForm = () => {
                     </Form.Item>
 
                     <Form.Item className={"item-box"}>
-                        <Form.Item label={"Godina dolaska"} className={"inline-item"} name={"coming_year"} >
+                        <Form.Item label={"Godina dolaska"} className={"inline-item"} name={"year_of_arrival"} >
                             <DatePicker picker={"year"} className={"bl-datepicker"} disabledDate={(current)=>current > moment(new Date())}/>
                         </Form.Item>
                         <Form.Item label={"Broj clanova domacinstva"} className={"inline-item"} name={"num_of_family_members"}>
@@ -107,7 +107,7 @@ const UserForm = () => {
                         <Form.Item label={"Kompanija"} className={"inline-item"} name={"company"}>
                             <Input/>
                         </Form.Item>
-                        <Form.Item label={"Godina rodjenja"} className={"inline-item"} name={"birth_year"}>
+                        <Form.Item label={"Godina rodjenja"} className={"inline-item"} name={"year_of_birth"}>
                             <DatePicker picker={"year"} className={"bl-datepicker"} disabledDate={(current)=>current > moment(new Date())}/>
                         </Form.Item>
                     </Form.Item>
