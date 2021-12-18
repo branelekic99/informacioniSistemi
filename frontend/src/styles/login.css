@@ -91,6 +91,7 @@
     width: 100%;
     height: 100%;
     background-color: #91b7ce;
+    display: flex;
     border: none;
     font-size: large;
     font-style: oblique;
@@ -102,6 +103,7 @@
     margin-top: 60px;
     width: 50%;
     height: 40px;
+    display: flex;
 }
 
 .back-wrapper{

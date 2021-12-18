@@ -1,10 +1,25 @@
-import React from 'react';
+import React, {useState} from 'react';
 import '../styles/login.css';
 import background from '../styles/icons/wp3990430.jpg';
 import {ArrowRightOutlined, DoubleRightOutlined} from "@ant-design/icons";
 import logo from "../styles/icons/logo-sr.png";
+import {useNavigate} from "react-router-dom";
 
 const Login = () => {
+
+        const [username, setUsername] = useState();
+        const [password, setPassword] = useState();
+
+        const navigate = useNavigate();
+
+        const handleUsernameChange = e => {
+            setUsername(e.target.value);
+        }
+
+        const handlePasswordChange = e => {
+            setPassword(e.target.value);
+        }
+
         const onFinish = (values) => {
             console.log('Success:', values);
         };
@@ -12,7 +27,13 @@ const Login = () => {
         const onFinishFailed = (errorInfo) => {
             console.log('Failed:', errorInfo);
         };
-
+        const handleLoginBack = () => {
+            navigate("/");
+        }
+        const handleSubmit = (e) => {
+            e.preventDefault();
+            console.log(username, password);
+        }
         return (
             <div className="main">
                 <div className="logo">
@@ -22,7 +43,7 @@ const Login = () => {
 
                 <div className="login-wrapper">
                     <div className={"back-wrapper"}>
-                        <ArrowRightOutlined/>
+                        <ArrowRightOutlined onClick={handleLoginBack}/>
                     </div>
 
                     <div className={"login-title"}>
@@ -36,31 +57,21 @@ const Login = () => {
                     </div>
 
                     <div className={"input-wrapper"}>
-                        <form>
+                        <form onSubmit={handleSubmit}>
                             <div className={"username"}>
                                 <input className={"input"} type={"text"} name={"Koirničko ime"}
-                                       placeholder={"Korisničko ime"} rules={[
-                                    {
-                                        required: true,
-                                        message: 'Unesite korisničko ime!',
-                                    },
-                                ]}/>
+                                       placeholder={"Korisničko ime"} onChange={handleUsernameChange} value={username}/>
                             </div>
                             <div className={"password"}>
                                 <input className={"input"} type={"password"} name={"Lozinka"}
-                                       placeholder={"Lozinka"} rules={[
-                                    {
-                                        required: true,
-                                        message: 'Unesite lozinku!',
-                                    },
-                                ]}/>
+                                       placeholder={"Lozinka"} onChange={handlePasswordChange} value={password}/>
+                            </div>
+                            <div className={"button-wrapper"}>
+                                <button className={"button"} type={"submit"}>PRIJAVI SE</button>
                             </div>
                         </form>
                     </div>
 
-                    <div className={"button-wrapper"}>
-                        <button className={"button"} type={"primary"} htmlType="submit">PRIJAVI SE</button>
-                    </div>
                 </div>
             </div>
         );
