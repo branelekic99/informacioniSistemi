@@ -31,7 +31,7 @@ public class UserEntity implements BaseEntity<Integer> {
     @Column(name = "email", nullable = false, length = 100)
     private String email;
     @Enumerated(EnumType.ORDINAL)
-    @Column(name = "role", nullable = false)
+    @Column(name = "rola", nullable = false)
     private Role role;
 
 }

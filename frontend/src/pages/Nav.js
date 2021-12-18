@@ -1,7 +1,7 @@
 import React, {useState, useEffect} from 'react';
 import {useNavigate, Link, useLocation} from 'react-router-dom';
 
-import {MenuOutlined, CloseCircleOutlined} from "@ant-design/icons";
+import {MenuOutlined,CloseCircleOutlined} from "@ant-design/icons";
 import logo from "../styles/icons/logo-sr.png";
 
 import "../styles/nav.css";
@@ -82,8 +82,8 @@ const Nav = () => {
                             </Link>
                         </li>
                         <li>
-                            <Link to="/about" onClick={menuToggleHandler}>
-                                O nama
+                            <Link to="/adminPanel" onClick={menuToggleHandler}>
+                                AdminPanel
                             </Link>
                         </li>
                     </ul>

@@ -1,0 +1,45 @@
+.AdminPanel{
+    background: white;
+}
+.ant-table-thead > tr >th{
+    width: 40px;
+    color: white;
+    background: #2b5c90 !important;
+    text-transform: uppercase;
+    text-align: center;
+    -moz-text-size-adjust: auto;
+
+
+}
+
+
+   .ant-table-tbody > tr >th{
+       color: white;
+       background: #2b5c90 !important;
+       text-align: center;
+       border-left: #1d1d1d;
+       border-right: #1d1d1d;
+   }
+    .rows{
+        text-align: center;
+    }
+
+    .yearColumn{
+        color: brown;
+    }
+
+
+@media (max-width: 48em) {
+    .AdminPanel{
+
+    }
+}
+.table-component{
+    padding: 50px;
+    margin-right: 20px;
+    margin-left: 20px;
+    padding-bottom: 20px;
+}
+.table{
+
+}
