@@ -10,7 +10,6 @@ const Captcha = ({setCaptcha}) => {
     const [numberValue,setNumberValue] = useState("");
 
     useEffect(()=>{
-
     },[]);
     const handleNumberChange = (e)=>{
         setNumberValue(e.target.value);
