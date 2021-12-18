@@ -31,10 +31,10 @@ public class CitizenEntity {
     @Column(name = "company", nullable = false, length = 45)
     private String company;
     @Basic
-    @Column(name = "birth_year", nullable = false, length = 45)
+    @Column(name = "year_of_birth", nullable = false, length = 45)
     private String year_of_birth;
     @Basic
-    @Column(name = "coming_year", nullable = false, length = 45)
+    @Column(name = "year_of_arrival", nullable = false, length = 45)
     private String year_of_arrival;
     @Basic
     @Column(name = "education", nullable = false, length = 100)
