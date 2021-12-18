@@ -1,0 +1,46 @@
+.captcha-container{
+    text-align: center;
+
+    height: 88vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-content: center;
+}
+.centered-box{
+    width: 30%;
+    margin: auto;
+    box-shadow: 0 8px 8px -4px gray;
+    height: 250px;
+}
+.centered-box h2{
+    font-size: 36px;
+    margin-top: 20px;
+}
+.input-container{
+    display: flex;
+    flex-direction: column;
+}
+.input-container input{
+    height: 50px;
+    width: 300px;
+    margin: auto;
+    font-size: 30px;
+    letter-spacing: 3px;
+    background-color: #d0cece;
+    border-radius: 5px;
+    border: none;
+}
+.input-container p{
+    margin: 0;
+    width: 300px;
+    margin: auto;
+    text-align: left;
+    color: red;
+}
+.input-container button{
+    width: 300px;
+    margin: 20px auto;
+    background: rgb(12,64,118);
+    letter-spacing: 2px;
+}
