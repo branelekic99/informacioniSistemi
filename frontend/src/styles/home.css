@@ -10,19 +10,16 @@
     margin:auto;
 }
 .home-title-container{
-    /*background-color: red;*/
     font-size: 36px;
     letter-spacing: 3px;
 }
 .home-second-title{
-    /*background-color: green;*/
     text-align: center;
     font-size: 30px;
     margin-top: 10px;
 }
 .home-link{
     margin-top:10px;
-    /*background-color: red;*/
     text-align: center;
 }
 .home-title a{

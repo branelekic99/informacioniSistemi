@@ -2,15 +2,24 @@ import React, {useState, useEffect, useMemo} from 'react';
 import {Form, Input, Select, DatePicker, InputNumber, Button} from "antd";
 import axios from "axios";
 import {municipalities} from "../constants/siMunicipalities";
-import SuccessfullySumbited from "../components/SuccessfullySumbited";
-import moment from "moment";
 
+import moment from "moment";
+import {useNavigate} from "react-router-dom";
 import "../styles/user-form.css";
+
+import Captcha from "../components/Captcha";
 
 const {Option} = Select;
 
 const UserForm = () => {
+    const navigation = useNavigate();
+
     const [formSubmitted,setFormSubmitted] = useState(false);
+    const [captchaCompleted,setCaptchaCompleted] = useState(false);
+    useEffect(()=>{
+        if(formSubmitted && captchaCompleted)
+            navigation("/user-form-success");
+    },[captchaCompleted]);
 
     const onFinish = async(values) => {
         try{
@@ -18,12 +27,15 @@ const UserForm = () => {
                 values.year_of_birth = values.year_of_birth.year();
             if(values.year_of_arrival)
                 values.year_of_arrival = values.year_of_arrival.year();
-            const result = await axios.post("/citizens",{values});
-            console.log(result);
+            setFormSubmitted(true);
         }catch (err){
             console.log(err);
         }
         console.log(values);
+    }
+
+    const createNewCitizen = async (data)=>{
+        const result = await axios.post("/citizens",{data});
     }
     let municipalitiesOptions = [];
     for (const [key, value] of Object.entries(municipalities)) {
@@ -32,8 +44,9 @@ const UserForm = () => {
     const handleRedirect = ()=>{
         window.location.href = "https://sss-zss.si/";
     }
-    if(formSubmitted)
-        return <SuccessfullySumbited />
+    if(formSubmitted && !captchaCompleted){
+        return <Captcha setCaptcha={setCaptchaCompleted}/>
+    }
     return (
         <div className={"container"}>
             <div className={"form-title"}>
@@ -70,7 +83,7 @@ const UserForm = () => {
 
                     <Form.Item className={"item-box"}>
                         <Form.Item label={"Drzavljanstvo"} className={"inline-item"} name={"citizenshipEntity"}>
-                            <Select placeholder={"Izaberite drzavljanstvo"}>
+                            <Select placeholder={"Izaberite drzavljanstvo"} filterOption={false}>
                                 <Option value={3}>BiH</Option>
                                 <Option value={1}>Srbija</Option>
                                 <Option value={2}>Hrvatska</Option>
@@ -80,7 +93,7 @@ const UserForm = () => {
                             </Select>
                         </Form.Item>
                         <Form.Item label={"Grad/Mjesto zivljenja"} className={"inline-item"} name={"city"}>
-                            <Select placeholder={"Izaberite mjesto zivljenja"} showSearch allowClear>
+                            <Select placeholder={"Izaberite mjesto zivljenja"} showSearch allowClear autocomplete={false}>
                                 {municipalitiesOptions.map((item) => item)}
                             </Select>
                         </Form.Item>
@@ -114,7 +127,7 @@ const UserForm = () => {
 
                     <Form.Item className={"form-submit-box"}>
                         <Button type={"primary"} htmlType={"submit"} block={true} size={"large"}>
-                            Potvrdi
+                            Dalje
                         </Button>
                     </Form.Item>
 

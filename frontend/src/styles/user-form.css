@@ -34,7 +34,10 @@
 .form-submit-box{
     width:50%;
     margin: auto;
-    background-color: red;
+}
+.form-submit-box button{
+    background: rgb(12,64,118);
+    letter-spacing: 2px;
 }
 .muted-text{
     font-size: 11px;
