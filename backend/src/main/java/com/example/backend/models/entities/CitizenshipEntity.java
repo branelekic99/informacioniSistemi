@@ -30,4 +30,8 @@ public class CitizenshipEntity {
         this.country = country;
     }
 
+    public CitizenshipEntity(Integer id){
+        this.id = id;
+    }
+
 }
