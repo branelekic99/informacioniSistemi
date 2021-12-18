@@ -1,244 +1,47 @@
-import React, {useState} from 'react'
+import React, {useEffect, useState} from 'react'
 
 import "antd/dist/antd.css";
 import {Button, Input, Table} from 'antd';
 import styles from "../styles/adminPanel.css"
 import Icon, {SearchOutlined} from "@ant-design/icons";
+import axios from 'axios'
+
+const token = "eyJhbGciOiJIUzUxMiJ9.eyJqdGkiOiIzIiwic3ViIjoiYWRtaW4iLCJyb2xlIjoiQURNSU4iLCJleHAiOjE2Mzk3NTg5MzR9.z6xqzeVWdE9TUZKTdI5CxXFFCLVWYnTkI3x6nzyJMqfWNukjDMIKF278SY01s87T2xdNdvH5jGvLCil8CkQbdQ";
+
 
 
 const AdminPanel = () => {
 
-    const dataSource = [
-
-        {   key : 1,
-            name : 'jelena',
-            lastname: 'Mackic',
-            city : 'Banja Luka',
-            email : 'mackicj@gmail.com',
-            phone : '066169912',
-            citizencol: 'ne znam',
-            workplace: 'student',
-            company : 'ETF',
-            age : 22,
-            citizenship : "BiH",
-            comingYear : 2014,
-            numOfHouseholdMembers : 3
-        },
-        {   key : 2,
-            name : 'jelena',
-            lastname: 'Mackic',
-            city : 'Banja Luka',
-            email : 'mackicj@gmail.com',
-            phone : '066169912',
-            citizencol: 'ne znam',
-            workplace: 'student',
-            company : 'ETF',
-            age : 22,
-            citizenship : "BiH",
-            comingYear : 2014,
-            numOfHouseholdMembers : 3
-        },
-        {   key : 3,
-            name : 'jelena',
-            lastname: 'Mackic',
-            city : 'Banja Luka',
-            email : 'mackicj@gmail.com',
-            phone : '066169912',
-            citizencol: 'ne znam',
-            workplace: 'student',
-            company : 'ETF',
-            age : 22,
-            citizenship : "BiH",
-            comingYear : 2014,
-            numOfHouseholdMembers : 3
-        },
-        {   key : 4,
-            name : 'jelena',
-            lastname: 'Mackic',
-            city : 'Banja Luka',
-            email : 'mackicj@gmail.com',
-            phone : '066169912',
-            citizencol: 'ne znam',
-            workplace: 'student',
-            company : 'ETF',
-            age : 22,
-            citizenship : "BiH",
-            comingYear : 2014,
-            numOfHouseholdMembers : 3
-        },
-        {   key : 5,
-            name : 'jelena',
-            lastname: 'Mackic',
-            city : 'Banja Luka',
-            email : 'mackicj@gmail.com',
-            phone : '066169912',
-            citizencol: 'ne znam',
-            workplace: 'student',
-            company : 'ETF',
-            age : 22,
-            citizenship : "BiH",
-            comingYear : 2014,
-            numOfHouseholdMembers : 3
-        },
-        {   key : 6,
-            name : 'jelena',
-            lastname: 'Mackic',
-            city : 'Banja Luka',
-            email : 'mackicj@gmail.com',
-            phone : '066169912',
-            citizencol: 'ne znam',
-            workplace: 'student',
-            company : 'ETF',
-            age : 22,
-            citizenship : "BiH",
-            comingYear : 2014,
-            numOfHouseholdMembers : 3
-        },
-        {   key : 7,
-            name : 'jelena',
-            lastname: 'Mackic',
-            city : 'Banja Luka',
-            email : 'mackicj@gmail.com',
-            phone : '066169912',
-            citizencol: 'ne znam',
-            workplace: 'student',
-            company : 'ETF',
-            age : 22,
-            citizenship : "BiH",
-            comingYear : 2014,
-            numOfHouseholdMembers : 3
-        },
-        {   key : 8,
-            name : 'jelena',
-            lastname: 'Mackic',
-            city : 'Banja Luka',
-            email : 'mackicj@gmail.com',
-            phone : '066169912',
-            citizencol: 'ne znam',
-            workplace: 'student',
-            company : 'ETF',
-            age : 22,
-            citizenship : "BiH",
-            comingYear : 2014,
-            numOfHouseholdMembers : 3
-        },
-        {   key : 9,
-            name : 'jelena',
-            lastname: 'Mackic',
-            city : 'Banja Luka',
-            email : 'mackicj@gmail.com',
-            phone : '066169912',
-            citizencol: 'ne znam',
-            workplace: 'student',
-            company : 'ETF',
-            age : 22,
-            citizenship : "BiH",
-            comingYear : 2014,
-            numOfHouseholdMembers : 3
-        },
-        {   key : 10,
-            name : 'jelena',
-            lastname: 'Mackic',
-            city : 'Banja Luka',
-            email : 'mackicj@gmail.com',
-            phone : '066169912',
-            citizencol: 'ne znam',
-            workplace: 'student',
-            company : 'ETF',
-            age : 42,
-            citizenship : "BiH",
-            comingYear : 2014,
-            numOfHouseholdMembers : 3
-        },
-        {   key : 11,
-            name : 'jelena',
-            lastname: 'Mackic',
-            city : 'Banja Luka',
-            email : 'mackicj@gmail.com',
-            phone : '066169912',
-            citizencol: 'ne znam',
-            workplace: 'student',
-            company : 'ETF',
-            age : 18,
-            citizenship : "BiH",
-            comingYear : 2014,
-            numOfHouseholdMembers : 3
-        },
-        {   key : 12,
-            name : 'jelena',
-            lastname: 'Mackic',
-            city : 'Banja Luka',
-            email : 'mackicj@gmail.com',
-            phone : '066169912',
-            citizencol: 'ne znam',
-            workplace: 'student',
-            company : 'ETF',
-            age : 15,
-            citizenship : "BiH",
-            comingYear : 2014,
-            numOfHouseholdMembers : 3
-        },
-        {   key : 13,
-            name : 'ivona',
-            lastname: 'sukunda',
-            city : 'Beograd',
-            email : 'mackicj@gmail.com',
-            phone : '066169912',
-            citizencol: 'ne znam',
-            workplace: 'student',
-            company : 'ETF',
-            age : 25,
-            citizenship : "BiH",
-            comingYear : 2014,
-            numOfHouseholdMembers : 3
-        },
-        {   key : 14,
-            name : 'ana',
-            lastname: 'Mackic',
-            city : 'Bograd',
-            email : 'mackicj@gmail.com',
-            phone : '066169912',
-            citizencol: 'ne znam',
-            workplace: 'student',
-            company : 'ETF',
-            age : 12,
-            citizenship : "BiH",
-            comingYear : 2014,
-            numOfHouseholdMembers : 3
-        },
-        {   key : 15,
-            name : 'ana',
-            lastname: 'Mackic',
-            city : 'Bijeljina',
-            email : 'mackicj@gmail.com',
-            phone : '066169912',
-            citizencol: 'ne znam',
-            workplace: 'student',
-            company : 'ETF',
-            age : 32,
-            citizenship : "BiH",
-            comingYear : 2014,
-            numOfHouseholdMembers : 3
+    const [data, setData] = useState([]);
+    const fetchData = async () => {
+        try {
+            const result = await axios.get("/citizens", {headers: {"Authorization": `Bearer ${token}`}});
+            setData(result.data);
+            console.log(result.data);
+        } catch (err) {
+            console.log(err);
         }
+    };
 
-    ];
+    useEffect(() => {
+        fetchData();
+    }, []);
+
 
     const columns = [
         {
             title: 'Ime i prezime',
             dataIndex: 'name',
-            key : 'name',
-            render : (text, record) => <p > {record.name} {record.lastname}</p>,
+            key: 'name',
+            render: (text, record) => <p> {record.name} {record.lastname}</p>,
 
 
         },
         {
             title: 'Godine starosti',
-            dataIndex: 'age',
-            key : 'age',
-            width:15,
-            defaultSortOrder: 'descend',
-            sorter: (a, b) => a.age - b.age,
+            dataIndex: 'year',
+            key: 'year',
+            width: 15,
         },
         {
             title: 'Grad',
@@ -273,26 +76,26 @@ const AdminPanel = () => {
         },
         {
             title: 'Drzavljanstvo',
-            dataIndex: 'citizenship',
-            key: 'citizenship',
+            dataIndex: ['citizenshipEntity','country'],
+            key: 'country',
         },
         {
             title: 'Godina dolaska ',
             dataIndex: 'comingYear',
             key: 'comingYear',
-            width:15,
+            width: 15,
         },
 
         {
             title: 'Broj clanova domacinstva',
-            dataIndex: 'numOfHouseholdMembers',
-            key: 'numOfHouseholdMembers',
-            width:15,
+            dataIndex: 'num_of_family_members',
+            key: 'num_of_family_members',
+            width: 15,
         }
     ];
 
     const onSelect = (e) => {
-       console.log('onSelect ', e.target);
+        console.log('onSelect ', e.target);
     }
 
     const doSomething = (e) => {
@@ -300,19 +103,21 @@ const AdminPanel = () => {
     }
 
 
-
     return (
-      <div className = "AdminPanel">
-          <Table pagination={{ pageSize: 7 }}
+        <div className="AdminPanel">
+            <div className= "table-component">
+                <Table className="table"
+                        pagination={{pageSize: 7}}
+                        dataSource={data}
+                        columns={columns}
+                        onRow={record => ({
+                           onClick: (e) => onSelect(e)
+                        })}
+                        rowClassName={"rows"}
+                />
+            </div>
 
-                 dataSource = {dataSource}
-                 columns = {columns}
-                 onRow = {record =>({
-                     onClick:(e) => onSelect(e)
-                 })}
-                 rowClassName={"rows"}
-          />
-      </div>
+        </div>
     );
 
 
