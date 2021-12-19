@@ -25,3 +25,14 @@
 .home-title a{
     font-size: 12px;
 }
+@media(max-width: 48em){
+    .home-container{
+        text-align: center;
+    }
+    .home-title-container{
+        font-size: 26px;
+    }
+    .home-second-title{
+        font-size: 26px;
+    }
+}
