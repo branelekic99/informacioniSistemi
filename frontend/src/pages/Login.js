@@ -1,18 +1,22 @@
-import React, {useState} from 'react';
+import React, {useState,useContext} from 'react';
 import '../styles/login.css';
 import background from '../styles/icons/wp3990430.jpg';
 import {ArrowRightOutlined, DoubleRightOutlined} from "@ant-design/icons";
 import {useNavigate} from "react-router-dom";
 import logo from "../styles/icons/logo-sr.png";
 import axios from 'axios';
+import UserContext from "../context/user/userContext";
+import {TOKEN} from "../constants/variables";
+
 const errorUsername = "* korisnicko ime je obavezno";
 const errorPassword = "* lozinka je obavezna";
 const errorLogin = "* unijeti kredencijali nisu ispravni";
+
 const Login = () => {
+        const {isAuthenticated,setIsAuthenticated} = useContext(UserContext);
 
         const [username, setUsername] = useState();
         const [password, setPassword] = useState();
-        const [token, setToken] = useState();
         const [errorMessageUsername,setErrorMessageUsername] = useState("");
         const [errorMessagePassword,setErrorMessagePassword] = useState("");
         const [errorMessageLogin,setErrorMessageLogin] = useState("");
@@ -54,7 +58,6 @@ const Login = () => {
                 console.log(username, password);
 
             }
-
         }
 
         const  loginCall = async () =>{
@@ -63,17 +66,18 @@ const Login = () => {
                     "username" : username,
                     "password" : password
                 } );
-                localStorage.setItem("token", result.data.token);
-                console.log(result);
+                localStorage.setItem(TOKEN, result.data.token);
+                setIsAuthenticated(true);
                 navigate("/adminPanel");
             }catch (err){
-                console.log(err.response.status);
                 if(err.response.status == 401){
                     setErrorMessageLogin(errorLogin);
                 }
             }
         }
-
+        if(isAuthenticated){
+            navigate("/");
+        }
         return (
             <div className="main">
                 <div className="logo">
@@ -90,10 +94,6 @@ const Login = () => {
                     <div className={"login-title"}>
                         <text className={"title-text"}>
                             Dobrodošli na prijavu!
-                           {/* <text> </text>
-                            <text className={"acc-title"}>
-                                prijavu!
-                            </text>*/}
                         </text>
                     </div>
 

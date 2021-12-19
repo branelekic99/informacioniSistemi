@@ -1,20 +1,23 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, useContext} from 'react';
 import {useNavigate, Link, useLocation} from 'react-router-dom';
 
-import {MenuOutlined,CloseCircleOutlined} from "@ant-design/icons";
+import {MenuOutlined, CloseCircleOutlined} from "@ant-design/icons";
 import logo from "../styles/icons/logo-sr.png";
+import UserContext from "../context/user/userContext";
+import {TOKEN} from "../constants/variables";
 
 import "../styles/nav.css";
 
+
 const Nav = () => {
+    const {isAuthenticated,setIsAuthenticated} = useContext(UserContext)
     const navigate = useNavigate();
     const location = useLocation();
     const [isLogin, setIsLogin] = useState(false);
 
     useEffect(() => {
-
         const {pathname} = location;
-        console.log(location);
+
         if (pathname === "/login") {
             setIsLogin(true);
         } else {
@@ -54,7 +57,11 @@ const Nav = () => {
         menuToggleHandler();
         navigate("/login");
     };
-
+    const logOutClickHandler = ()=>{
+        setIsAuthenticated(false);
+        localStorage.setItem(TOKEN, null);
+        navigate("/")
+    }
     if (isLogin) {
         return "";
     }
@@ -81,13 +88,15 @@ const Nav = () => {
                                 Obrazac
                             </Link>
                         </li>
-                        <li>
+                        {isAuthenticated && <li>
                             <Link to="/adminPanel" onClick={menuToggleHandler}>
                                 AdminPanel
                             </Link>
-                        </li>
+                        </li>}
+
                     </ul>
-                    <button onClick={loginClickHandler}>Uloguj se</button>
+                    {isAuthenticated ? <button onClick={logOutClickHandler}>Izloguj se</button> : <button onClick={loginClickHandler}>Uloguj se</button>}
+
                 </nav>
                 <div className={"header__content__toggle"}>
                     {!menuOpen ? (

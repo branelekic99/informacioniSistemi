@@ -1,15 +1,18 @@
-import React, {useEffect, useState} from 'react'
+import React, {useEffect, useState,useContext} from 'react'
 import {useNavigate} from "react-router-dom";
 import "antd/dist/antd.css";
 import {Button, Input, Table} from 'antd';
 import styles from "../styles/adminPanel.css"
 import Icon, {SearchOutlined} from "@ant-design/icons";
+import {TOKEN} from "../constants/variables";
 import "react-loader-spinner/dist/loader/css/react-spinner-loader.css";
 import Loader from "react-loader-spinner";
 import axios from 'axios'
+import UserContext from "../context/user/userContext";
 
 
 const AdminPanel = () => {
+    const {isAuthenticated} = useContext(UserContext);
 
     const [data, setData] = useState([]);
     const [isLoaded, setIsLoaded] = useState(false);
@@ -23,7 +26,7 @@ const AdminPanel = () => {
 
     const fetchData = async () => {
         try {
-            const result = await axios.get("/citizens", {headers: {"Authorization": `Bearer ${localStorage.getItem("token")}`}});
+            const result = await axios.get("/citizens", {headers: {"Authorization": `Bearer ${localStorage.getItem(TOKEN)}`}});
             setData(result.data);
             setIsLoaded(true);
             console.log(result.data);
@@ -136,7 +139,9 @@ const AdminPanel = () => {
     const doSomething = (e) => {
         console.log('Kliknuto je na dugme', e);
     }
-
+    if(!isAuthenticated){
+        navigate("/login");
+    }
     if(!isLoaded){
         return (
             <div className= "background-div">
