@@ -29,7 +29,7 @@ public class CitizenController {
     @GetMapping
     public ResponseEntity<Map<String, Object>> findAll(
             @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "3") int size
+            @RequestParam(defaultValue = "10") int size
     ) {
 
         try {
@@ -42,7 +42,7 @@ public class CitizenController {
             citizens = pageCitizens.getContent();
 
             Map<String, Object> response = new HashMap<>();
-            response.put("tutorials", citizens);
+            response.put("citizens", citizens);
             response.put("currentPage", pageCitizens.getNumber());
             response.put("totalItems", pageCitizens.getTotalElements());
             response.put("totalPages", pageCitizens.getTotalPages());
