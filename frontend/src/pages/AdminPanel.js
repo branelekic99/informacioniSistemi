@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react'
-
+import {useNavigate} from "react-router-dom";
 import "antd/dist/antd.css";
 import {Button, Input, Table} from 'antd';
 import styles from "../styles/adminPanel.css"
@@ -7,11 +7,6 @@ import Icon, {SearchOutlined} from "@ant-design/icons";
 import "react-loader-spinner/dist/loader/css/react-spinner-loader.css";
 import Loader from "react-loader-spinner";
 import axios from 'axios'
-
-const token = "eyJhbGciOiJIUzUxMiJ9.eyJqdGkiOiIzIiwic3ViIjoiYWRtaW4iLCJyb2xlIjoiQURNSU4iLCJleHAiOjE2Mzk4NDY0Mjl9.hUYOvQ8yiM6NV3i3MzA5zClIuFHQ9BjeRUqCNrkERIlNC95-SFtyWcV4cekLUvLB8BCxs2bYuMdUc7DhZaLWCg";
-
-
-
 
 
 const AdminPanel = () => {
@@ -24,6 +19,8 @@ const AdminPanel = () => {
     });
     const [itemsPerPage, setItemsPerPage] = useState(10);
 
+    const navigate = useNavigate();
+
     const fetchData = async () => {
         try {
             const result = await axios.get("/citizens", {headers: {"Authorization": `Bearer ${localStorage.getItem("token")}`}});
@@ -31,9 +28,15 @@ const AdminPanel = () => {
             setIsLoaded(true);
             console.log(result.data);
         } catch (err) {
-            console.log(err);
+            if(err.response.status == 403){
+               // handleTokenExpiration();
+            }
         }
     };
+
+    const handleTokenExpiration = () =>{
+        navigate('/login');
+    }
 
     useEffect(() => {
         const handleResize = () => {
@@ -136,9 +139,22 @@ const AdminPanel = () => {
 
     if(!isLoaded){
         return (
-            <Loader>
-                Loading
-            </Loader>
+            <div className= "background-div">
+                <div className = "loader-div">
+                    <Loader className = "loader"
+                            type = "Circles"
+                            color = "#2b5c90"
+                            width = {100}
+                    >
+                        loading
+                    </Loader>
+                    <text className= "loading-message">
+                        Ucitvanje podataka, molimo Vas sacekajte.
+                    </text>
+                </div>
+            </div>
+
+
         )
     }
 
