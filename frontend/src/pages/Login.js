@@ -69,6 +69,7 @@ const Login = () => {
                     "username" : username,
                     "password" : password
                 } );
+                console.log(result.data.token);
                 localStorage.setItem(TOKEN, result.data.token);
                 setIsAuthenticated(true);
                 navigate("/adminPanel");

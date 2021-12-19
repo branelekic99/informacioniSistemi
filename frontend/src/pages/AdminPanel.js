@@ -21,17 +21,27 @@ const AdminPanel = () => {
         height: window.innerHeight,
     });
     const [itemsPerPage, setItemsPerPage] = useState(10);
-
+    const [currentPage, setCurrentPage] = useState(1);
     const navigate = useNavigate();
 
     const fetchData = async () => {
         try {
-            const result = await axios.get("/citizens", {headers: {"Authorization": `Bearer ${localStorage.getItem(TOKEN)}`}});
+            console.log(currentPage);
+            console.log(itemsPerPage);
+            const result = await axios.get("/citizens",
+                {headers: {"Authorization": `Bearer ${localStorage.getItem(TOKEN)}`}},
+                {params :
+                        {   page : currentPage,
+                            size : itemsPerPage
+                        }
+                });
+
             setData(result.data);
             setIsLoaded(true);
             console.log(result.data);
         } catch (err) {
-            if(err.response.status == 403){
+            if(err.response){
+                console.log(err);
                // handleTokenExpiration();
             }
         }
@@ -139,6 +149,9 @@ const AdminPanel = () => {
         console.log('onSelect ', e.target);
     }
 
+    const onPageChange = (e) => {
+        alert(e);
+    }
     const doSomething = (e) => {
         console.log('Kliknuto je na dugme', e);
     }
@@ -170,10 +183,16 @@ const AdminPanel = () => {
                        pagination={
                            {
                                pageSize: itemsPerPage,
-                               position: ["bottomCenter"]
+                               position: ["bottomCenter"],
+                               onChange: (page, pageSize) => {
+                                   setCurrentPage(page);
+                                   fetchData();
+
+                               }
                            }
 
                        }
+
                        dataSource={data}
                        columns={columns}
                        onRow={record => ({
