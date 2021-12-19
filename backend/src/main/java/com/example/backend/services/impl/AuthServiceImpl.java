@@ -48,7 +48,7 @@ public class AuthServiceImpl implements AuthService {
             response = userService.findById(user.getId(), LoginResponse.class);
             response.setToken(generateJwt(user));
         } catch (Exception ex) {
-            throw new UnauthorizedException();
+            throw new UnauthorizedException("Wrong user credentials.");
         }
         return response;
     }

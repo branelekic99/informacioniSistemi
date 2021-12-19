@@ -1,5 +1,6 @@
 package com.example.backend.controllers.advice;
 
+import com.example.backend.exceptions.InvalidRequestException;
 import com.example.backend.exceptions.UnauthorizedException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -13,16 +14,16 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 @ControllerAdvice
-public class AuthControllerAdvisor extends ResponseEntityExceptionHandler {
+public class CitizenControllerAdvisor extends ResponseEntityExceptionHandler {
 
-    @ExceptionHandler(UnauthorizedException.class)
-    public ResponseEntity<Object> handleUnauthorizedException(
-            UnauthorizedException ex, WebRequest request) {
+    @ExceptionHandler(InvalidRequestException.class)
+    public ResponseEntity<Object> handleInvalidRequestException(
+            InvalidRequestException ex, WebRequest request) {
 
         Map<String, Object> body = new LinkedHashMap<>();
         body.put("message", ex.getData());
 
-        return new ResponseEntity<>(body, HttpStatus.UNAUTHORIZED);
+        return new ResponseEntity<>(body, HttpStatus.BAD_REQUEST);
     }
 
 
