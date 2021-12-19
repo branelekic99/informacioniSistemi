@@ -72,8 +72,18 @@ primjer tijela POST metoda
 
 
 Na citizens endpointu dozvoljene su GET i POST metoda. Pri pozivu ovih metoda potrebno je ukljuciti Bearer Token tip autorizacije cija ce vrijednost biti token koji je vracen u POST zahtjevu
-na login endopoint. GET metoda ce vratiti sve gradjane iz baze a post metoda ce kreirati i sacuvati novog gradjana u bazu o kojem su podaci proslijedjeni u tijelu POST zahtjeva.
-primer tijela POST metoda
+na login endopoint.
+
+GET metoda vraca listu gradjana. Potrebno je definisati query parametre page i size koji definisu redni broj i velicinu
+stranice pri paginaciji. Default vrijednost za parameter page je 0, dok je za parametar size 10.
+primjeri poziva GET metoda
+/citizens (ovaj poziv ce vratiti prvih deset zapisa iz baze)
+/citizens/?size=5 (ovaj poziv ce vratiti prvih pet zapisa iz baze)
+/citizens/?page=1 (ovaj poziv ce vratiti drugih deset zapisa iz baze)
+/citizens/?page=2&size=5 (ovaj poziv ce vratiti trecih pet zapisa iz baze)
+
+POST metoda ce kreirati i sacuvati novog gradjana u bazu o kojem su podaci proslijedjeni u tijelu POST zahtjeva.
+primjer tijela POST metoda
 
 {
         "firstname": "Marko",
