@@ -13,7 +13,7 @@ import UserContext from "../context/user/userContext";
 
 const AdminPanel = () => {
     const {isAuthenticated} = useContext(UserContext);
-
+    console.log("ovo je auth",isAuthenticated)
     const [data, setData] = useState([]);
     const [isLoaded, setIsLoaded] = useState(false);
     const [pageSize, setPageSize] = useState({
@@ -49,6 +49,9 @@ const AdminPanel = () => {
             });
         };
         window.addEventListener("resize", handleResize);
+        if(!isAuthenticated){
+            navigate("/login");
+        }
         fetchData();
         return () => window.removeEventListener("resize", handleResize);
 
@@ -158,11 +161,8 @@ const AdminPanel = () => {
                     </text>
                 </div>
             </div>
-
-
         )
     }
-
     return (
         <div className="admin-panel">
             <div className="table-component">

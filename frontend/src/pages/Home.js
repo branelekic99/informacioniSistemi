@@ -13,7 +13,7 @@ const Home = () => {
         <div className={"home-container"}>
             <div className={"home-title"}>
                 <div className={"home-title-container"}>
-                    Dobrodosli na stranicu
+                    Dobrodosli na registar
                 </div>
                 <div className={"home-second-title"}>
                     Saveza Srba Slovenije

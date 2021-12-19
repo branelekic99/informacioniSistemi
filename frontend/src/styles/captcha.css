@@ -44,3 +44,11 @@
     background: rgb(12,64,118);
     letter-spacing: 2px;
 }
+@media(max-width: 48em) {
+    .centered-box{
+        width:80%;
+    }
+    .input-container input{
+        font-size: 22px;
+    }
+}

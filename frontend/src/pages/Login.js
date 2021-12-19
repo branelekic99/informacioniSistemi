@@ -1,4 +1,4 @@
-import React, {useState,useContext} from 'react';
+import React, {useState, useContext, useEffect} from 'react';
 import '../styles/login.css';
 import background from '../styles/icons/wp3990430.jpg';
 import {ArrowRightOutlined, DoubleRightOutlined} from "@ant-design/icons";
@@ -22,7 +22,10 @@ const Login = () => {
         const [errorMessageLogin,setErrorMessageLogin] = useState("");
 
         const navigate = useNavigate();
-
+        useEffect(()=>{
+            if(isAuthenticated)
+                navigate("/")
+        },[]);
         const handleUsernameChange = e => {
             setUsername(e.target.value);
             if(errorMessageUsername)
@@ -75,9 +78,7 @@ const Login = () => {
                 }
             }
         }
-        if(isAuthenticated){
-            navigate("/");
-        }
+
         return (
             <div className="main">
                 <div className="logo">
