@@ -3,6 +3,7 @@ package com.example.backend.controllers;
 import com.example.backend.exceptions.UnauthorizedException;
 import com.example.backend.models.dto.JwtUser;
 import com.example.backend.models.dto.LoginResponse;
+import com.example.backend.models.dto.UsernameResponse;
 import com.example.backend.models.requests.LoginRequest;
 import com.example.backend.services.AuthService;
 import com.example.backend.services.UserService;
@@ -26,15 +27,15 @@ public class AuthController {
     }
 
     @PostMapping("login")
-    @ExceptionHandler(UnauthorizedException.class)
     public LoginResponse login(@RequestBody @Valid LoginRequest request) {
         return service.login(request);
     }
 
-    @GetMapping("state")
-    public LoginResponse state(Authentication auth) {
+
+    @GetMapping("get-user")
+    public UsernameResponse state(Authentication auth) {
         JwtUser jwtUser = (JwtUser) auth.getPrincipal();
-        return userService.findById(jwtUser.getId(), LoginResponse.class);
+        return new UsernameResponse(jwtUser.getUsername());
     }
 
 }

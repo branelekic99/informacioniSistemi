@@ -4,6 +4,12 @@
       "methods": ["GET"],
       "pattern": "/citizens",
       "roles": ["ADMIN","USER"]
+    },
+
+    {
+      "methods": ["GET"],
+      "pattern": "/get-user",
+      "roles": ["ADMIN","USER"]
     }
   ]
 }
