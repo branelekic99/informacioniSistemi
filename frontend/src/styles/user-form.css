@@ -47,6 +47,13 @@
 .bl-datepicker{
     width: 100%;
 }
+.spinner-container{
+    height: 88vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
 @media(max-width: 48em) {
     .container{
        width:90%;

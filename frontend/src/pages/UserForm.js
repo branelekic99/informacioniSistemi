@@ -2,9 +2,9 @@ import React, {useState, useEffect, useMemo} from 'react';
 import {Form, Input, Select, DatePicker, InputNumber, Button} from "antd";
 import axios from "axios";
 import {municipalities} from "../constants/siMunicipalities";
-
 import moment from "moment";
 import {useNavigate} from "react-router-dom";
+import Loader from "react-loader-spinner";
 import "../styles/user-form.css";
 
 import Captcha from "../components/Captcha";
@@ -35,18 +35,17 @@ const UserForm = () => {
             }
             setFormData(values);
             setFormSubmitted(true);
-            console.log(values);
         } catch (err) {
             console.log(err);
         }
-        console.log(values);
     }
 
     const createNewCitizen = async () => {
         if (formData !== null) {
+            const formDataString = JSON.stringify(formData);
+            console.log(formDataString);
             try{
-                const result = await axios.post("/citizens", {formData});
-                console.log(result);
+                const result = await axios.post("/citizens",formData);
                 navigation("/user-form-success");
             }catch (err){
                 console.log(err);
@@ -62,6 +61,16 @@ const UserForm = () => {
     }
     if (formSubmitted && !captchaCompleted) {
         return <Captcha setCaptcha={setCaptchaCompleted}/>
+    }
+    if(formSubmitted && captchaCompleted){
+        return <div className={"spinner-container"}>
+            <Loader
+                type="ThreeDots"
+                color="#00BFFF"
+                height={100}
+                width={100}
+            />
+        </div>
     }
     return (
         <div className={"container"}>
