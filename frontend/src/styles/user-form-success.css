@@ -1,4 +1,3 @@
-
 .success-container{
     width:25%;
     height: 500px;
@@ -8,10 +7,11 @@
     flex-direction: column;
     box-shadow: 0 8px 8px -4px gray;
     overflow: hidden;
+
 }
 .first-part{
     flex:1;
-    background-color: rgb(139,195,74);
+    background-color:#00BD9B;
     display: flex;
     justify-content: center;
     align-content: center;
@@ -34,7 +34,6 @@
 .second-part{
     flex:1;
     text-align: center;
-    /*text-transform: uppercase;*/
     font-size: 16px;
     letter-spacing: 2.5px;
     color:gray;
@@ -47,8 +46,13 @@
     border-radius: 40px;
     width:100px;
     height: 40px;
-    background-color: rgb(139,195,74);
+    background-color:#00BD9B;
     border: 0px;
     color:white;
     margin-top: 20px;
+}
+@media(max-width: 48em){
+    .success-container{
+        width:70%;
+    }
 }

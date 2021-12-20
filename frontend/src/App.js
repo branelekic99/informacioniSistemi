@@ -10,19 +10,24 @@ import Nav from "./pages/Nav";
 import AdminPanel from "./pages/AdminPanel"
 import 'antd/dist/antd.css'; // or 'antd/dist/antd.less'
 import 'antd/dist/antd.css';
-import UserForm from "./pages/UserForm"; // or 'antd/dist/antd.less'
+import UserForm from "./pages/UserForm";
+import SuccessfullySumbited from "./components/SuccessfullySumbited"; // or 'antd/dist/antd.less'
+import UserState from "./context/user/UserState";
 
 function App() {
     return (
         <>
             <BrowserRouter>
-                <Nav/>
-                <Routes>
-                    <Route path={"/"} element={<Home/>}/>
-                    <Route path={"/login"} element={<Login />}/>
-                    <Route path={"/adminPanel"} element={<AdminPanel/>}/>
-                    <Route path={"/user-form"} element={<UserForm />}/>
-                </Routes>
+                <UserState>
+                    <Nav/>
+                    <Routes>
+                        <Route path={"/"} element={<Home/>}/>
+                        <Route path={"/login"} element={<Login/>}/>
+                        <Route path={"/adminPanel"} element={<AdminPanel/>}/>
+                        <Route path={"/user-form"} element={<UserForm/>}/>
+                        <Route path={"/user-form-success"} element={<SuccessfullySumbited/>}/>
+                    </Routes>
+                </UserState>
             </BrowserRouter>
         </>
     );

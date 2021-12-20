@@ -13,7 +13,7 @@
 }
 .form-container{
     padding: 20px;
-    background: #b7b5b5;
+    background: #afafaf;
     border-radius: 10px;
     margin-top: 10px;
 
@@ -34,12 +34,25 @@
 .form-submit-box{
     width:50%;
     margin: auto;
-    background-color: red;
+}
+.form-submit-box button{
+    background: rgb(12,64,118);
+    letter-spacing: 2px;
 }
 .muted-text{
     font-size: 11px;
     color: gray;
     margin: 0px;
+}
+.bl-datepicker{
+    width: 100%;
+}
+.spinner-container{
+    height: 88vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
 }
 @media(max-width: 48em) {
     .container{
@@ -60,5 +73,8 @@
     .block-item{
         width:90%;
         margin:10px auto;
+    }
+    .form-submit-box{
+        margin-top: 10px;
     }
 }

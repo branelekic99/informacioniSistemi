@@ -5,9 +5,10 @@
       "pattern": "/citizens",
       "roles": ["ADMIN","USER"]
     },
+
     {
-      "methods": ["POST"],
-      "pattern": "/citizens",
+      "methods": ["GET"],
+      "pattern": "/get-user",
       "roles": ["ADMIN","USER"]
     }
   ]
