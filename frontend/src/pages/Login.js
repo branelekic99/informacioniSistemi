@@ -75,7 +75,7 @@ const Login = () => {
                 navigate("/adminPanel");
             }catch (err){
                 if(err.response.status == 401){
-                    setErrorMessageLogin(errorLogin);
+                    setErrorMessageLogin(err.response.data.message);
                 }
             }
         }

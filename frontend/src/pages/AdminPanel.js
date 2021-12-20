@@ -20,6 +20,7 @@ const AdminPanel = () => {
         width: window.innerWidth,
         height: window.innerHeight,
     });
+    const [numOfData, setNumOfData] = useState();
     const [itemsPerPage, setItemsPerPage] = useState(10);
     const [currentPage, setCurrentPage] = useState(1);
     const navigate = useNavigate();
@@ -29,15 +30,18 @@ const AdminPanel = () => {
             console.log(currentPage);
             console.log(itemsPerPage);
             const result = await axios.get("/citizens",
-                {headers: {"Authorization": `Bearer ${localStorage.getItem(TOKEN)}`}},
                 {params :
-                        {   page : currentPage,
-                            size : itemsPerPage
-                        }
-                });
+                        {   "page" : currentPage,
+                            "size" : itemsPerPage
+                        },
+                        headers:
+                            {"Authorization": `Bearer ${localStorage.getItem(TOKEN)}`}});
 
-            setData(result.data);
+            setData(result.data.citizens);
+            setNumOfData(result.data.totalItems);
             setIsLoaded(true);
+            console.log(currentPage);
+            console.log(itemsPerPage);
             console.log(result.data);
         } catch (err) {
             if(err.response){
@@ -182,6 +186,8 @@ const AdminPanel = () => {
                 <Table className="table"
                        pagination={
                            {
+                               simple : true,
+                               total : numOfData,
                                pageSize: itemsPerPage,
                                position: ["bottomCenter"],
                                onChange: (page, pageSize) => {
