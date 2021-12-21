@@ -80,6 +80,8 @@ public class CitizenController {
             throw new InvalidRequestException("Invalid request, field workplace cannot be null.");
         else if(citizen.getCitizenshipEntity() == null)
             throw new InvalidRequestException("Invalid request, field citizenship_entity cannot be null.");
+        else if(citizen.getEducation() == null)
+            throw new InvalidRequestException("Invalid request, field education cannot be null.");
         return citizenEntityRepository.save(citizen);
     }
 }
