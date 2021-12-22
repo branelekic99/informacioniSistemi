@@ -5,7 +5,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 
 @ResponseStatus(
         value = HttpStatus.UNAUTHORIZED,
-        reason = "Wrong user credentials."
+        reason = "Pogrešno korisničko ime ili lozinka. Molimo pokušajte ponovo."
 )
 public class UnauthorizedException extends HttpException {
 

@@ -72,16 +72,10 @@ public class CitizenController {
             throw new InvalidRequestException("Invalid request, field phone cannot be null.");
         else if(citizen.getEmail() == null)
             throw new InvalidRequestException("Invalid request, field email cannot be null.");
-        else if(citizen.getYear_of_arrival() == null)
-            throw new InvalidRequestException("Invalid request, field year_of_arrival cannot be null.");
         else if(citizen.getYear_of_birth() == null)
             throw new InvalidRequestException("Invalid request, field year_of_birth cannot be null.");
-        else if(citizen.getWorkplace() == null)
-            throw new InvalidRequestException("Invalid request, field workplace cannot be null.");
         else if(citizen.getCitizenshipEntity() == null)
             throw new InvalidRequestException("Invalid request, field citizenship_entity cannot be null.");
-        else if(citizen.getEducation() == null)
-            throw new InvalidRequestException("Invalid request, field education cannot be null.");
         return citizenEntityRepository.save(citizen);
     }
 }
