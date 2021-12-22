@@ -132,7 +132,7 @@ const UserForm = () => {
                         <Form.Item label={"Grad/Mjesto življenja"} className={"inline-item"} name={"city"}
                                    rules={[{required: true, message: "Unesite mjesto življenja!"}]}>
                             <Select placeholder={"Izaberite mjesto življenja"} showSearch allowClear
-                                    filterOption={false}>
+                                    filterOption={true}>
                                 {municipalitiesOptions.map((item) => item)}
                             </Select>
                         </Form.Item>
