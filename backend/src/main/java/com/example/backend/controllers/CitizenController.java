@@ -79,19 +79,20 @@ public class CitizenController {
         else if(citizen.getCitizenshipEntity() == null)
             throw new InvalidRequestException("Invalid request, field citizenship_entity cannot be null.");
         try{
-            Integer.parseInt(citizen.getNum_of_family_members());
+            if(citizen.getNum_of_family_members() != null)
+                Integer.parseInt(citizen.getNum_of_family_members());
         }
         catch(NumberFormatException e){
             throw new InvalidRequestException("num_of_family_members field must contain integer value.");
         }
         try{
-            if(Integer.parseInt(citizen.getYear_of_arrival()) > LocalDateTime.now().getYear())
+            if(citizen.getYear_of_arrival() != null && Integer.parseInt(citizen.getYear_of_arrival()) > LocalDateTime.now().getYear())
                 throw new InvalidRequestException("Year of arrival cannot be a future year.");
         }
         catch(NumberFormatException e){
             throw new InvalidRequestException("year_of_arrival field must contain integer value.");
         }try{
-            if(Integer.parseInt(citizen.getYear_of_birth()) > LocalDateTime.now().getYear())
+            if(citizen.getYear_of_birth() != null && Integer.parseInt(citizen.getYear_of_birth()) > LocalDateTime.now().getYear())
                 throw new InvalidRequestException("Year of birth cannot be a future year.");
         }
         catch(NumberFormatException e){
