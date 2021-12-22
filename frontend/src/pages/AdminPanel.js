@@ -38,6 +38,7 @@ const AdminPanel = () => {
                 });
             setData(result.data.citizens);
             setNumOfData(result.data.totalItems);
+            console.log(result.data);
             setIsLoading(false);
         } catch (err) {
             if (err.response) {
