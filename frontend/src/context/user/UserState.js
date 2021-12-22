@@ -1,11 +1,12 @@
 import React, {useState} from 'react';
 import UserContext from "./userContext";
+import {USER_STATUS} from "../../constants/variables";
 
 const UserState = (props) => {
-    const [isAuthenticated,setIsAuthenticated] = useState(false);
+    const [userStatus,setUserStatus] = useState(USER_STATUS.CHECKING);
 
     return (
-        <UserContext.Provider value={{isAuthenticated:isAuthenticated,setIsAuthenticated:setIsAuthenticated}}>
+        <UserContext.Provider value={{userStatus:userStatus,setUserStatus:setUserStatus}}>
             {props.children}
         </UserContext.Provider>
     );

@@ -6,7 +6,7 @@ export const columns = [
         render: (text, record) => <p> {record.firstname} {record.lastname}</p>,
     },
     {
-        title: 'Godine starosti',
+        title: 'Godina rođenja',
         dataIndex: 'year_of_birth',
         key: 'year_of_birth',
         width: 15,
