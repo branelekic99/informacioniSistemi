@@ -8,7 +8,7 @@ import axios from 'axios';
 import UserContext from "../context/user/userContext";
 import {TOKEN} from "../constants/variables";
 
-const errorUsername = "* korisnicko ime je obavezno";
+const errorUsername = "* korisničko ime je obavezno";
 const errorPassword = "* lozinka je obavezna";
 const errorLogin = "* unijeti kredencijali nisu ispravni";
 
@@ -30,12 +30,14 @@ const Login = () => {
             setUsername(e.target.value);
             if(errorMessageUsername)
                 setErrorMessageUsername("");
+            setErrorMessageLogin("");
         }
 
         const handlePasswordChange = e => {
             setPassword(e.target.value);
             if(errorMessagePassword)
                 setErrorMessagePassword("");
+            setErrorMessageLogin("");
         }
 
         const onFinish = (values) => {
@@ -104,7 +106,7 @@ const Login = () => {
                         <form onSubmit={handleSubmit}>
                             {errorMessageLogin && <p style={{"color" : "red"}}>{errorMessageLogin}</p>}
                             <div className={"username"}>
-                                <input className={"input"} type={"text"} name={"Koirničko ime"}
+                                <input className={"input"} type={"text"} name={"Korisničko ime"}
                                        placeholder={"Korisničko ime"} onChange={handleUsernameChange} value={username}/>
                                        {errorMessageUsername && <p style={{"color" : "red"}}>{errorMessageUsername}</p>}
                             </div>
