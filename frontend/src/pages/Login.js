@@ -85,6 +85,10 @@ const Login = () => {
             <div className="main">
                 <div className="logo">
                     <div className="logo-div">
+                        <text className="admin_title">
+                            REGISTAR SRBIJA SLOVENIJE<br />
+                            Administratorska stranica
+                        </text>
                         <img src={logo} alt={"Logo"}/>
                     </div>
                 </div>
