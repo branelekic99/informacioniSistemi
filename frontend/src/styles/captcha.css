@@ -1,6 +1,5 @@
 .captcha-container{
     text-align: center;
-
     height: 88vh;
     display: flex;
     flex-direction: column;
@@ -50,5 +49,21 @@
     }
     .input-container input{
         font-size: 22px;
+        width: 250px;
+    }
+    .input-container button{
+        width:250px;
+    }
+}
+@media(max-width: 22em) {
+    .centered-box{
+        width:90%;
+    }
+    .input-container input{
+        font-size: 18px;
+        width: 200px;
+    }
+    .input-container button{
+        width:200px;
     }
 }

@@ -16,6 +16,7 @@ const UserForm = () => {
 
     const [formSubmitted, setFormSubmitted] = useState(false);
     const [captchaCompleted, setCaptchaCompleted] = useState(false);
+
     const [formData, setFormData] = useState(null);
 
     useEffect(() => {
@@ -49,6 +50,8 @@ const UserForm = () => {
                 navigation("/user-form-success");
             } catch (err) {
                 console.log(err);
+                setFormSubmitted(false);
+                setCaptchaCompleted(false);
             }
         }
     }
@@ -129,7 +132,7 @@ const UserForm = () => {
                         <Form.Item label={"Grad/Mjesto življenja"} className={"inline-item"} name={"city"}
                                    rules={[{required: true, message: "Unesite mjesto življenja!"}]}>
                             <Select placeholder={"Izaberite mjesto življenja"} showSearch allowClear
-                                    filterOption={false}>
+                                    filterOption={true}>
                                 {municipalitiesOptions.map((item) => item)}
                             </Select>
                         </Form.Item>

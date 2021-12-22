@@ -140,3 +140,11 @@
         display: none;
     }
 }
+@media(max-width: 22em) {
+    .header__content__logo{
+        width: 80%;
+    }
+    .header__content__logo img{
+        width: 100%;
+    }
+}

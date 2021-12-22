@@ -4,17 +4,18 @@ import {useNavigate, Link, useLocation} from 'react-router-dom';
 import {MenuOutlined, CloseCircleOutlined} from "@ant-design/icons";
 import logo from "../styles/icons/logo-sr.png";
 import UserContext from "../context/user/userContext";
-import {TOKEN} from "../constants/variables";
+import {TOKEN, USER_STATUS} from "../constants/variables";
 
 import "../styles/nav.css";
+import {checkUserStatus} from "../helper_functions/checkUserStatus";
 
 
 const Nav = () => {
-    const {isAuthenticated,setIsAuthenticated} = useContext(UserContext)
+    const {userStatus,setUserStatus} = useContext(UserContext)
     const navigate = useNavigate();
     const location = useLocation();
     const [isLogin, setIsLogin] = useState(false);
-
+    console.log("ovo je user status",userStatus)
     useEffect(() => {
         const {pathname} = location;
 
@@ -38,8 +39,15 @@ const Nav = () => {
                 height: window.innerHeight,
             });
         };
+        const checkUser = async ()=>{
+            const user = await checkUserStatus();
+            if(user !== null)
+                setUserStatus(USER_STATUS.AUTHENTICATED);
+            else setUserStatus(USER_STATUS.NOT_AUTHENTICATED);
+            console.log("oov je user",user)
+        }
         window.addEventListener("resize", handleResize);
-
+        checkUser();
         return () => window.removeEventListener("resize", handleResize);
     }, []);
 
@@ -58,7 +66,7 @@ const Nav = () => {
         navigate("/login");
     };
     const logOutClickHandler = ()=>{
-        setIsAuthenticated(false);
+        setUserStatus(USER_STATUS.NOT_AUTHENTICATED);
         localStorage.setItem(TOKEN, null);
         navigate("/")
     }
@@ -88,14 +96,14 @@ const Nav = () => {
                                 Obrazac
                             </Link>
                         </li>
-                        {isAuthenticated && <li>
+                        {userStatus === USER_STATUS.AUTHENTICATED && <li>
                             <Link to="/adminPanel" onClick={menuToggleHandler}>
                                 AdminPanel
                             </Link>
                         </li>}
 
                     </ul>
-                    {isAuthenticated ? <button onClick={logOutClickHandler}>Izloguj se</button> : <button onClick={loginClickHandler}>Uloguj se</button>}
+                    {userStatus === USER_STATUS.AUTHENTICATED ? <button onClick={logOutClickHandler}>Izloguj se</button> : <button onClick={loginClickHandler}>Uloguj se</button>}
 
                 </nav>
                 <div className={"header__content__toggle"}>
