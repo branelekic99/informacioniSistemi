@@ -10,10 +10,12 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.regex.Pattern;
 
 @RestController
 @RequestMapping("/citizens")
@@ -68,20 +70,45 @@ public class CitizenController {
             throw new InvalidRequestException("Invalid request, field lastname cannot be null.");
         else if(citizen.getCity() == null)
             throw new InvalidRequestException("Invalid request, field city cannot be null.");
-        else if(citizen.getPhone() == null)
-            throw new InvalidRequestException("Invalid request, field phone cannot be null.");
-        else if(citizen.getEmail() == null)
-            throw new InvalidRequestException("Invalid request, field email cannot be null.");
-        else if(citizen.getYear_of_arrival() == null)
-            throw new InvalidRequestException("Invalid request, field year_of_arrival cannot be null.");
+        else if(citizen.getPhone() == null || citizen.getPhone().length() < 9)
+            throw new InvalidRequestException("Invalid request, field phone contains invalid value.");
+        else if(citizen.getEmail() == null || isEmailValid(citizen.getEmail()))
+            throw new InvalidRequestException("Invalid request, field email contains invalid value.");
         else if(citizen.getYear_of_birth() == null)
             throw new InvalidRequestException("Invalid request, field year_of_birth cannot be null.");
-        else if(citizen.getWorkplace() == null)
-            throw new InvalidRequestException("Invalid request, field workplace cannot be null.");
         else if(citizen.getCitizenshipEntity() == null)
             throw new InvalidRequestException("Invalid request, field citizenship_entity cannot be null.");
-        else if(citizen.getEducation() == null)
-            throw new InvalidRequestException("Invalid request, field education cannot be null.");
+        try{
+            if(citizen.getNum_of_family_members() != null)
+                Integer.parseInt(citizen.getNum_of_family_members());
+        }
+        catch(NumberFormatException e){
+            throw new InvalidRequestException("num_of_family_members field must contain integer value.");
+        }
+        try{
+            if(citizen.getYear_of_arrival() != null && Integer.parseInt(citizen.getYear_of_arrival()) > LocalDateTime.now().getYear())
+                throw new InvalidRequestException("Year of arrival cannot be a future year.");
+        }
+        catch(NumberFormatException e){
+            throw new InvalidRequestException("year_of_arrival field must contain integer value.");
+        }try{
+            if(citizen.getYear_of_birth() != null && Integer.parseInt(citizen.getYear_of_birth()) > LocalDateTime.now().getYear())
+                throw new InvalidRequestException("Year of birth cannot be a future year.");
+        }
+        catch(NumberFormatException e){
+            throw new InvalidRequestException("year_of_birth field must contain integer value.");
+        }
+
         return citizenEntityRepository.save(citizen);
+    }
+
+
+    public static boolean isEmailValid(String email)
+    {
+        String regex = "^[A-Za-z0-9+_.-]+@(.+)$";
+        Pattern pattern = Pattern.compile(regex);
+        if (email == null)
+            return false;
+        return !pattern.matcher(email).matches();
     }
 }

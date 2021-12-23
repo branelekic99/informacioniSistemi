@@ -48,7 +48,7 @@ public class AuthServiceImpl implements AuthService {
             response = userService.findById(user.getId(), LoginResponse.class);
             response.setToken(generateJwt(user));
         } catch (Exception ex) {
-            throw new UnauthorizedException("Wrong user credentials.");
+            throw new UnauthorizedException("Pogrešno korisničko ime ili lozinka. Molimo pokušajte ponovo.");
         }
         return response;
     }
