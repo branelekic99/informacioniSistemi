@@ -158,8 +158,9 @@ const UserForm = () => {
                                         disabledDate={(current) => current > moment(new Date())}/>
                         </Form.Item>
                         <Form.Item label={"Broj članova domaćinstva"} className={"inline-item"}
-                                   name={"num_of_family_members"}>
-                            <Input/>
+                                   name={"num_of_family_members"}
+                        >
+                            <InputNumber  className = {"members-num"} min={1} />
                         </Form.Item>
                     </Form.Item>
 
