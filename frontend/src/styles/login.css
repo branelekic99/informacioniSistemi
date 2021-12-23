@@ -158,6 +158,20 @@
     width: 380px;
 }
 
+.admin_title{
+    padding-bottom: 80%;
+    font-size: 25px;
+    font-style: italic;
+    font-weight: bold;
+    color: white;
+    font-family: Roboto;
+    flex-direction: column;
+    align-content: center;
+    width: 500px;
+    padding-right: 120px;
+
+}
+
 @media (max-width: 48em) {
     .main{
         flex-direction: column;
@@ -202,5 +216,4 @@
     .title-text{
         font-size: 30px;
     }
-
 }

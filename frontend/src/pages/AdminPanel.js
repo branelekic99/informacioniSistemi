@@ -1,43 +1,57 @@
-import React, {useEffect, useState,useContext} from 'react'
-import {useNavigate} from "react-router-dom";
-import "antd/dist/antd.css";
-import {Button, Input, Table} from 'antd';
-import styles from "../styles/adminPanel.css"
-import Icon, {SearchOutlined} from "@ant-design/icons";
-import {TOKEN} from "../constants/variables";
-import "react-loader-spinner/dist/loader/css/react-spinner-loader.css";
-import Loader from "react-loader-spinner";
+import React, {useEffect, useState, useContext} from 'react'
+import {useNavigate,Navigate} from "react-router-dom";
+import {Table} from 'antd';
+import {TOKEN, USER_STATUS} from "../constants/variables";
 import axios from 'axios'
 import UserContext from "../context/user/userContext";
+import {columns} from "../constants/citizenTableColumMeta";
 
+import "react-loader-spinner/dist/loader/css/react-spinner-loader.css";
+import "../styles/adminPanel.css";
+import {checkUserStatus} from "../helper_functions/checkUserStatus";
 
 const AdminPanel = () => {
-    const {isAuthenticated} = useContext(UserContext);
-    console.log("ovo je auth",isAuthenticated)
+    const {userStatus,setUserStatus} = useContext(UserContext);
+
     const [data, setData] = useState([]);
-    const [isLoaded, setIsLoaded] = useState(false);
+    const [isLoading, setIsLoading] = useState(false);
+    // const [permistionGranted,setUserChecking] = useState(false);
+
     const [pageSize, setPageSize] = useState({
         width: window.innerWidth,
         height: window.innerHeight,
     });
+    const [numOfData, setNumOfData] = useState();
     const [itemsPerPage, setItemsPerPage] = useState(10);
+    const [currentPage, setCurrentPage] = useState(0);
 
     const navigate = useNavigate();
 
-    const fetchData = async () => {
+    const fetchData = async (page,itemsPerPage) => {
+        setIsLoading(true);
         try {
-            const result = await axios.get("/citizens", {headers: {"Authorization": `Bearer ${localStorage.getItem(TOKEN)}`}});
-            setData(result.data);
-            setIsLoaded(true);
-            console.log(result.data);
+            const result = await axios.get("/citizens",
+                {
+                    params:
+                        {
+                            "page": page,
+                            "size": itemsPerPage
+                        },
+                    headers:
+                        {"Authorization": `Bearer ${localStorage.getItem(TOKEN)}`}
+                });
+            setData(result.data.citizens);
+            setNumOfData(result.data.totalItems);
+            setIsLoading(false);
         } catch (err) {
-            if(err.response.status == 403){
-               // handleTokenExpiration();
+            if (err.response) {
+                console.log(err);
+                setData([]);
             }
         }
     };
 
-    const handleTokenExpiration = () =>{
+    const handleTokenExpiration = () => {
         navigate('/login');
     }
 
@@ -49,136 +63,50 @@ const AdminPanel = () => {
             });
         };
         window.addEventListener("resize", handleResize);
-        if(!isAuthenticated){
-            navigate("/login");
-        }
-        fetchData();
+        console.log("ovde sam !?");
+        if(userStatus === USER_STATUS.NOT_AUTHENTICATED)
+            navigate("/login")
         return () => window.removeEventListener("resize", handleResize);
-
     }, []);
 
-    useEffect(()=>{
-        if(pageSize.width <= 768){
+    useEffect(() => {
+        fetchData(currentPage,itemsPerPage);
+    }, [currentPage,itemsPerPage]);
+
+    useEffect(() => {
+        if (pageSize.width <= 768) {
             setItemsPerPage(5);
-        }else{
+        } else {
             setItemsPerPage(10);
         }
-    },[pageSize]);
+        setCurrentPage(0);
+    }, [pageSize]);
 
-    const columns = [
-        {
-            title: 'Ime i prezime',
-            dataIndex: 'name',
-            key: 'name',
-            render: (text, record) => <p> {record.firstname} {record.lastname}</p>,
-
-
-        },
-        {
-            title: 'Godine starosti',
-            dataIndex: 'year_of_birth',
-            key: 'year_of_birth',
-            width: 15,
-        },
-        {
-            title: 'Grad',
-            dataIndex: 'city',
-            key: 'city',
-
-        },
-        {
-            title: 'Email',
-            dataIndex: 'email',
-            key: 'email',
-            className:"email-column"
-            // render: (text) => <p className={"email-column"}>{text}</p>,
-        },
-        {
-            title: 'Telefon',
-            dataIndex: 'phone',
-            key: 'phone',
-            width: 20,
-        },
-        {
-            title: 'Strucna sprema',
-            dataIndex: 'education',
-            key: 'education',
-        },
-        {
-            title: 'Radno mjesto',
-            dataIndex: 'workplace',
-            key: 'workplace',
-        },
-        {
-            title: 'Kompanija',
-            dataIndex: 'company',
-            key: 'company',
-        },
-        {
-            title: 'Drzavljanstvo',
-            dataIndex: ['citizenshipEntity', 'country'],
-            key: 'country',
-            width: 20,
-        },
-        {
-            title: 'Godina dolaska ',
-            dataIndex: 'year_of_arrival',
-            key: 'year_of_arrival',
-            width: 15,
-        },
-
-        {
-            title: 'Broj clanova domacinstva',
-            dataIndex: 'num_of_family_members',
-            key: 'num_of_family_members',
-            // width: 15,
-        }
-    ];
-
-    const onSelect = (e) => {
-        console.log('onSelect ', e.target);
-    }
-
-    const doSomething = (e) => {
-        console.log('Kliknuto je na dugme', e);
-    }
-    if(!isAuthenticated){
-        navigate("/login");
-    }
-    if(!isLoaded){
-        return (
-            <div className= "background-div">
-                <div className = "loader-div">
-                    <Loader className = "loader"
-                            type = "Circles"
-                            color = "#2b5c90"
-                            width = {100}
-                    >
-                        loading
-                    </Loader>
-                    <text className= "loading-message">
-                        Ucitvanje podataka, molimo Vas sacekajte.
-                    </text>
-                </div>
-            </div>
-        )
-    }
+    if(userStatus === USER_STATUS.CHECKING)
+        return <p>loading!!!</p>
+    if(userStatus === USER_STATUS.NOT_AUTHENTICATED)
+        return <Navigate to={"/login"}/>
     return (
         <div className="admin-panel">
             <div className="table-component">
                 <Table className="table"
+                       loading={isLoading}
                        pagination={
                            {
+                               total: numOfData,
                                pageSize: itemsPerPage,
-                               position: ["bottomCenter"]
+                               position: ["bottomCenter"],
+                               onChange: (page, pageSize) => {
+                                   setCurrentPage(page - 1);
+                                   setItemsPerPage(pageSize);
+                               }
                            }
-
                        }
                        dataSource={data}
                        columns={columns}
-                       onRow={record => ({
-                           onClick: (e) => onSelect(e)
-                       })}
+                    // onRow={record => ({
+                    //     onClick: (e) => onSelect(e)
+                    // })}
                        rowClassName={"rows"}
                        size={"small"}
                 />
@@ -186,7 +114,5 @@ const AdminPanel = () => {
 
         </div>
     );
-
-
 }
 export default AdminPanel;

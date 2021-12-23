@@ -8,7 +8,6 @@ import Home from "./pages/Home";
 import Login from "./pages/Login";
 import Nav from "./pages/Nav";
 import AdminPanel from "./pages/AdminPanel"
-import 'antd/dist/antd.css'; // or 'antd/dist/antd.less'
 import 'antd/dist/antd.css';
 import UserForm from "./pages/UserForm";
 import SuccessfullySumbited from "./components/SuccessfullySumbited"; // or 'antd/dist/antd.less'

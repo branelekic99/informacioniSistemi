@@ -54,6 +54,9 @@
     justify-content: center;
     align-items: center;
 }
+.members-num{
+    width: 100%;
+}
 @media(max-width: 48em) {
     .container{
        width:90%;

@@ -9,6 +9,13 @@ import "../styles/user-form.css";
 
 import Captcha from "../components/Captcha";
 
+const errorUsername = "Unesite Vaše ime.";
+const errorPassword = "Unesite Vaše prezime.";
+const errorEmail = "Unesite Vašu email adresu.";
+const errorPhoneNumber = "Unesite Vaš broj telefona.";
+const errorCitizenship = "Unesite državljanstvo!";
+const errorCity = "Unesite mjesto življenja!";
+
 const {Option} = Select;
 
 const UserForm = () => {
@@ -16,6 +23,7 @@ const UserForm = () => {
 
     const [formSubmitted, setFormSubmitted] = useState(false);
     const [captchaCompleted, setCaptchaCompleted] = useState(false);
+
     const [formData, setFormData] = useState(null);
 
     useEffect(() => {
@@ -29,8 +37,8 @@ const UserForm = () => {
                 values.year_of_birth = values.year_of_birth.year();
             if (values.year_of_arrival)
                 values.year_of_arrival = values.year_of_arrival.year();
-            for(const [key,value] of Object.entries(values)){
-                if(value === undefined)
+            for (const [key, value] of Object.entries(values)) {
+                if (value === undefined)
                     delete values[key]
             }
             setFormData(values);
@@ -44,11 +52,13 @@ const UserForm = () => {
         if (formData !== null) {
             const formDataString = JSON.stringify(formData);
             console.log(formDataString);
-            try{
-                const result = await axios.post("/citizens",formData);
+            try {
+                const result = await axios.post("/citizens", formData);
                 navigation("/user-form-success");
-            }catch (err){
+            } catch (err) {
                 console.log(err);
+                setFormSubmitted(false);
+                setCaptchaCompleted(false);
             }
         }
     }
@@ -62,7 +72,7 @@ const UserForm = () => {
     if (formSubmitted && !captchaCompleted) {
         return <Captcha setCaptcha={setCaptchaCompleted}/>
     }
-    if(formSubmitted && captchaCompleted){
+    if (formSubmitted && captchaCompleted) {
         return <div className={"spinner-container"}>
             <Loader
                 type="ThreeDots"
@@ -75,8 +85,8 @@ const UserForm = () => {
     return (
         <div className={"container"}>
             <div className={"form-title"}>
-                <h2>Popunite obrazac sa vasim licnim podacima</h2>
-                <p className={"muted-text"}>*Podaci ce biti koristeni iskljucivo od strane <a onClick={handleRedirect}>Saveza
+                <h2>Popunite obrazac sa ličnim podacima</h2>
+                <p className={"muted-text"}>*Podaci će biti korišteni isključivo od strane <a onClick={handleRedirect}>Saveza
                     Srba Slovenije</a></p>
             </div>
             <div className={"form-container"}>
@@ -87,28 +97,35 @@ const UserForm = () => {
                 >
                     <Form.Item className={"item-box"}>
                         <Form.Item label={"Ime"} className={"inline-item"} name={"firstname"}
-                                   rules={[{required: true, message: "Unesite vase ime."}]}>
+                                   rules={[{required: true, message: errorUsername}]}>
                             <Input/>
                         </Form.Item>
                         <Form.Item label={"Prezime"} className={"inline-item"} name={"lastname"}
-                                   rules={[{required: true, message: "Unesite vase prezime."}]}>
+                                   rules={[{required: true, message: errorPassword}]}>
                             <Input/>
                         </Form.Item>
                     </Form.Item>
 
                     <Form.Item className={"item-box"}>
                         <Form.Item label={"Email"} className={"inline-item"} name={"email"}
-                                   rules={[{required: true, message: "Unesite vasu email adresu."}]}>
+                                   rules={[{required: true,
+                                       type : "email",
+                                       message: errorEmail}]}>
+
                             <Input/>
                         </Form.Item>
                         <Form.Item label={"Broj telefona"} className={"inline-item"} name={"phone"}
-                                   rules={[{required: true, message: "Unesite vas broj telefona."}]}>
+                                   rules={[{required: true,
+                                       type: "string",
+                                       min : 9,
+                                       message: errorPhoneNumber}]}>
                             <Input/>
                         </Form.Item>
                     </Form.Item>
 
                     <Form.Item className={"item-box"}>
-                        <Form.Item label={"Drzavljanstvo"} className={"inline-item"} name={"citizenshipEntity"} rules={[{required: true, message: "Unesite drzavljanstvo!"}]}>
+                        <Form.Item label={"Drzavljanstvo"} className={"inline-item"} name={"citizenshipEntity"}
+                                   rules={[{required: true, message: errorCitizenship}]}>
                             <Select placeholder={"Izaberite drzavljanstvo"} filterOption={false}>
                                 <Option value={3}>BiH</Option>
                                 <Option value={1}>Srbija</Option>
@@ -118,7 +135,8 @@ const UserForm = () => {
                                 <Option value={6}>Makedonija</Option>
                             </Select>
                         </Form.Item>
-                        <Form.Item label={"Grad/Mjesto zivljenja"} className={"inline-item"} name={"city"} rules={[{required: true, message: "Unesite mjesto zivljenja!"}]}>
+                        <Form.Item label={"Grad/Mjesto zivljenja"} className={"inline-item"} name={"city"}
+                                   rules={[{required: true, message: errorCity}]}>
                             <Select placeholder={"Izaberite mjesto zivljenja"} showSearch allowClear
                                     filterOption={false}>
                                 {municipalitiesOptions.map((item) => item)}
@@ -126,7 +144,7 @@ const UserForm = () => {
                         </Form.Item>
                     </Form.Item>
                     <Form.Item className={"item-box"}>
-                        <Form.Item label={"Strucna sprema"} className={"inline-item"} name={"education"}>
+                        <Form.Item label={"Stručna sprema"} className={"inline-item"} name={"education"}>
                             <Input/>
                         </Form.Item>
                         <Form.Item label={"Radno mjesto"} className={"inline-item"} name={"workplace"}>
@@ -139,9 +157,10 @@ const UserForm = () => {
                             <DatePicker picker={"year"} className={"bl-datepicker"}
                                         disabledDate={(current) => current > moment(new Date())}/>
                         </Form.Item>
-                        <Form.Item label={"Broj clanova domacinstva"} className={"inline-item"}
-                                   name={"num_of_family_members"}>
-                            <Input/>
+                        <Form.Item label={"Broj članova domaćinstva"} className={"inline-item"}
+                                   name={"num_of_family_members"}
+                        >
+                            <InputNumber  className = {"members-num"} min={1} />
                         </Form.Item>
                     </Form.Item>
 
@@ -149,7 +168,8 @@ const UserForm = () => {
                         <Form.Item label={"Kompanija"} className={"inline-item"} name={"company"}>
                             <Input/>
                         </Form.Item>
-                        <Form.Item label={"Godina rodjenja"} className={"inline-item"} name={"year_of_birth"}>
+                        <Form.Item label={"Godina rođenja"} className={"inline-item"} name={"year_of_birth"}
+                                   rules={[{required: true, message: "Unesite godinu rođenja."}]}>
                             <DatePicker picker={"year"} className={"bl-datepicker"}
                                         disabledDate={(current) => current > moment(new Date())}/>
                         </Form.Item>
