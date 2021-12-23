@@ -9,6 +9,13 @@ import "../styles/user-form.css";
 
 import Captcha from "../components/Captcha";
 
+const errorUsername = "Unesite Vaše ime.";
+const errorPassword = "Unesite Vaše prezime.";
+const errorEmail = "Unesite Vašu email adresu.";
+const errorPhoneNumber = "Unesite Vaš broj telefona.";
+const errorCitizenship = "Unesite državljanstvo!";
+const errorCity = "Unesite mjesto življenja!";
+
 const {Option} = Select;
 
 const UserForm = () => {
@@ -90,37 +97,36 @@ const UserForm = () => {
                 >
                     <Form.Item className={"item-box"}>
                         <Form.Item label={"Ime"} className={"inline-item"} name={"firstname"}
-                                   rules={[{required: true, message: "Unesite Vaše ime."}]}>
+                                   rules={[{required: true, message: errorUsername}]}>
                             <Input/>
                         </Form.Item>
                         <Form.Item label={"Prezime"} className={"inline-item"} name={"lastname"}
-                                   rules={[{required: true, message: "Unesite Vaše prezime."}]}>
+                                   rules={[{required: true, message: errorPassword}]}>
                             <Input/>
                         </Form.Item>
                     </Form.Item>
 
                     <Form.Item className={"item-box"}>
                         <Form.Item label={"Email"} className={"inline-item"} name={"email"}
-                                   rules={[{
-                                       required: true,
+                                   rules={[{required: true,
                                        type : "email",
-                                       message: "Unesite validnu email adresu."
-                                   }]}>
+                                       message: errorEmail}]}>
+
                             <Input/>
                         </Form.Item>
                         <Form.Item label={"Broj telefona"} className={"inline-item"} name={"phone"}
                                    rules={[{required: true,
-                                            type: "string",
-                                            min : 9,
-                                            message: "Unesite Vaš broj telefona."}]}>
+                                       type: "string",
+                                       min : 9,
+                                       message: errorPhoneNumber}]}>
                             <Input/>
                         </Form.Item>
                     </Form.Item>
 
                     <Form.Item className={"item-box"}>
-                        <Form.Item label={"Državljanstvo"} className={"inline-item"} name={"citizenshipEntity"}
-                                   rules={[{required: true, message: "Unesite državljanstvo!"}]}>
-                            <Select placeholder={"Izaberite državljanstvo"} filterOption={false}>
+                        <Form.Item label={"Drzavljanstvo"} className={"inline-item"} name={"citizenshipEntity"}
+                                   rules={[{required: true, message: errorCitizenship}]}>
+                            <Select placeholder={"Izaberite drzavljanstvo"} filterOption={false}>
                                 <Option value={3}>BiH</Option>
                                 <Option value={1}>Srbija</Option>
                                 <Option value={2}>Hrvatska</Option>
@@ -129,10 +135,10 @@ const UserForm = () => {
                                 <Option value={6}>Makedonija</Option>
                             </Select>
                         </Form.Item>
-                        <Form.Item label={"Grad/Mjesto življenja"} className={"inline-item"} name={"city"}
-                                   rules={[{required: true, message: "Unesite mjesto življenja!"}]}>
-                            <Select placeholder={"Izaberite mjesto življenja"} showSearch allowClear
-                                    filterOption={true}>
+                        <Form.Item label={"Grad/Mjesto zivljenja"} className={"inline-item"} name={"city"}
+                                   rules={[{required: true, message: errorCity}]}>
+                            <Select placeholder={"Izaberite mjesto zivljenja"} showSearch allowClear
+                                    filterOption={false}>
                                 {municipalitiesOptions.map((item) => item)}
                             </Select>
                         </Form.Item>
