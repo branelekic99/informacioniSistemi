@@ -24,10 +24,11 @@ const AdminPanel = () => {
     const [numOfData, setNumOfData] = useState();
     const [itemsPerPage, setItemsPerPage] = useState(10);
     const [currentPage, setCurrentPage] = useState(0);
-
+    const [pageSizeOptions,setPageSizeOptions] = useState(["10","20","50","100"]);
     const navigate = useNavigate();
 
     const fetchData = async (page,itemsPerPage) => {
+        console.log("ulazim ovde",page,itemsPerPage)
         setIsLoading(true);
         try {
             const result = await axios.get("/citizens",
@@ -40,8 +41,13 @@ const AdminPanel = () => {
                     headers:
                         {"Authorization": `Bearer ${localStorage.getItem(TOKEN)}`}
                 });
+            const numberOfData = result.data.totalItems;
             setData(result.data.citizens);
-            setNumOfData(result.data.totalItems);
+            setNumOfData(numberOfData);
+            if(numberOfData > 100){
+                setPageSizeOptions(currentValue=>[...currentValue,numberOfData.toString()])
+            }
+
             setIsLoading(false);
         } catch (err) {
             if (err.response) {
@@ -63,14 +69,13 @@ const AdminPanel = () => {
             });
         };
         window.addEventListener("resize", handleResize);
-        console.log("ovde sam !?");
         if(userStatus === USER_STATUS.NOT_AUTHENTICATED)
             navigate("/login")
         return () => window.removeEventListener("resize", handleResize);
     }, []);
 
     useEffect(() => {
-        fetchData(currentPage,itemsPerPage);
+            fetchData(currentPage,itemsPerPage);
     }, [currentPage,itemsPerPage]);
 
     useEffect(() => {
@@ -93,6 +98,8 @@ const AdminPanel = () => {
                        loading={isLoading}
                        pagination={
                            {
+                               pageSizeOptions:pageSizeOptions,
+                               showSizeChanger:true,
                                total: numOfData,
                                pageSize: itemsPerPage,
                                position: ["bottomCenter"],
@@ -104,9 +111,6 @@ const AdminPanel = () => {
                        }
                        dataSource={data}
                        columns={columns}
-                    // onRow={record => ({
-                    //     onClick: (e) => onSelect(e)
-                    // })}
                        rowClassName={"rows"}
                        size={"small"}
                 />

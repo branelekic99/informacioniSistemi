@@ -6,8 +6,6 @@
     background-size: cover;
     width: 100%;
     height: 100vh;
-    /*height: 100vh;*/
-    /*background: brown;*/
 }
 
 .login-wrapper{
@@ -215,5 +213,8 @@
     }
     .title-text{
         font-size: 30px;
+    }
+    .admin_title{
+        display: none;
     }
 }

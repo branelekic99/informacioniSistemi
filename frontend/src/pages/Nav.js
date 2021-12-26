@@ -15,7 +15,7 @@ const Nav = () => {
     const navigate = useNavigate();
     const location = useLocation();
     const [isLogin, setIsLogin] = useState(false);
-    console.log("ovo je user status",userStatus)
+
     useEffect(() => {
         const {pathname} = location;
 
@@ -44,7 +44,6 @@ const Nav = () => {
             if(user !== null)
                 setUserStatus(USER_STATUS.AUTHENTICATED);
             else setUserStatus(USER_STATUS.NOT_AUTHENTICATED);
-            console.log("oov je user",user)
         }
         window.addEventListener("resize", handleResize);
         checkUser();
