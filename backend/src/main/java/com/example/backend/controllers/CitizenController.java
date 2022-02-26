@@ -68,8 +68,6 @@ public class CitizenController {
             throw new InvalidRequestException("Invalid request, field firstaname cannot be null.");
         else if(citizen.getLastname() == null)
             throw new InvalidRequestException("Invalid request, field lastname cannot be null.");
-        else if(citizen.getCity() == null)
-            throw new InvalidRequestException("Invalid request, field city cannot be null.");
         else if(citizen.getPhone() == null || citizen.getPhone().length() < 9)
             throw new InvalidRequestException("Invalid request, field phone contains invalid value.");
         else if(citizen.getEmail() == null || isEmailValid(citizen.getEmail()))
