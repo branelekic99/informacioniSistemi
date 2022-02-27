@@ -18,6 +18,9 @@ public class CityEntity implements BaseEntity<Integer> {
     @Column(name = "id", nullable = false)
     private Integer id;
     @Basic
+    @Column(name = "country", nullable = false, length = 45)
+    private String country;
+    @Basic
     @Column(name = "name", nullable = false, length = 45)
     private String name;
     @Basic
