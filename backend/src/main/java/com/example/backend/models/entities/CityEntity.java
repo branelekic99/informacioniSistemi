@@ -25,13 +25,21 @@ public class CityEntity implements BaseEntity<Integer> {
     private String name;
     @Basic
     @Column(name = "latitude", nullable = false)
-    private long latitude;
+    private double latitude;
     @Basic
     @Column(name = "longitude", nullable = false)
-    private String longitude;
+    private double longitude;
     @OneToMany(mappedBy = "cityEntity")
     @JsonIgnore
     private List<CitizenEntity> citizenEntities;
 
-
+    @Override
+    public String toString() {
+        return "   {" +
+                "\n\t\t\"country\" : \"" + country + "\"," +
+                "\n\t\t\"name\" : \"" + name + "\"," +
+                "\n\t\t\"latitude\" : \"" + latitude + "\"," +
+                "\n\t\t\"longitude\" : \"" + longitude + "\"," +
+                "\t\n},\n";
+    }
 }

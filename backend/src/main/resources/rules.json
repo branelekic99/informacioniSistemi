@@ -5,6 +5,16 @@
       "pattern": "/citizens",
       "roles": ["ADMIN","USER"]
     },
+    {
+      "methods": ["GET"],
+      "pattern": "/cities/fill",
+      "roles": ["ADMIN","USER"]
+    },
+    {
+      "methods": ["GET"],
+      "pattern": "/cities",
+      "roles": ["ADMIN","USER"]
+    },
 
     {
       "methods": ["GET"],
