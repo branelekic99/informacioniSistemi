@@ -28,16 +28,17 @@ public class CityController {
     @GetMapping("/fill")
     public ResponseEntity<Map<String, Object>> fillCities() throws FileNotFoundException {
         Gson gson = new Gson();
-        JsonReader citiesJson = new JsonReader(new FileReader("cities.json"));
+        JsonReader citiesJson = new JsonReader(new FileReader("city_list.json"));
         CityEntity[] cities = gson.fromJson(citiesJson, CityEntity[].class);
         int i = 0;
         for(CityEntity city : cities){
             if(city.getCountry().equals("SI")){
                 cityEntityRepository.save(city);
+                i++;
             }
         }
         Map<String, Object> response = new HashMap<>();
-        response.put("num", i);
+        response.put("num_of_cities", i);
 
         return new ResponseEntity<>(response, HttpStatus.OK);
 
