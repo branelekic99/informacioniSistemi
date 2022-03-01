@@ -39,7 +39,7 @@ public class CityEntity implements BaseEntity<Integer> {
                 "\n\t\t\"country\" : \"" + country + "\"," +
                 "\n\t\t\"name\" : \"" + name + "\"," +
                 "\n\t\t\"latitude\" : \"" + latitude + "\"," +
-                "\n\t\t\"longitude\" : \"" + longitude + "\"," +
-                "\t\n},\n";
+                "\n\t\t\"longitude\" : \"" + longitude + "\"" +
+                "\n\t},\n";
     }
 }

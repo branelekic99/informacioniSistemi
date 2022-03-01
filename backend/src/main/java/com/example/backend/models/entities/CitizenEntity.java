@@ -5,6 +5,10 @@ import lombok.*;
 import javax.persistence.*;
 
 @Data
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
+@Table(name= "citizen")
 @Entity(name = "citizen")
 public class CitizenEntity {
 
