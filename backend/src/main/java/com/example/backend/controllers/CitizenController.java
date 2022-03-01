@@ -2,20 +2,28 @@ package com.example.backend.controllers;
 
 import com.example.backend.exceptions.InvalidRequestException;
 import com.example.backend.models.entities.CitizenEntity;
+import com.example.backend.models.entities.CityEntity;
 import com.example.backend.repositories.CitizenEntityRepository;
 import com.example.backend.repositories.CityEntityRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.persistence.Entity;
+import javax.persistence.EntityManager;
+import javax.persistence.TypedQuery;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Predicate;
+import javax.persistence.criteria.Root;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import static org.springframework.data.domain.ExampleMatcher.GenericPropertyMatchers.contains;
 
 @RestController
 @RequestMapping("/citizens")
@@ -24,10 +32,12 @@ public class CitizenController {
     private final CitizenEntityRepository citizenEntityRepository;
 
     private final CityEntityRepository cityEntityRepository;
+    private final EntityManager entityManager;
 
-    public CitizenController(CitizenEntityRepository citizenEntityRepository, CityEntityRepository cityEntityRepository) {
+    public CitizenController(CitizenEntityRepository citizenEntityRepository, CityEntityRepository cityEntityRepository, EntityManager entityManager) {
         this.citizenEntityRepository = citizenEntityRepository;
         this.cityEntityRepository = cityEntityRepository;
+        this.entityManager = entityManager;
     }
 
 
@@ -44,16 +54,20 @@ public class CitizenController {
         try {
             List<CitizenEntity> citizens = new ArrayList<CitizenEntity>();
             Pageable paging = PageRequest.of(page, size);
-
+            CriteriaBuilder cb = entityManager.getCriteriaBuilder();
+            CriteriaQuery cq = cb.createQuery();
+            Root<CitizenEntity> citizen = cq.from(CitizenEntity.class);
             Page<CitizenEntity> pageCitizens;
-            if(city_name != null)
-                pageCitizens = citizenEntityRepository.findByCity(cityEntityRepository.findByName(city_name).getId(), paging);
-            else if(education != null)
-                pageCitizens = citizenEntityRepository.findByEducation(education, paging);
-            else if(firstname != null && lastname != null)
-                pageCitizens = citizenEntityRepository.findByName(firstname, lastname, paging);
-            else
-                pageCitizens = citizenEntityRepository.findAll(paging);
+            CityEntity city = cityEntityRepository.findByName(city_name);
+            pageCitizens = citizenEntityRepository.findAll(Example.of(CitizenEntity.builder().firstname(firstname).lastname(lastname).
+                    education(education).cityEntity(city).build(),
+                    ExampleMatcher.matchingAll().withMatcher("firstName", contains().ignoreCase()).
+                            withMatcher("firstName", contains().ignoreCase())),
+                    paging);
+
+
+
+
 
             citizens = pageCitizens.getContent();
 
