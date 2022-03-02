@@ -15,17 +15,19 @@ public class BackendApplication {
 
     public static void main(String[] args) throws IOException {
         /*Gson gson = new Gson();
-        FileWriter fw = new FileWriter("slo_cities.json");
-        fw.write("[\n");
+        PrintWriter pw = new PrintWriter("slo_cities.json");
         JsonReader citiesJson = new JsonReader(new FileReader("cities.json"));
         CityEntity[] cities = gson.fromJson(citiesJson, CityEntity[].class);
         int i = 0;
+        pw.write("[\n");
         for(CityEntity city : cities){
             if(city.getCountry().equals("SI")){
-                fw.write(city.toString());
+                pw.write(city.toString());
+                i++;
             }
         }
-        fw.write("\n]");*/
+        pw.write("]");
+        System.out.println(i);*/
         SpringApplication.run(BackendApplication.class, args);
     }
 
