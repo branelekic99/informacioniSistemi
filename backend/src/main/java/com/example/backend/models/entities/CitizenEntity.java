@@ -1,8 +1,10 @@
 package com.example.backend.models.entities;
 
+import com.example.backend.models.enums.Sex;
 import lombok.*;
 
 import javax.persistence.*;
+import java.util.Date;
 
 @Data
 @Builder
@@ -55,4 +57,9 @@ public class CitizenEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "city_id", referencedColumnName = "id", nullable = true)
     private CityEntity cityEntity;
+    @Enumerated(value=EnumType.STRING)
+    @Column(name="sex")
+    private Sex sex;
+    @Column(name="t_create")
+    public Date t_create;
 }

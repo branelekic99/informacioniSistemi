@@ -1,29 +1,27 @@
 package com.example.backend.controllers;
 
 import com.example.backend.exceptions.InvalidRequestException;
+import com.example.backend.models.dto.CitizenMapDTO;
 import com.example.backend.models.entities.CitizenEntity;
+import com.example.backend.models.entities.CitizenshipEntity;
 import com.example.backend.models.entities.CityEntity;
+import com.example.backend.models.enums.Sex;
 import com.example.backend.repositories.CitizenEntityRepository;
+import com.example.backend.repositories.CitizenshipEntityRepository;
 import com.example.backend.repositories.CityEntityRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import javax.persistence.Entity;
 import javax.persistence.EntityManager;
-import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import static org.springframework.data.domain.ExampleMatcher.GenericPropertyMatchers.contains;
+import static org.springframework.data.domain.ExampleMatcher.GenericPropertyMatchers.startsWith;
 
 @RestController
 @RequestMapping("/citizens")
@@ -32,12 +30,14 @@ public class CitizenController {
     private final CitizenEntityRepository citizenEntityRepository;
 
     private final CityEntityRepository cityEntityRepository;
+    private final CitizenshipEntityRepository citizenshipEntityRepository;
     private final EntityManager entityManager;
 
-    public CitizenController(CitizenEntityRepository citizenEntityRepository, CityEntityRepository cityEntityRepository, EntityManager entityManager) {
+    public CitizenController(CitizenEntityRepository citizenEntityRepository, CityEntityRepository cityEntityRepository, EntityManager entityManager,CitizenshipEntityRepository citizenshipEntityRepository) {
         this.citizenEntityRepository = citizenEntityRepository;
         this.cityEntityRepository = cityEntityRepository;
         this.entityManager = entityManager;
+        this.citizenshipEntityRepository = citizenshipEntityRepository;
     }
 
 
@@ -45,10 +45,16 @@ public class CitizenController {
     public ResponseEntity<Map<String, Object>> findAll(
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "10") int size,
-            @RequestParam(required = false) String city_name,
+            @RequestParam(required = false) Integer city_id,
             @RequestParam(required = false) String education,
             @RequestParam(required = false) String firstname,
-            @RequestParam(required = false) String lastname
+            @RequestParam(required = false) String lastname,
+            @RequestParam(required = false) String workplace,
+            @RequestParam(required = false) Integer year_of_birth,
+            @RequestParam(required = false) Integer year_of_arrival,
+            @RequestParam(required = false) Integer citizenship_id,
+            @RequestParam(required = false) Sex sex,
+            @RequestParam(required = false) String company
     ) {
 
         try {
@@ -58,11 +64,12 @@ public class CitizenController {
             CriteriaQuery cq = cb.createQuery();
             Root<CitizenEntity> citizen = cq.from(CitizenEntity.class);
             Page<CitizenEntity> pageCitizens;
-            CityEntity city = cityEntityRepository.findByName(city_name);
-            pageCitizens = citizenEntityRepository.findAll(Example.of(CitizenEntity.builder().firstname(firstname).lastname(lastname).
-                    education(education).cityEntity(city).build(),
-                    ExampleMatcher.matchingAll().withMatcher("firstName", contains().ignoreCase()).
-                            withMatcher("firstName", contains().ignoreCase())),
+            CityEntity city = cityEntityRepository.findByIdentifier(city_id);
+            CitizenshipEntity citizenship = citizenshipEntityRepository.findByIdentifier(citizenship_id);
+            pageCitizens = citizenEntityRepository.findAll(Example.of(CitizenEntity.builder().company(company).sex(sex).citizenshipEntity(citizenship).firstname(firstname).lastname(lastname).
+                    education(education).cityEntity(city).workplace(workplace).build(),
+                    ExampleMatcher.matchingAll().withMatcher("firstName", startsWith().ignoreCase()).
+                            withMatcher("lastname", startsWith().ignoreCase()).withMatcher("education", startsWith().ignoreCase()).withMatcher("company", startsWith().ignoreCase())),
                     paging);
 
 
@@ -109,6 +116,13 @@ public class CitizenController {
             throw new InvalidRequestException("Invalid request, field year_of_birth cannot be null.");
         else if(citizen.getCitizenshipEntity() == null)
             throw new InvalidRequestException("Invalid request, field citizenship_entity cannot be null.");
+        citizen.setT_create(new Date());
         return citizenEntityRepository.save(citizen);
+    }
+
+    @GetMapping("/map")
+    List<CitizenMapDTO> citizensForMap(){
+        return citizenEntityRepository.getCitizenMapDTOs();
+
     }
 }
