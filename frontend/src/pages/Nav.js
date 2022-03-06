@@ -96,6 +96,11 @@ const Nav = () => {
                                 Obrazac
                             </Link>
                         </li>
+                        <li>
+                            <Link to="/map" onClick={menuToggleHandler}>
+                                Mapa
+                            </Link>
+                        </li>
                         {userStatus === USER_STATUS.AUTHENTICATED && <li>
                             <Link to="/adminPanel" onClick={menuToggleHandler}>
                                 AdminPanel
