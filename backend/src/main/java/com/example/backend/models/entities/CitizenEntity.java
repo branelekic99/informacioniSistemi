@@ -51,12 +51,10 @@ public class CitizenEntity {
     @Basic
     @Column(name = "num_of_family_members", nullable = false)
     private String num_of_family_members;
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "citizenship_id", referencedColumnName = "id", nullable = true)
-    private CitizenshipEntity citizenshipEntity;
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "city_id", referencedColumnName = "id", nullable = true)
-    private CityEntity cityEntity;
+    @Column(name = "citizenship_id", nullable = false)
+    private Integer citizenship_id;
+    @Column(name="city_id", nullable = false)
+    private Integer city_id;
     @Enumerated(value=EnumType.STRING)
     @Column(name="sex")
     private Sex sex;

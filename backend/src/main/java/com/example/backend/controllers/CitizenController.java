@@ -64,10 +64,8 @@ public class CitizenController {
             CriteriaQuery cq = cb.createQuery();
             Root<CitizenEntity> citizen = cq.from(CitizenEntity.class);
             Page<CitizenEntity> pageCitizens;
-            CityEntity city = cityEntityRepository.findByIdentifier(city_id);
-            CitizenshipEntity citizenship = citizenshipEntityRepository.findByIdentifier(citizenship_id);
-            pageCitizens = citizenEntityRepository.findAll(Example.of(CitizenEntity.builder().company(company).sex(sex).citizenshipEntity(citizenship).firstname(firstname).lastname(lastname).
-                    education(education).cityEntity(city).workplace(workplace).build(),
+            pageCitizens = citizenEntityRepository.findAll(Example.of(CitizenEntity.builder().company(company).sex(sex).citizenship_id(citizenship_id).firstname(firstname).lastname(lastname).
+                    education(education).city_id(city_id).workplace(workplace).build(),
                     ExampleMatcher.matchingAll().withMatcher("firstName", startsWith().ignoreCase()).
                             withMatcher("lastname", startsWith().ignoreCase()).withMatcher("education", startsWith().ignoreCase()).withMatcher("company", startsWith().ignoreCase())),
                     paging);
@@ -106,16 +104,18 @@ public class CitizenController {
             throw new InvalidRequestException("Invalid request, field firstaname cannot be null.");
         else if(citizen.getLastname() == null)
             throw new InvalidRequestException("Invalid request, field lastname cannot be null.");
-        else if(citizen.getCityEntity() == null)
-            throw new InvalidRequestException("Invalid request, field city cannot be null.");
+        else if(citizen.getCity_id() == null)
+            throw new InvalidRequestException("Invalid request, field city_id cannot be null.");
         else if(citizen.getPhone() == null)
             throw new InvalidRequestException("Invalid request, field phone cannot be null.");
         else if(citizen.getEmail() == null)
             throw new InvalidRequestException("Invalid request, field email cannot be null.");
         else if(citizen.getYear_of_birth() == null)
             throw new InvalidRequestException("Invalid request, field year_of_birth cannot be null.");
-        else if(citizen.getCitizenshipEntity() == null)
-            throw new InvalidRequestException("Invalid request, field citizenship_entity cannot be null.");
+        else if(citizen.getCitizenship_id() == null)
+            throw new InvalidRequestException("Invalid request, field citizenship_id cannot be null.");
+        else if(!(citizen.getSex().equals(Sex.male) || citizen.getSex().equals(Sex.female)))
+            throw new InvalidRequestException("Invalid request, field sex must have value male or female.");
         citizen.setT_create(new Date());
         return citizenEntityRepository.save(citizen);
     }
