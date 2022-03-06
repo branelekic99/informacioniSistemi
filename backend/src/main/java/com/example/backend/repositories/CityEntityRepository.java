@@ -10,4 +10,8 @@ public interface CityEntityRepository extends JpaRepository<CityEntity,Integer> 
 
     @Query(value = "select * from city where name = ?1", nativeQuery = true)
     CityEntity findByName(String name);
+
+    @Query(value = "select * from city where id = ?1", nativeQuery = true)
+    CityEntity findByIdentifier(Integer id);
+
 }
