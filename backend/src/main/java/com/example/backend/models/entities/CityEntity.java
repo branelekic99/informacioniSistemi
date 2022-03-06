@@ -29,9 +29,7 @@ public class CityEntity implements BaseEntity<Integer> {
     @Basic
     @Column(name = "longitude", nullable = false)
     private double longitude;
-    @OneToMany(mappedBy = "cityEntity")
-    @JsonIgnore
-    private List<CitizenEntity> citizenEntities;
+
 
     @Override
     public String toString() {
