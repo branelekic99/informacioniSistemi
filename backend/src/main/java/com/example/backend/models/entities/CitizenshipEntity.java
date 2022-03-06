@@ -18,7 +18,9 @@ public class CitizenshipEntity {
     @Basic
     @Column(name = "country", nullable = false, length = 45)
     private String country;
-
+    @OneToMany(mappedBy = "citizenshipEntity")
+    @JsonIgnore
+    private List<CitizenEntity> citizenEntities;
 
     public CitizenshipEntity(){
     }
