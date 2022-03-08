@@ -7,12 +7,17 @@
     },
     {
       "methods": ["GET"],
-      "pattern": "/cities/fill",
+      "pattern": "/citizenships",
       "roles": ["ADMIN","USER"]
     },
     {
       "methods": ["GET"],
-      "pattern": "/cities",
+      "pattern": "/citizens/map",
+      "roles": ["ADMIN","USER"]
+    },
+    {
+      "methods": ["GET"],
+      "pattern": "/cities/fill",
       "roles": ["ADMIN","USER"]
     },
 
