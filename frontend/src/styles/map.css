@@ -48,6 +48,12 @@
     display: block;
     animation: fadeIn 0.5s;
 }
+.mapboxgl-popup-content{
+    padding: 2px!important;
+}
+.bl-map-popup{
+
+}
 @keyframes fadeIn {
     from {
         opacity: 0;
