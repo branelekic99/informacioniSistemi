@@ -1,10 +1,16 @@
 package com.example.backend.models.entities;
 
+import com.example.backend.models.enums.Sex;
 import lombok.*;
 
 import javax.persistence.*;
+import java.util.Date;
 
 @Data
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
+@Table(name= "citizen")
 @Entity(name = "citizen")
 public class CitizenEntity {
 
@@ -25,9 +31,6 @@ public class CitizenEntity {
     @Column(name = "phone", nullable = false, length = 45)
     private String phone;
     @Basic
-    @Column(name = "city", nullable = false, length = 45)
-    private String city;
-    @Basic
     @Column(name = "company", nullable = false, length = 45)
     private String company;
     @Basic
@@ -43,9 +46,20 @@ public class CitizenEntity {
     @Column(name = "workplace", nullable = false, length = 100)
     private String workplace;
     @Basic
+    @Column(name = "other", nullable = false, length = 1000)
+    private String other;
+    @Basic
     @Column(name = "num_of_family_members", nullable = false)
     private String num_of_family_members;
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "citizenship_id", referencedColumnName = "id", nullable = true)
     private CitizenshipEntity citizenshipEntity;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "city_id", referencedColumnName = "id", nullable = true)
+    private CityEntity cityEntity;
+    @Enumerated(value=EnumType.STRING)
+    @Column(name="sex")
+    private Sex sex;
+    @Column(name="t_create")
+    public Date t_create;
 }

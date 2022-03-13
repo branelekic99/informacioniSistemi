@@ -1,21 +1,30 @@
 package com.example.backend.controllers;
 
 import com.example.backend.exceptions.InvalidRequestException;
+import com.example.backend.models.dto.CitizenMapDTO;
 import com.example.backend.models.entities.CitizenEntity;
+import com.example.backend.models.entities.CitizenshipEntity;
+import com.example.backend.models.entities.CityEntity;
+import com.example.backend.models.enums.Sex;
+import com.example.backend.models.requests.CitizenRequest;
 import com.example.backend.repositories.CitizenEntityRepository;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
+import com.example.backend.repositories.CitizenshipEntityRepository;
+import com.example.backend.repositories.CityEntityRepository;
+import org.modelmapper.ModelMapper;
+import org.springframework.data.domain.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 
-import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.regex.Pattern;
+import javax.persistence.EntityManager;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Root;
+import java.util.*;
+
+import static org.springframework.data.domain.ExampleMatcher.GenericPropertyMatchers.contains;
+import static org.springframework.data.domain.ExampleMatcher.GenericPropertyMatchers.startsWith;
 
 @RestController
 @RequestMapping("/citizens")
@@ -23,23 +32,54 @@ public class CitizenController {
 
     private final CitizenEntityRepository citizenEntityRepository;
 
-    public CitizenController(CitizenEntityRepository citizenEntityRepository) {
+    private final CityEntityRepository cityEntityRepository;
+    private final CitizenshipEntityRepository citizenshipEntityRepository;
+    private final EntityManager entityManager;
+    private final ModelMapper modelMapper;
+
+    public CitizenController(CitizenEntityRepository citizenEntityRepository, CityEntityRepository cityEntityRepository, EntityManager entityManager,CitizenshipEntityRepository citizenshipEntityRepository, ModelMapper modelMapper) {
         this.citizenEntityRepository = citizenEntityRepository;
+        this.cityEntityRepository = cityEntityRepository;
+        this.entityManager = entityManager;
+        this.citizenshipEntityRepository = citizenshipEntityRepository;
+        this.modelMapper = modelMapper;
     }
 
 
     @GetMapping
     public ResponseEntity<Map<String, Object>> findAll(
             @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "10") int size
+            @RequestParam(defaultValue = "10") int size,
+            @RequestParam(required = false) Integer city_id,
+            @RequestParam(required = false) String education,
+            @RequestParam(required = false) String firstname,
+            @RequestParam(required = false) String lastname,
+            @RequestParam(required = false) String workplace,
+            @RequestParam(required = false) Integer year_of_birth,
+            @RequestParam(required = false) Integer year_of_arrival,
+            @RequestParam(required = false) Integer citizenship_id,
+            @RequestParam(required = false) Sex sex,
+            @RequestParam(required = false) String company
     ) {
 
         try {
             List<CitizenEntity> citizens = new ArrayList<CitizenEntity>();
             Pageable paging = PageRequest.of(page, size);
-
+            CriteriaBuilder cb = entityManager.getCriteriaBuilder();
+            CriteriaQuery cq = cb.createQuery();
+            Root<CitizenEntity> citizen = cq.from(CitizenEntity.class);
             Page<CitizenEntity> pageCitizens;
-            pageCitizens = citizenEntityRepository.findAll(paging);
+            CityEntity city = cityEntityRepository.findByIdentifier(city_id);
+            CitizenshipEntity citizenship = citizenshipEntityRepository.findByIdentifier(citizenship_id);
+            pageCitizens = citizenEntityRepository.findAll(Example.of(CitizenEntity.builder().company(company).sex(sex).citizenshipEntity(citizenship).firstname(firstname).lastname(lastname).
+                    education(education).cityEntity(city).workplace(workplace).build(),
+                    ExampleMatcher.matchingAll().withMatcher("firstName", startsWith().ignoreCase()).
+                            withMatcher("lastname", startsWith().ignoreCase()).withMatcher("education", startsWith().ignoreCase()).withMatcher("company", startsWith().ignoreCase())),
+                    paging);
+
+
+
+
 
             citizens = pageCitizens.getContent();
 
@@ -54,61 +94,45 @@ public class CitizenController {
             return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
-    /*@GetMapping
-    List<CitizenEntity> findAll() {
-        return citizenEntityRepository.findAll();
-    }*/
+    @GetMapping("/filter")
+    Page<CitizenEntity> findAll(@RequestParam(name="city_name", required = false) String city_name) {
+        /*if(city_name != null)
+            return citizenEntityRepository.findByCity(city_name);
+        return citizenEntityRepository.findAll();*/
+        return null;
+    }
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    CitizenEntity save(@RequestBody CitizenEntity citizen) {
+    CitizenEntity save(@RequestBody CitizenRequest citizenRequest) {
+        CitizenEntity citizen = modelMapper.map(citizenRequest, CitizenEntity.class);
+        citizen.setCitizenshipEntity(citizenshipEntityRepository.getById(citizenRequest.getCitizenship_id()));
+        citizen.setCityEntity(cityEntityRepository.getById(citizenRequest.getCity_id()));
         if(citizen.getId() != null)
             throw new InvalidRequestException("Invalid request, field id must be null.");
         if(citizen.getFirstname() == null)
             throw new InvalidRequestException("Invalid request, field firstaname cannot be null.");
         else if(citizen.getLastname() == null)
             throw new InvalidRequestException("Invalid request, field lastname cannot be null.");
-        else if(citizen.getCity() == null)
+        else if(citizen.getCityEntity() == null)
             throw new InvalidRequestException("Invalid request, field city cannot be null.");
-        else if(citizen.getPhone() == null || citizen.getPhone().length() < 9)
-            throw new InvalidRequestException("Invalid request, field phone contains invalid value.");
-        else if(citizen.getEmail() == null || isEmailValid(citizen.getEmail()))
-            throw new InvalidRequestException("Invalid request, field email contains invalid value.");
+        else if(citizen.getPhone() == null)
+            throw new InvalidRequestException("Invalid request, field phone cannot be null.");
+        else if(citizen.getEmail() == null)
+            throw new InvalidRequestException("Invalid request, field email cannot be null.");
         else if(citizen.getYear_of_birth() == null)
             throw new InvalidRequestException("Invalid request, field year_of_birth cannot be null.");
         else if(citizen.getCitizenshipEntity() == null)
             throw new InvalidRequestException("Invalid request, field citizenship_entity cannot be null.");
-        try{
-            if(citizen.getNum_of_family_members() != null)
-                Integer.parseInt(citizen.getNum_of_family_members());
-        }
-        catch(NumberFormatException e){
-            throw new InvalidRequestException("num_of_family_members field must contain integer value.");
-        }
-        try{
-            if(citizen.getYear_of_arrival() != null && Integer.parseInt(citizen.getYear_of_arrival()) > LocalDateTime.now().getYear())
-                throw new InvalidRequestException("Year of arrival cannot be a future year.");
-        }
-        catch(NumberFormatException e){
-            throw new InvalidRequestException("year_of_arrival field must contain integer value.");
-        }try{
-            if(citizen.getYear_of_birth() != null && Integer.parseInt(citizen.getYear_of_birth()) > LocalDateTime.now().getYear())
-                throw new InvalidRequestException("Year of birth cannot be a future year.");
-        }
-        catch(NumberFormatException e){
-            throw new InvalidRequestException("year_of_birth field must contain integer value.");
-        }
-
+        else if(!(citizen.getSex().equals(Sex.male) || citizen.getSex().equals(Sex.female)))
+            throw new InvalidRequestException("Invalid request, field sex must have value male or female.");
+        citizen.setT_create(new Date());
         return citizenEntityRepository.save(citizen);
     }
 
+    @GetMapping("/map")
+    List<CitizenMapDTO> citizensForMap(){
+        return citizenEntityRepository.getCitizenMapDTOs();
 
-    public static boolean isEmailValid(String email)
-    {
-        String regex = "^[A-Za-z0-9+_.-]+@(.+)$";
-        Pattern pattern = Pattern.compile(regex);
-        if (email == null)
-            return false;
-        return !pattern.matcher(email).matches();
     }
 }

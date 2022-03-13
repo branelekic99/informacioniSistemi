@@ -24,6 +24,7 @@ const AdminPanel = () => {
     const [numOfData, setNumOfData] = useState();
     const [itemsPerPage, setItemsPerPage] = useState(10);
     const [currentPage, setCurrentPage] = useState(0);
+    const [filtered, setFiltered] = useState();
 
     const navigate = useNavigate();
 
@@ -50,6 +51,9 @@ const AdminPanel = () => {
             }
         }
     };
+
+
+
 
     const handleTokenExpiration = () => {
         navigate('/login');
