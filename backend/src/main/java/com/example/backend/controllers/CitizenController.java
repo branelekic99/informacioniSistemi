@@ -73,7 +73,7 @@ public class CitizenController {
             CitizenshipEntity citizenship = citizenshipEntityRepository.findByIdentifier(citizenship_id);
             pageCitizens = citizenEntityRepository.findAll(Example.of(CitizenEntity.builder().company(company).sex(sex).citizenshipEntity(citizenship).firstname(firstname).lastname(lastname).
                     education(education).cityEntity(city).workplace(workplace).build(),
-                    ExampleMatcher.matchingAll().withMatcher("firstName", startsWith().ignoreCase()).
+                    ExampleMatcher.matchingAll().withMatcher("firstname", startsWith().ignoreCase()).
                             withMatcher("lastname", startsWith().ignoreCase()).withMatcher("education", startsWith().ignoreCase()).withMatcher("company", startsWith().ignoreCase())),
                     paging);
 
