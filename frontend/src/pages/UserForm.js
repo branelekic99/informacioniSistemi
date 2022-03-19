@@ -22,7 +22,7 @@ const {Option} = Select;
 const UserForm = () => {
     const navigation = useNavigate();
 
-    const [formSubmitted, setFormSubmitted] = useState(true);
+    const [formSubmitted, setFormSubmitted] = useState(false);
     const [captchaCompleted, setCaptchaCompleted] = useState(false);
     const [municipalitiesOptions, setMunicipalitiesOptions] = useState([]);
     const [formData, setFormData] = useState(null);
@@ -137,7 +137,9 @@ const UserForm = () => {
                     <Form.Item className={"item-box"}>
                         <Form.Item label={"Drzavljanstvo"} className={"inline-item"} name={"citizenship_id"}
                                    rules={[{required: true, message: errorCitizenship}]}>
-                            <Select placeholder={"Izaberite drzavljanstvo"} filterOption={false}>
+                            <Select placeholder={"Izaberite drzavljanstvo"} filterOption={false}
+
+                            >
                                 <Option value={3}>BiH</Option>
                                 <Option value={1}>Srbija</Option>
                                 <Option value={2}>Hrvatska</Option>
@@ -149,7 +151,9 @@ const UserForm = () => {
                         <Form.Item label={"Grad/Mjesto zivljenja"} className={"inline-item"} name={"city_id"}
                                    rules={[{required: true, message: errorCity}]}>
                             <Select placeholder={"Izaberite mjesto zivljenja"} showSearch allowClear
-                                    filterOption={false}>
+                                    filterOption={(input, option) =>
+                                         option.children.toLowerCase().includes(input.toLowerCase())
+                                    }>
                                 {municipalitiesOptions.map((item) => <Option value={item.id}>{item.name}</Option>)}
                             </Select>
                         </Form.Item>
