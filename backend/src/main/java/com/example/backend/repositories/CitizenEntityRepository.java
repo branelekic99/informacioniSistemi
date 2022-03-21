@@ -22,4 +22,7 @@ public interface CitizenEntityRepository extends JpaRepository<CitizenEntity,Int
 
     @Query(nativeQuery = true, value = "SELECT * FROM citizen_map_view")
     List<CitizenMapDTO> getCitizenMapDTOs();
+
+    @Query(value = "select * from citizen where year_of_birth = ?1", nativeQuery = true)
+    Page<CitizenEntity> findByYearOfBirth(String year_of_birth, Pageable pageable);
 }

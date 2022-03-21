@@ -101,6 +101,12 @@ public class CitizenController {
         return citizenEntityRepository.findAll();*/
         return null;
     }
+    @GetMapping("/age")
+    Page<CitizenEntity> findAge(@RequestParam(name="year_of_birth", required = false) String year_of_birth) {
+        if(year_of_birth != null)
+            return citizenEntityRepository.findByYearOfBirth(year_of_birth,PageRequest.of(0, 5));
+        return null;
+    }
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
