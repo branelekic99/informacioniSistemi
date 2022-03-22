@@ -11,11 +11,14 @@ import com.example.backend.repositories.CitizenEntityRepository;
 import com.example.backend.repositories.CitizenshipEntityRepository;
 import com.example.backend.repositories.CityEntityRepository;
 import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.*;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.client.RestTemplate;
 
 import javax.persistence.EntityManager;
 import javax.persistence.criteria.CriteriaBuilder;
@@ -36,6 +39,8 @@ public class CitizenController {
     private final CitizenshipEntityRepository citizenshipEntityRepository;
     private final EntityManager entityManager;
     private final ModelMapper modelMapper;
+    @Autowired
+    private RestTemplate restTemplate;
 
     public CitizenController(CitizenEntityRepository citizenEntityRepository, CityEntityRepository cityEntityRepository, EntityManager entityManager,CitizenshipEntityRepository citizenshipEntityRepository, ModelMapper modelMapper) {
         this.citizenEntityRepository = citizenEntityRepository;
@@ -110,7 +115,13 @@ public class CitizenController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    CitizenEntity save(@RequestBody CitizenRequest citizenRequest) {
+    CitizenEntity save(@RequestBody CitizenRequest citizenRequest,@RequestParam(name="g-recaptcha-response") String captchaResponse) {
+        String url = "https://www.google.com/recaptcha/api/siteverify";
+        String params = "?secret=6Lf6r_weAAAAAOYCf0cuc1mwSw30vhkFPfRGMzV0&response="+captchaResponse;
+        ReCaptchaResponse reCaptchaResponse = restTemplate.exchange(url+params, HttpMethod.POST,null,ReCaptchaResponse.class).getBody();
+
+
+
         CitizenEntity citizen = modelMapper.map(citizenRequest, CitizenEntity.class);
         citizen.setCitizenshipEntity(citizenshipEntityRepository.getById(citizenRequest.getCitizenship_id()));
         citizen.setCityEntity(cityEntityRepository.getById(citizenRequest.getCity_id()));
@@ -132,8 +143,12 @@ public class CitizenController {
             throw new InvalidRequestException("Invalid request, field citizenship_entity cannot be null.");
         else if(!(citizen.getSex().equals(Sex.male) || citizen.getSex().equals(Sex.female)))
             throw new InvalidRequestException("Invalid request, field sex must have value male or female.");
+        else if(!reCaptchaResponse.isSuccess())
+            throw new InvalidRequestException("Invalid request, there si no confirmation od a human.");
         citizen.setT_create(new Date());
-        return citizenEntityRepository.save(citizen);
+
+            return citizenEntityRepository.save(citizen);
+
     }
 
     @GetMapping("/map")

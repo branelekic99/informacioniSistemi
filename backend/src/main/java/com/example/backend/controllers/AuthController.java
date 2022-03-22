@@ -23,8 +23,7 @@ public class AuthController {
 
     private final AuthService service;
     private final UserService userService;
-    @Autowired
-    private RestTemplate restTemplate;
+
 
     public AuthController(AuthService service, UserService userService) {
         this.service = service;
@@ -33,16 +32,11 @@ public class AuthController {
 
 
     @PostMapping("login")
-    public LoginResponse login(@RequestBody @Valid LoginRequest request,@RequestParam(name="g-recaptcha-response") String captchaResponse) {
+    public LoginResponse login(@RequestBody @Valid LoginRequest request) {
 
-        String url = "https://www.google.com/recaptcha/api/siteverify";
-        String params = "?secret=6Lf6r_weAAAAAOYCf0cuc1mwSw30vhkFPfRGMzV0&response="+captchaResponse;
-        ReCaptchaResponse reCaptchaResponse = restTemplate.exchange(url+params, HttpMethod.POST,null,ReCaptchaResponse.class).getBody();
 
-        if(reCaptchaResponse.isSuccess())
             return service.login(request);
-        else
-            return null;
+
     }
 
 
