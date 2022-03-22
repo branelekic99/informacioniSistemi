@@ -55,8 +55,8 @@ public class CitizenController {
             @RequestParam(required = false) String firstname,
             @RequestParam(required = false) String lastname,
             @RequestParam(required = false) String workplace,
-            @RequestParam(required = false) Integer year_of_birth,
-            @RequestParam(required = false) Integer year_of_arrival,
+            @RequestParam(required = false) String year_of_birth,
+            @RequestParam(required = false) String year_of_arrival,
             @RequestParam(required = false) Integer citizenship_id,
             @RequestParam(required = false) Sex sex,
             @RequestParam(required = false) String company
@@ -72,7 +72,7 @@ public class CitizenController {
             CityEntity city = cityEntityRepository.findByIdentifier(city_id);
             CitizenshipEntity citizenship = citizenshipEntityRepository.findByIdentifier(citizenship_id);
             pageCitizens = citizenEntityRepository.findAll(Example.of(CitizenEntity.builder().company(company).sex(sex).citizenshipEntity(citizenship).firstname(firstname).lastname(lastname).
-                    education(education).cityEntity(city).workplace(workplace).build(),
+                    education(education).cityEntity(city).workplace(workplace).year_of_birth(year_of_birth).year_of_arrival(year_of_arrival).build(),
                     ExampleMatcher.matchingAll().withMatcher("firstname", startsWith().ignoreCase()).
                             withMatcher("lastname", startsWith().ignoreCase()).withMatcher("education", startsWith().ignoreCase()).withMatcher("company", startsWith().ignoreCase())),
                     paging);
