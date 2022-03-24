@@ -117,7 +117,7 @@ public class CitizenController {
     @ResponseStatus(HttpStatus.CREATED)
     CitizenEntity save(@RequestBody CitizenRequest citizenRequest,@RequestParam(name="g-recaptcha-response") String captchaResponse) {
         String url = "https://www.google.com/recaptcha/api/siteverify";
-        String params = "?secret=6Lf6r_weAAAAAOYCf0cuc1mwSw30vhkFPfRGMzV0&response="+captchaResponse;
+        String params = "?secret=dodajtoken="+captchaResponse;
         ReCaptchaResponse reCaptchaResponse = restTemplate.exchange(url+params, HttpMethod.POST,null,ReCaptchaResponse.class).getBody();
 
 
