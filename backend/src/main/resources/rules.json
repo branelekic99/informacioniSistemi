@@ -20,6 +20,11 @@
       "pattern": "/cities/fill",
       "roles": ["ADMIN","USER"]
     },
+    {
+      "methods": ["GET"],
+      "pattern": "/citizens/statistics/*",
+      "roles": ["ADMIN","USER"]
+    },
 
     {
       "methods": ["GET"],
