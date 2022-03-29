@@ -194,12 +194,9 @@ public class CitizenController {
     @GetMapping("/statistics/citizenship")
     public ResponseEntity statisticsCitizenship(){
         Map<String, Object> response = new HashMap<>();
-        response.put("BIH", citizenEntityRepository.countCitizenship(1));
-        response.put("SRB", citizenEntityRepository.countCitizenship(2));
-        response.put("HR", citizenEntityRepository.countCitizenship(3));
-        response.put("SLO", citizenEntityRepository.countCitizenship(4));
-        response.put("MAC", citizenEntityRepository.countCitizenship(5));
-        response.put("CG", citizenEntityRepository.countCitizenship(6));
+        List<CitizenshipEntity> citizenships = citizenshipEntityRepository.findAll();
+        for(CitizenshipEntity citizenshipEntity : citizenships)
+            response.put(citizenshipEntity.getCountry(), citizenEntityRepository.countCitizenship(citizenshipEntity.getId()));
 
         return new ResponseEntity(response,HttpStatus.OK);
     }
