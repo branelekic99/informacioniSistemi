@@ -2,6 +2,7 @@ package com.example.backend.repositories;
 
 import com.example.backend.models.dto.CitizenMapDTO;
 import com.example.backend.models.entities.CitizenEntity;
+import com.example.backend.models.enums.Sex;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -20,6 +21,21 @@ public interface CitizenEntityRepository extends JpaRepository<CitizenEntity,Int
     @Query(value = "select * from citizen where firstname = ?1 and lastname= ?2", nativeQuery = true)
     Page<CitizenEntity> findByName(String firstName, String lastname, Pageable pageable);
 
-    @Query(nativeQuery = true, value = "SELECT * FROM citizen_map_view")
+    @Query(nativeQuery = true, value = "select * from citizen_map_view")
     List<CitizenMapDTO> getCitizenMapDTOs();
+
+    @Query(nativeQuery = true, value = "select count(id) FROM citizen where sex=?")
+    int countSex(String sex);
+
+    @Query(nativeQuery = true, value = "select count(id) from citizen where year_of_arrival between ?1 and ?2")
+    int countArrival(int first_year, int second_year);
+
+    @Query(nativeQuery = true, value = "select count(id) from citizen where month(t_create)=?")
+    int countMonth(int month);
+
+    @Query(nativeQuery = true, value = "select count(id) from citizen where (year(now())-year_of_birth) between ?1 and ?2")
+    int countAge(int first_year, int second_year);
+
+    @Query(nativeQuery = true, value = "select count(id) from citizen where citizenship_id=?")
+    int countCitizenship(int citizenship_id);
 }
