@@ -38,4 +38,6 @@ public interface CitizenEntityRepository extends JpaRepository<CitizenEntity,Int
 
     @Query(nativeQuery = true, value = "select count(id) from citizen where citizenship_id=?")
     int countCitizenship(int citizenship_id);
+    @Query(value = "select * from citizen where year_of_birth = ?1", nativeQuery = true)
+    Page<CitizenEntity> findByYearOfBirth(String year_of_birth, Pageable pageable);
 }
