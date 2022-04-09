@@ -60,8 +60,8 @@ public class CitizenController {
             @RequestParam(required = false) String firstname,
             @RequestParam(required = false) String lastname,
             @RequestParam(required = false) String workplace,
-            @RequestParam(required = false) Integer year_of_birth,
-            @RequestParam(required = false) Integer year_of_arrival,
+            @RequestParam(required = false) String year_of_birth,
+            @RequestParam(required = false) String year_of_arrival,
             @RequestParam(required = false) Integer citizenship_id,
             @RequestParam(required = false) Sex sex,
             @RequestParam(required = false) String company
@@ -77,7 +77,7 @@ public class CitizenController {
             CityEntity city = cityEntityRepository.findByIdentifier(city_id);
             CitizenshipEntity citizenship = citizenshipEntityRepository.findByIdentifier(citizenship_id);
             pageCitizens = citizenEntityRepository.findAll(Example.of(CitizenEntity.builder().company(company).sex(sex).citizenshipEntity(citizenship).firstname(firstname).lastname(lastname).
-                    education(education).cityEntity(city).workplace(workplace).build(),
+                    education(education).cityEntity(city).workplace(workplace).year_of_birth(year_of_birth).year_of_arrival(year_of_arrival).build(),
                     ExampleMatcher.matchingAll().withMatcher("firstname", startsWith().ignoreCase()).
                             withMatcher("lastname", startsWith().ignoreCase()).withMatcher("education", startsWith().ignoreCase()).withMatcher("company", startsWith().ignoreCase())),
                     paging);
@@ -117,7 +117,7 @@ public class CitizenController {
     @ResponseStatus(HttpStatus.CREATED)
     CitizenEntity save(@RequestBody CitizenRequest citizenRequest,@RequestParam(name="g-recaptcha-response") String captchaResponse) {
         String url = "https://www.google.com/recaptcha/api/siteverify";
-        String params = "?secret=6Lf6r_weAAAAAOYCf0cuc1mwSw30vhkFPfRGMzV0&response="+captchaResponse;
+        String params = "?secret=dodajtoken="+captchaResponse;
         ReCaptchaResponse reCaptchaResponse = restTemplate.exchange(url+params, HttpMethod.POST,null,ReCaptchaResponse.class).getBody();
 
 
@@ -154,6 +154,71 @@ public class CitizenController {
     @GetMapping("/map")
     List<CitizenMapDTO> citizensForMap(){
         return citizenEntityRepository.getCitizenMapDTOs();
+    }
 
+    @GetMapping("/statistics/sex")
+    public ResponseEntity statisticsSex(){
+        Map<String, Object> response = new HashMap<>();
+        response.put("male", citizenEntityRepository.countSex("male"));
+        response.put("female", citizenEntityRepository.countSex("female"));
+        return new ResponseEntity(response,HttpStatus.OK);
+    }
+
+    @GetMapping("/statistics/arrival")
+    public ResponseEntity statisticsArrival(){
+        Map<String, Object> response = new HashMap<>();
+        response.put("1990-1995", citizenEntityRepository.countArrival(1991,1995));
+        response.put("1996-2000", citizenEntityRepository.countArrival(1996,2000));
+        response.put("2001-2005", citizenEntityRepository.countArrival(2001,2005));
+        response.put("2006-2010", citizenEntityRepository.countArrival(2006,2010));
+        response.put("2011-2015", citizenEntityRepository.countArrival(2011,2015));
+        response.put("2016-2020", citizenEntityRepository.countArrival(2016,2020));
+        response.put("2021-2022", citizenEntityRepository.countArrival(2021,2022));
+
+        return new ResponseEntity(response,HttpStatus.OK);
+    }
+
+    @GetMapping("/statistics/age")
+    public ResponseEntity statisticsAge(){
+        Map<String, Object> response = new HashMap<>();
+        response.put("1-10", citizenEntityRepository.countAge(1,10));
+        response.put("11-20", citizenEntityRepository.countAge(11,20));
+        response.put("21-30", citizenEntityRepository.countAge(21,30));
+        response.put("31-40", citizenEntityRepository.countAge(31,40));
+        response.put("41-50", citizenEntityRepository.countAge(41,50));
+        response.put("51-60", citizenEntityRepository.countAge(51,60));
+        response.put("61-70", citizenEntityRepository.countAge(61,70));
+        response.put("71-100", citizenEntityRepository.countAge(71,100));
+
+        return new ResponseEntity(response,HttpStatus.OK);
+    }
+
+    @GetMapping("/statistics/month")
+    public ResponseEntity statisticsMonth(){
+        Map<String, Object> response = new HashMap<>();
+        response.put("Jan", citizenEntityRepository.countMonth(1));
+        response.put("Feb", citizenEntityRepository.countMonth(2));
+        response.put("Mar", citizenEntityRepository.countMonth(3));
+        response.put("Apr", citizenEntityRepository.countMonth(4));
+        response.put("May", citizenEntityRepository.countMonth(5));
+        response.put("Jun", citizenEntityRepository.countMonth(6));
+        response.put("Jul", citizenEntityRepository.countMonth(7));
+        response.put("Aug", citizenEntityRepository.countMonth(8));
+        response.put("Sep", citizenEntityRepository.countMonth(9));
+        response.put("Oct", citizenEntityRepository.countMonth(10));
+        response.put("Nov", citizenEntityRepository.countMonth(11));
+        response.put("Dec", citizenEntityRepository.countMonth(12));
+
+        return new ResponseEntity(response,HttpStatus.OK);
+    }
+
+    @GetMapping("/statistics/citizenship")
+    public ResponseEntity statisticsCitizenship(){
+        Map<String, Object> response = new HashMap<>();
+        List<CitizenshipEntity> citizenships = citizenshipEntityRepository.findAll();
+        for(CitizenshipEntity citizenshipEntity : citizenships)
+            response.put(citizenshipEntity.getCountry(), citizenEntityRepository.countCitizenship(citizenshipEntity.getId()));
+
+        return new ResponseEntity(response,HttpStatus.OK);
     }
 }
