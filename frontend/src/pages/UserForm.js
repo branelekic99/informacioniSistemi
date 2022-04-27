@@ -23,14 +23,15 @@ const UserForm = () => {
     const navigation = useNavigate();
 
     const [formSubmitted, setFormSubmitted] = useState(false);
-    const [captchaCompleted, setCaptchaCompleted] = useState(false);
+    const [captcha, setCaptcha] = useState("");
     const [municipalitiesOptions, setMunicipalitiesOptions] = useState([]);
     const [formData, setFormData] = useState(null);
+    const [captchaFailedMessage,setCaptchaFailedMessage] = useState("");
 
     useEffect(() => {
-        if (formSubmitted && captchaCompleted) createNewCitizen();
+        if (formSubmitted && captcha.length > 0) createNewCitizen();
 
-    }, [captchaCompleted]);
+    }, [captcha]);
 
     useEffect(() => {
         getCityData();
@@ -62,25 +63,28 @@ const UserForm = () => {
 
     const createNewCitizen = async () => {
         if (formData !== null) {
-            const formDataString = JSON.stringify(formData);
+
+            formData.token = captcha;
             console.log(formData)
+            const formDataString = JSON.stringify(formData);
+            console.log(formDataString)
             try {
                 const result = await axios.post("/citizens", formData);
                 navigation("/user-form-success");
             } catch (err) {
                 console.log(err);
                 setFormSubmitted(false);
-                setCaptchaCompleted(false);
+                setCaptcha("");
             }
         }
     }
     const handleRedirect = () => {
         window.location.href = "https://sss-zss.si/";
     }
-    if (formSubmitted && !captchaCompleted) {
-        return <Captcha setCaptcha={setCaptchaCompleted}/>
+    if (formSubmitted && !captcha) {
+        return <Captcha setCaptcha={setCaptcha}/>
     }
-    if (formSubmitted && captchaCompleted) {
+    if (formSubmitted && captcha) {
         return <div className={"spinner-container"}>
             <Loader
                 type="ThreeDots"

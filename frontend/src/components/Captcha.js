@@ -6,11 +6,7 @@ import axios from "axios";
 const Captcha = ({setCaptcha}) => {
 
     const handleChange = async token=>{
-        const result = await axios.post("https://www.google.com/recaptcha/api/siteverify",{
-            "secret":"6LdwPcQeAAAAAEVcbTjBM-VuR7ziGWU7pq8AT-d7",
-            "response":token
-        })
-        console.log(result)
+        setCaptcha(token);
     }
     // const [randomNumber,setRandomNumber] = useState(Math.floor(Math.random() * 4000) + 4000);
     // const [errorMessage,setErrorMessage] = useState("");
