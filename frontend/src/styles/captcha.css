@@ -9,7 +9,7 @@
 .centered-box{
     width: 30%;
     margin: auto;
-    box-shadow: 0 8px 8px -4px gray;
+    /*box-shadow: 0 8px 8px -4px gray;*/
     height: 250px;
 }
 .centered-box h2{

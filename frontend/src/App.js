@@ -12,6 +12,7 @@ import 'antd/dist/antd.css';
 import UserForm from "./pages/UserForm";
 import SuccessfullySumbited from "./components/SuccessfullySumbited"; // or 'antd/dist/antd.less'
 import UserState from "./context/user/UserState";
+import MapBox from "./pages/map/MapBox";
 
 function App() {
     return (
@@ -24,6 +25,7 @@ function App() {
                         <Route path={"/login"} element={<Login/>}/>
                         <Route path={"/adminPanel"} element={<AdminPanel/>}/>
                         <Route path={"/user-form"} element={<UserForm/>}/>
+                        <Route path={"/map"} element={<MapBox />}/>
                         <Route path={"/user-form-success"} element={<SuccessfullySumbited/>}/>
                     </Routes>
                 </UserState>

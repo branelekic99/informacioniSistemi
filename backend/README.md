@@ -7,7 +7,7 @@ CREATE TABLE citizenship
     id      INT AUTO_INCREMENT NOT NULL,
     country VARCHAR(45)        NOT NULL,
     CONSTRAINT pk_citizenship PRIMARY KEY (id)
-);
+);/8
 
 CREATE TABLE workplace
 (
