@@ -101,9 +101,14 @@ const Nav = () => {
                                 AdminPanel
                             </Link>
                         </li>}
+                        {userStatus === USER_STATUS.AUTHENTICATED && <li>
+                            <Link to="/statistic-month" onClick={menuToggleHandler}>
+                                Statistika
+                            </Link>
+                        </li>}
 
                     </ul>
-                    {userStatus === USER_STATUS.AUTHENTICATED ? <button onClick={logOutClickHandler}>Izloguj se</button> : <button onClick={loginClickHandler}>Uloguj se</button>}
+                        {userStatus === USER_STATUS.AUTHENTICATED ? <button onClick={logOutClickHandler}>Izloguj se</button> : <button onClick={loginClickHandler}>Uloguj se</button>}
 
                 </nav>
                 <div className={"header__content__toggle"}>

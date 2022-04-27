@@ -10,8 +10,13 @@ import Nav from "./pages/Nav";
 import AdminPanel from "./pages/AdminPanel"
 import 'antd/dist/antd.css';
 import UserForm from "./pages/UserForm";
+import StatisticMonthOfFilling from "./pages/StatisticMonthOfFilling";
+import StatisticYearOfAge from "./pages/StatisticYearOfAge";
+import StatisticYearOfArrival from "./pages/StatisticYearOfArrival";
+import  StatisticGender from "./pages/StatisticGender";
 import SuccessfullySumbited from "./components/SuccessfullySumbited"; // or 'antd/dist/antd.less'
 import UserState from "./context/user/UserState";
+import {Statistic} from "antd";
 
 function App() {
     return (
@@ -20,10 +25,14 @@ function App() {
                 <UserState>
                     <Nav/>
                     <Routes>
-                        <Route path={"/"} element={<Home/>}/>
+                        <Route path={"/"} element={<Home/>}/>StatisticGender
                         <Route path={"/login"} element={<Login/>}/>
                         <Route path={"/adminPanel"} element={<AdminPanel/>}/>
                         <Route path={"/user-form"} element={<UserForm/>}/>
+                        <Route path={"/statistic-month"} element={<StatisticMonthOfFilling/>}/>
+                        <Route path={"/statistic-age"} element={<StatisticYearOfAge/>}/>
+                        <Route path={"/statistic-year"} element={<StatisticYearOfArrival/>}/>
+                        <Route path={"/statistic-gender"} element={<StatisticGender/>}/>
                         <Route path={"/user-form-success"} element={<SuccessfullySumbited/>}/>
                     </Routes>
                 </UserState>
