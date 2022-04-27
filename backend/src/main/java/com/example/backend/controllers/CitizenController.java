@@ -16,7 +16,6 @@ import org.springframework.data.domain.*;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 
@@ -26,7 +25,6 @@ import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
 import java.util.*;
 
-import static org.springframework.data.domain.ExampleMatcher.GenericPropertyMatchers.contains;
 import static org.springframework.data.domain.ExampleMatcher.GenericPropertyMatchers.startsWith;
 
 @RestController
@@ -39,15 +37,16 @@ public class CitizenController {
     private final CitizenshipEntityRepository citizenshipEntityRepository;
     private final EntityManager entityManager;
     private final ModelMapper modelMapper;
-    @Autowired
-    private RestTemplate restTemplate;
+    private final RestTemplate restTemplate;
 
-    public CitizenController(CitizenEntityRepository citizenEntityRepository, CityEntityRepository cityEntityRepository, EntityManager entityManager,CitizenshipEntityRepository citizenshipEntityRepository, ModelMapper modelMapper) {
+
+    public CitizenController(CitizenEntityRepository citizenEntityRepository, CityEntityRepository cityEntityRepository, EntityManager entityManager, CitizenshipEntityRepository citizenshipEntityRepository, ModelMapper modelMapper, RestTemplate restTemplate) {
         this.citizenEntityRepository = citizenEntityRepository;
         this.cityEntityRepository = cityEntityRepository;
         this.entityManager = entityManager;
         this.citizenshipEntityRepository = citizenshipEntityRepository;
         this.modelMapper = modelMapper;
+        this.restTemplate = restTemplate;
     }
 
 
@@ -117,7 +116,7 @@ public class CitizenController {
     @ResponseStatus(HttpStatus.CREATED)
     CitizenEntity save(@RequestBody CitizenRequest citizenRequest,@RequestParam(name="g-recaptcha-response") String captchaResponse) {
         String url = "https://www.google.com/recaptcha/api/siteverify";
-        String params = "?secret=dodajtoken="+captchaResponse;
+        String params = "?secret=dodajtoken&response="+captchaResponse;
         ReCaptchaResponse reCaptchaResponse = restTemplate.exchange(url+params, HttpMethod.POST,null,ReCaptchaResponse.class).getBody();
 
 
