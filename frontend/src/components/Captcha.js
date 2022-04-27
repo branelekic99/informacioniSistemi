@@ -1,39 +1,40 @@
-import React, {useEffect, useState} from 'react';
-import {Button} from "antd";
+import React, {useState} from 'react';
 import "../styles/captcha.css";
-
-const captchaErrorMessage = "Netacan broj pokusajte opet!";
+import ReCAPTCHA from "react-google-recaptcha";
+import axios from "axios";
 
 const Captcha = ({setCaptcha}) => {
-    const [randomNumber,setRandomNumber] = useState(Math.floor(Math.random() * 4000) + 4000);
-    const [errorMessage,setErrorMessage] = useState("");
-    const [numberValue,setNumberValue] = useState("");
 
-    useEffect(()=>{
-    },[]);
-    const handleNumberChange = (e)=>{
-        setNumberValue(e.target.value);
-        if(errorMessage)
-            setErrorMessage("");
+    const handleChange = async token=>{
+        setCaptcha(token);
     }
-    const handleCaptchaSubmit = ()=>{
-        if(numberValue != randomNumber){
-            setErrorMessage(captchaErrorMessage);
-        }else{
-            setCaptcha(true);
-        }
-    }
+    // const [randomNumber,setRandomNumber] = useState(Math.floor(Math.random() * 4000) + 4000);
+    // const [errorMessage,setErrorMessage] = useState("");
+    // const [numberValue,setNumberValue] = useState("");
+
+    // useEffect(()=>{
+    // },[]);
+    // const handleNumberChange = (e)=>{
+    //     setNumberValue(e.target.value);
+    //     if(errorMessage)
+    //         setErrorMessage("");
+    // }
+    // const handleCaptchaSubmit = ()=>{
+    //     if(numberValue != randomNumber){
+    //         setErrorMessage(captchaErrorMessage);
+    //     }else{
+    //         setCaptcha(true);
+    //     }
+    // }
     return (
         <div className={"captcha-container"}>
             <div className={"centered-box"}>
-                <h2>{randomNumber}</h2>
-                <div className={"input-container"}>
-                    <input placeholder={"Unesite broj!"} value={numberValue} onChange={handleNumberChange}/>
-                    {errorMessage && <p>{errorMessage}</p>}
-                    <Button type={"primary"}  block={true} size={"large"} onClick={handleCaptchaSubmit}>
-                        Potvrdi
-                    </Button>
-                </div>
+                <ReCAPTCHA
+                    sitekey="6LdwPcQeAAAAAEKvUAR6FTJ0SkoOZJqh0RG-N4rJ"
+                    onChange={handleChange}
+                    // size={"invisible"}
+                    onErrored={e=>console.log(e)}
+                />
             </div>
         </div>
     );
