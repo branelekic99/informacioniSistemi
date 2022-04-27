@@ -7,9 +7,13 @@
     color: white;
     background: #2b5c90 !important;
     text-transform: uppercase;
-    text-align: center;
     -moz-text-size-adjust: auto;
+    text-align: center;
+    justify-content: center;
+    align-content: center;
 }
+
+
     .rows{
         text-align: center;
         font-size: 16px;
@@ -68,7 +72,6 @@
     color: #2b5c90;
 }
 .background-div{
-    /*background: #00BD9B;*/
     display: flex;
     height: 88vh;
     display: flex;
