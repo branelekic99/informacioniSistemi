@@ -7,6 +7,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
+import org.springframework.web.client.RestTemplate;
 
 import java.io.*;
 
@@ -38,6 +39,10 @@ public class BackendApplication {
         ModelMapper mapper= new ModelMapper();
         mapper.getConfiguration().setAmbiguityIgnored(true);
         return mapper;
+    }
+    @Bean
+    public RestTemplate restTemplate() {
+        return new RestTemplate();
     }
 
 }
