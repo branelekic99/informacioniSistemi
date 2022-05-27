@@ -48,64 +48,70 @@ const AdminPanel = () => {
     function info(record) {
         console.log("recordddddddddddddd",record);
         Modal.info({
-            title: 'Informacije',
+            icon: null,
+            title: <div className= "info-title">  </div>,
             content: (
-                <form>
-                    <p>
-                        Ime i prezime :
-                        <input value={" " + record.firstname + " " + record.lastname} disabled={true}/>
-                    </p>
-                    <p>
-                        Pol :
-                        <input value={" " + record.sex} disabled={true}/>
-                    </p>
-                    <p>
-                        Godina rođenja :
-                        <input value={" " + record.year_of_birth} disabled={true}/>
-                    </p>
-                    <p>
-                        Državljanstvo :
-                        <input value={" " + record.citizenshipEntity.country} disabled={true}/>
-                    </p>
-                    <p>
-                        Godina dolaska :
-                        <input value={" " + record.year_of_arrival} disabled={true}/>
-                    </p>
-                    <p>
-                        Grad :
-                        <input value={" " + record.cityEntity.name} disabled={true}/>
-                    </p>
-                    <p>
-                        Stručna sprema :
-                        <input value={" " + record.education} disabled={true}/>
-                    </p>
-                    <p>
-                        Kompanija :
-                        <input value={" " + record.company} disabled={true}/>
-                    </p>
-                    <p>
-                        Radno mjesto :
-                        <input value={" " + record.workplace} disabled={true}/>
-                    </p>
-                    <p>
-                        Broj članova domaćinstva :
-                        <input value={" " + record.num_of_family_members} disabled={true}/>
-                    </p>
-                    <p>
-                        Broj telefona :
-                        <input value={" " + record.phone} disabled={true}/>
-                    </p>
-                    <p>
-                        Email :
-                        <input value={" " + record.email} disabled={true}/>
-                    </p>
-                    <p>
-                        Ostalo :
-                        <input value={" " + record.other} disabled={true}/>
-                    </p>
-                </form>
+                <div className="info-container">
+                    <form className="info-form">
+                        <p>
+                            <div> {"Ime i prezime : " + record.firstname + " " + record.lastname} </div>
+
+                        </p>
+                        <p>
+                            <div> {"Pol : " + record.sex} </div>
+
+                        </p>
+                        <p>
+                            <div> {"Godina rođenja : " + record.year_of_birth} </div>
+                        </p>
+                        <p>
+
+                            <div> {"Državljanstvo : " + record.citizenshipEntity.country} </div>
+                        </p>
+                        <p>
+
+                            <div> {"Godina dolaska : " + record.year_of_arrival} </div>
+                        </p>
+                        <p>
+
+                            <div> {"Grad : " + record.cityEntity.name} </div>
+                        </p>
+                        <p>
+
+                            <div> {"Stručna sprema : " + record.education} </div>
+                        </p>
+                        <p>
+
+                            <div> {"Kompanija : " + record.company} </div>
+                        </p>
+                        <p>
+
+                            <div> {"Radno mjesto : " + record.workplace} </div>
+                        </p>
+                        <p>
+                            <div> {"Broj članova domaćinstva : " + record.num_of_family_members} </div>
+                        </p>
+                        <p>
+
+                            <div> {"Broj telefona : " + record.phone} </div>
+                        </p>
+                        <p>
+
+                            <div> {"Email : " + record.email} </div>
+                        </p>
+                        <p>
+
+                            <div> {"Ostalo : " + record.other} </div>
+                        </p>
+                    </form>
+                </div>
+
             ),
             onOk() {},
+            width : "60%",
+            bodyStyle: {
+                "background-color" : "#2b5c90"
+            }
         });
     }
     const columns = [
