@@ -105,6 +105,11 @@ const Nav = () => {
                                 AdminPanel
                             </Link>
                         </li>}
+                        {userStatus === USER_STATUS.AUTHENTICATED && <li>
+                            <Link to="/statistic-month" onClick={menuToggleHandler}>
+                                AdminPanel
+                            </Link>
+                        </li>}
 
                     </ul>
                     {userStatus === USER_STATUS.AUTHENTICATED ?
