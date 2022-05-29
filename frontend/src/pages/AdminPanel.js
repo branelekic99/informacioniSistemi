@@ -182,11 +182,16 @@ const AdminPanel = () => {
                             filterOption={(input, option) =>
                                 option.children.toLowerCase().includes(input.toLowerCase())
                             }
-                            onSelect={ (key,option) => {
-                                console.log("SELECTED ", selectedKeys)
-                                setSelectedKeys(option.value);
+                            // onSelect={ (key,option) => {
+                            //     console.log("SELECTED ", selectedKeys)
+                            //     console.log(key,option)
+                            //     setSelectedKeys(option.value);
+                            //     confirm();
+                            //     console.log("SELECTED ", selectedKeys)
+                            // }}
+                            onChange={(value)=>{
+                                setSelectedKeys(value === undefined?[]:[value]);
                                 confirm();
-                                console.log("SELECTED ", selectedKeys)
                             }}
                             onPressEnter={() => {
                                 confirm()
@@ -325,7 +330,8 @@ const AdminPanel = () => {
 
         }
         if(filtered.cityEntity != null){
-            console.log("IZabran je grad ", filtered.city[0]);
+            console.log("IZabran je grad ", filtered.cityEntity[0]);
+            baseUrl += `city_id=${filtered.cityEntity[0]}`
         }
         console.log("base url: ", baseUrl);
         return baseUrl;
