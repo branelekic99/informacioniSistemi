@@ -1,19 +1,20 @@
 import React, {useState, useEffect, useMemo} from 'react';
 import {Form, Input, Select, DatePicker, InputNumber, Button} from "antd";
 import axios from "axios";
-import {municipalities} from "../constants/siMunicipalities";
 import moment from "moment";
 import {useNavigate} from "react-router-dom";
 import Loader from "react-loader-spinner";
 import "../styles/user-form.css";
 
 import Captcha from "../components/Captcha";
+import {TOKEN} from "../constants/variables";
 
 const errorUsername = "Unesite Vaše ime.";
 const errorPassword = "Unesite Vaše prezime.";
 const errorEmail = "Unesite Vašu email adresu.";
 const errorPhoneNumber = "Unesite Vaš broj telefona.";
 const errorCitizenship = "Unesite državljanstvo!";
+const errorSex = "Odaberite pol!"
 const errorCity = "Unesite mjesto življenja!";
 
 const {Option} = Select;
@@ -22,21 +23,33 @@ const UserForm = () => {
     const navigation = useNavigate();
 
     const [formSubmitted, setFormSubmitted] = useState(false);
-    const [captchaCompleted, setCaptchaCompleted] = useState(false);
-
+    const [captcha, setCaptcha] = useState("");
+    const [municipalitiesOptions, setMunicipalitiesOptions] = useState([]);
     const [formData, setFormData] = useState(null);
+    const [captchaFailedMessage,setCaptchaFailedMessage] = useState("");
 
     useEffect(() => {
-        if (formSubmitted && captchaCompleted) createNewCitizen();
+        if (formSubmitted && captcha.length > 0) createNewCitizen();
 
-    }, [captchaCompleted]);
+    }, [captcha]);
 
+    useEffect(() => {
+        getCityData();
+    }, []);
+    const getCityData = async () => {
+        try {
+            const result = await axios.get("/cities");
+            setMunicipalitiesOptions(result.data);
+        } catch (err) {
+            console.log(err);
+        }
+    }
     const onFinish = async (values) => {
         try {
             if (values.year_of_birth)
-                values.year_of_birth = values.year_of_birth.year();
+                values.year_of_birth = values.year_of_birth.year().toString();
             if (values.year_of_arrival)
-                values.year_of_arrival = values.year_of_arrival.year();
+                values.year_of_arrival = values.year_of_arrival.year().toString();
             for (const [key, value] of Object.entries(values)) {
                 if (value === undefined)
                     delete values[key]
@@ -50,29 +63,28 @@ const UserForm = () => {
 
     const createNewCitizen = async () => {
         if (formData !== null) {
+
+            formData.token = captcha;
+            console.log(formData)
             const formDataString = JSON.stringify(formData);
-            console.log(formDataString);
+            console.log(formDataString)
             try {
                 const result = await axios.post("/citizens", formData);
                 navigation("/user-form-success");
             } catch (err) {
                 console.log(err);
                 setFormSubmitted(false);
-                setCaptchaCompleted(false);
+                setCaptcha("");
             }
         }
-    }
-    let municipalitiesOptions = [];
-    for (const [key, value] of Object.entries(municipalities)) {
-        municipalitiesOptions.push(<Option value={value} key={key}>{value}</Option>)
     }
     const handleRedirect = () => {
         window.location.href = "https://sss-zss.si/";
     }
-    if (formSubmitted && !captchaCompleted) {
-        return <Captcha setCaptcha={setCaptchaCompleted}/>
+    if (formSubmitted && !captcha) {
+        return <Captcha setCaptcha={setCaptcha}/>
     }
-    if (formSubmitted && captchaCompleted) {
+    if (formSubmitted && captcha) {
         return <div className={"spinner-container"}>
             <Loader
                 type="ThreeDots"
@@ -108,25 +120,30 @@ const UserForm = () => {
 
                     <Form.Item className={"item-box"}>
                         <Form.Item label={"Email"} className={"inline-item"} name={"email"}
-                                   rules={[{required: true,
-                                       type : "email",
-                                       message: errorEmail}]}>
+                                   rules={[{
+                                       required: true,
+                                       type: "email",
+                                       message: errorEmail
+                                   }]}>
 
                             <Input/>
                         </Form.Item>
                         <Form.Item label={"Broj telefona"} className={"inline-item"} name={"phone"}
-                                   rules={[{required: true,
+                                   rules={[{
+                                       required: true,
                                        type: "string",
-                                       min : 9,
-                                       message: errorPhoneNumber}]}>
+                                       min: 9,
+                                       message: errorPhoneNumber
+                                   }]}>
                             <Input/>
                         </Form.Item>
                     </Form.Item>
-
                     <Form.Item className={"item-box"}>
-                        <Form.Item label={"Drzavljanstvo"} className={"inline-item"} name={"citizenshipEntity"}
+                        <Form.Item label={"Drzavljanstvo"} className={"inline-item"} name={"citizenship_id"}
                                    rules={[{required: true, message: errorCitizenship}]}>
-                            <Select placeholder={"Izaberite drzavljanstvo"} filterOption={false}>
+                            <Select placeholder={"Izaberite drzavljanstvo"} filterOption={false}
+
+                            >
                                 <Option value={3}>BiH</Option>
                                 <Option value={1}>Srbija</Option>
                                 <Option value={2}>Hrvatska</Option>
@@ -135,11 +152,13 @@ const UserForm = () => {
                                 <Option value={6}>Makedonija</Option>
                             </Select>
                         </Form.Item>
-                        <Form.Item label={"Grad/Mjesto zivljenja"} className={"inline-item"} name={"city"}
+                        <Form.Item label={"Grad/Mjesto zivljenja"} className={"inline-item"} name={"city_id"}
                                    rules={[{required: true, message: errorCity}]}>
                             <Select placeholder={"Izaberite mjesto zivljenja"} showSearch allowClear
-                                    filterOption={false}>
-                                {municipalitiesOptions.map((item) => item)}
+                                    filterOption={(input, option) =>
+                                         option.children.toLowerCase().includes(input.toLowerCase())
+                                    }>
+                                {municipalitiesOptions.map((item) => <Option value={item.id}>{item.name}</Option>)}
                             </Select>
                         </Form.Item>
                     </Form.Item>
@@ -160,7 +179,7 @@ const UserForm = () => {
                         <Form.Item label={"Broj članova domaćinstva"} className={"inline-item"}
                                    name={"num_of_family_members"}
                         >
-                            <InputNumber  className = {"members-num"} min={1} />
+                            <InputNumber className={"members-num"} min={1}/>
                         </Form.Item>
                     </Form.Item>
 
@@ -174,16 +193,25 @@ const UserForm = () => {
                                         disabledDate={(current) => current > moment(new Date())}/>
                         </Form.Item>
                     </Form.Item>
-
+                    <Form.Item className={"item-box"}>
+                        <Form.Item label={"Pol"} className={"inline-item"} name={"sex"}
+                                   rules={[{required: true, message: errorSex}]}>
+                            <Select placeholder={"Izaberite pol"} filterOption={false}>
+                                <Option value={"male"}>Muško</Option>
+                                <Option value={"female"}>Žensko</Option>
+                            </Select>
+                        </Form.Item>
+                        <Form.Item label={"Ostalo"} className={"inline-item"} name={"other"}>
+                            <Input.TextArea/>
+                        </Form.Item>
+                    </Form.Item>
                     <Form.Item className={"form-submit-box"}>
                         <Button type={"primary"} htmlType={"submit"} block={true} size={"large"}>
                             Dalje
                         </Button>
                     </Form.Item>
-
                 </Form>
             </div>
-
         </div>
     );
 };

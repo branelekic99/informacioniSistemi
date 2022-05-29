@@ -1,0 +1,65 @@
+.map-container {
+    width:100%;
+    height: 99%;
+}
+
+.map-controls{
+    position: absolute;
+    right: 25px;
+    top:50px;
+}
+.control-item{
+    background: #0C4076;
+    color: white;
+    padding: 7px;
+    border-radius: 5px;
+    align-content: center;
+    justify-content: center;
+    display: flex;
+    margin-bottom: 10px;
+    position: relative;
+}
+.control-item-active{
+    background: #4ce78f;
+}
+.control-item:hover{
+    cursor: pointer;
+}
+.gender-filter{
+    position: absolute;
+    color: black;
+    right: 40px;
+    top: 0px;
+    display: none;
+}
+.gender-filter-visible{
+    display: block;
+    animation: fadeIn 0.5s;
+}
+.arrival-year-filter{
+    position: absolute;
+    color: black;
+    right: 40px;
+    top: 0px;
+    display: none;
+    width: 150px;
+}
+.arrival-year-filter-visible{
+    display: block;
+    animation: fadeIn 0.5s;
+}
+.mapboxgl-popup-content{
+    padding: 2px!important;
+}
+.bl-map-popup{
+
+}
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
