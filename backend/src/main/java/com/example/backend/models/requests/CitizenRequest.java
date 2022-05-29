@@ -44,4 +44,6 @@ public class CitizenRequest {
     private Integer city_id;
     @NotBlank
     private Sex sex;
+    @NotBlank
+    private String token;
 }

@@ -10,8 +10,13 @@ import com.example.backend.models.requests.CitizenRequest;
 import com.example.backend.repositories.CitizenEntityRepository;
 import com.example.backend.repositories.CitizenshipEntityRepository;
 import com.example.backend.repositories.CityEntityRepository;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.*;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
@@ -24,6 +29,10 @@ import javax.persistence.EntityManager;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
+import java.io.IOException;
+import java.io.OutputStream;
+import java.io.OutputStreamWriter;
+import java.net.*;
 import java.util.*;
 
 import static org.springframework.data.domain.ExampleMatcher.GenericPropertyMatchers.contains;
@@ -39,8 +48,9 @@ public class CitizenController {
     private final CitizenshipEntityRepository citizenshipEntityRepository;
     private final EntityManager entityManager;
     private final ModelMapper modelMapper;
-    @Autowired
-    private RestTemplate restTemplate;
+
+    @Value("${secret}")
+    private String secret;
 
     public CitizenController(CitizenEntityRepository citizenEntityRepository, CityEntityRepository cityEntityRepository, EntityManager entityManager,CitizenshipEntityRepository citizenshipEntityRepository, ModelMapper modelMapper) {
         this.citizenEntityRepository = citizenEntityRepository;
@@ -113,18 +123,47 @@ public class CitizenController {
         return null;
     }
 
+    public boolean captcha( String token) {
+        URL url = null;
+        try {
+            url = new URL("https://www.google.com/recaptcha/api/siteverify");
+            URLConnection con = url.openConnection();
+            HttpURLConnection http = (HttpURLConnection) con;
+            http.setRequestMethod("POST"); // PUT is another valid option
+            http.setDoOutput(true);
+            http.connect();
+            OutputStream os = http.getOutputStream();
+            OutputStreamWriter osw = new OutputStreamWriter(os, "UTF-8");
+            osw.write("{ \"secret\":" + secret + "\",\"response\":\" " + token + "\"}");
+            osw.flush();
+            osw.close();
+            JsonObject jsonObject = new JsonParser().parse(new String(http.getInputStream().readAllBytes())).getAsJsonObject();
+            if (jsonObject.get("success").getAsBoolean() == true)
+                return true;
+            else
+                return false;
+
+
+
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        } catch (ProtocolException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    CitizenEntity save(@RequestBody CitizenRequest citizenRequest,@RequestParam(name="g-recaptcha-response") String captchaResponse) {
-        String url = "https://www.google.com/recaptcha/api/siteverify";
-        String params = "?secret=dodajtoken="+captchaResponse;
-        ReCaptchaResponse reCaptchaResponse = restTemplate.exchange(url+params, HttpMethod.POST,null,ReCaptchaResponse.class).getBody();
-
-
-
+    CitizenEntity save(@RequestBody CitizenRequest citizenRequest) {
+        if(!captcha( citizenRequest.getToken()))
+            throw new InvalidRequestException("Invalid request, there si no confirmation of a human.");
         CitizenEntity citizen = modelMapper.map(citizenRequest, CitizenEntity.class);
         citizen.setCitizenshipEntity(citizenshipEntityRepository.getById(citizenRequest.getCitizenship_id()));
         citizen.setCityEntity(cityEntityRepository.getById(citizenRequest.getCity_id()));
+
         if(citizen.getId() != null)
             throw new InvalidRequestException("Invalid request, field id must be null.");
         if(citizen.getFirstname() == null)
@@ -143,8 +182,6 @@ public class CitizenController {
             throw new InvalidRequestException("Invalid request, field citizenship_entity cannot be null.");
         else if(!(citizen.getSex().equals(Sex.male) || citizen.getSex().equals(Sex.female)))
             throw new InvalidRequestException("Invalid request, field sex must have value male or female.");
-        else if(!reCaptchaResponse.isSuccess())
-            throw new InvalidRequestException("Invalid request, there si no confirmation od a human.");
         citizen.setT_create(new Date());
 
             return citizenEntityRepository.save(citizen);
