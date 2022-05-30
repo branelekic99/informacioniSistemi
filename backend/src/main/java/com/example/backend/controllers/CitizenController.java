@@ -21,7 +21,6 @@ import org.springframework.data.domain.*;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 
@@ -36,7 +35,6 @@ import java.io.OutputStreamWriter;
 import java.net.*;
 import java.util.*;
 
-import static org.springframework.data.domain.ExampleMatcher.GenericPropertyMatchers.contains;
 import static org.springframework.data.domain.ExampleMatcher.GenericPropertyMatchers.startsWith;
 
 @RestController
@@ -53,12 +51,15 @@ public class CitizenController {
     @Value("${secret}")
     private String secret;
 
-    public CitizenController(CitizenEntityRepository citizenEntityRepository, CityEntityRepository cityEntityRepository, EntityManager entityManager,CitizenshipEntityRepository citizenshipEntityRepository, ModelMapper modelMapper) {
+
+
+    public CitizenController(CitizenEntityRepository citizenEntityRepository, CityEntityRepository cityEntityRepository, EntityManager entityManager, CitizenshipEntityRepository citizenshipEntityRepository, ModelMapper modelMapper, RestTemplate restTemplate) {
         this.citizenEntityRepository = citizenEntityRepository;
         this.cityEntityRepository = cityEntityRepository;
         this.entityManager = entityManager;
         this.citizenshipEntityRepository = citizenshipEntityRepository;
         this.modelMapper = modelMapper;
+        this.restTemplate = restTemplate;
     }
 
 
@@ -160,6 +161,7 @@ public class CitizenController {
     CitizenEntity save(@RequestBody CitizenRequest citizenRequest) {
         if(!captcha( citizenRequest.getToken()))
             throw new InvalidRequestException("Invalid request, there si no confirmation of a human.");
+
         CitizenEntity citizen = modelMapper.map(citizenRequest, CitizenEntity.class);
         citizen.setCitizenshipEntity(citizenshipEntityRepository.getById(citizenRequest.getCitizenship_id()));
         citizen.setCityEntity(cityEntityRepository.getById(citizenRequest.getCity_id()));
