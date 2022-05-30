@@ -2,19 +2,42 @@ import React, {useEffect, useState} from 'react';
 import '../styles/statistic.css';
 import {Pie} from '@ant-design/plots';
 import {Link} from "react-router-dom";
+import axios from "axios";
+import {TOKEN} from "../constants/variables";
 
 const StatisticGender = () => {
 
-    const data = [
-        {
-            type: 'LJEPŠI POL',
-            value: 70,
-        },
-        {
-            type: 'MANJE LJEPŠI POL',
-            value: 30,
-        },
-    ];
+    const [data, setData] = useState([]);
+
+    const fetchData = async () => {
+        const url = "/citizens/statistics/sex"
+        try{
+            setData([]);
+            const result = await  axios.get(url,
+                {
+                    headers:
+                        {"Authorization": `Bearer ${localStorage.getItem(TOKEN)}`}
+                });
+            const statisticData = result.data;
+            const newObject = [];
+            for(const [key,value] of Object.entries(statisticData)){
+                newObject.push({
+                    type:key,
+                    value:value,
+                })
+            }
+            setData(newObject);
+            console.log(newObject);
+
+        }catch (err){
+            console.log("Errr");
+        }
+    }
+
+    useEffect(() => {
+        fetchData();
+    },[])
+
 
     const config = {
         appendPadding: 10,

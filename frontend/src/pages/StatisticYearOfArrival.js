@@ -3,48 +3,46 @@ import '../styles/statistic.css';
 import {Line, G2} from '@ant-design/plots';
 import {Link} from "react-router-dom";
 import { each, findIndex } from '@antv/util';
+import axios from "axios";
+import {TOKEN} from "../constants/variables";
 
 const StatisticYearOfArrival = () => {
 
     const { InteractionAction, registerInteraction, registerAction } = G2;
-    const data = [
-        {
-            year: '1991',
-            value: 3,
-        },
-        {
-            year: '1992',
-            value: 4,
-        },
-        {
-            year: '1993',
-            value: 3.5,
-        },
-        {
-            year: '1994',
-            value: 5,
-        },
-        {
-            year: '1995',
-            value: 4.9,
-        },
-        {
-            year: '1996',
-            value: 6,
-        },
-        {
-            year: '1997',
-            value: 7,
-        },
-        {
-            year: '1998',
-            value: 9,
-        },
-        {
-            year: '1999',
-            value: 13,
-        },
-    ];
+    const [data, setData] = useState([]);
+
+    const fetchData = async () => {
+        const url = "/citizens/statistics/arrival"
+        try{
+            setData([]);
+            const result = await  axios.get(url,
+                {
+                    headers:
+                        {"Authorization": `Bearer ${localStorage.getItem(TOKEN)}`}
+                });
+            const statisticData = result.data;
+
+            const newObject = [];
+            for(const [key,value] of Object.entries(statisticData)){
+                newObject.push({
+                    year:key,
+                    value:value,
+                })
+            }
+            setData(newObject);
+            console.log(newObject);
+
+        }catch (err){
+            console.log("Errr");
+        }
+    }
+
+
+    useEffect(() => {
+        fetchData();
+    }, [])
+
+
     G2.registerShape('point', 'custom-point', {
         draw(cfg, container) {
             const point = {

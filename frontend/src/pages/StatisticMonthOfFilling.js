@@ -3,59 +3,44 @@ import '../styles/statistic.css';
 import {G2, Line} from '@ant-design/plots';
 import {Link} from "react-router-dom";
 import {each, findIndex} from "@antv/util";
+import axios from "axios";
+import {TOKEN} from "../constants/variables";
 
 const StatisticMonthOfFilling = () => {
     const { InteractionAction, registerInteraction, registerAction } = G2;
-    const data = [
-        {
-            year: 'Januar',
-            value: 3,
-        },
-        {
-            year: 'Februar',
-            value: 4,
-        },
-        {
-            year: 'Mart',
-            value: 3.5,
-        },
-        {
-            year: 'April',
-            value: 5,
-        },
-        {
-            year: 'Maj',
-            value: 4.9,
-        },
-        {
-            year: 'Jun',
-            value: 6,
-        },
-        {
-            year: 'Jul',
-            value: 7,
-        },
-        {
-            year: 'Avgust',
-            value: 9,
-        },
-        {
-            year: 'Septembar',
-            value: 13,
-        },
-        {
-            year: 'Oktobar',
-            value: 13,
-        },
-        {
-            year: 'Novembar',
-            value: 13,
-        },
-        {
-            year: 'Decembar',
-            value: 13,
-        },
-    ];
+    const [data, setData] = useState([]);
+
+    const fetchData = async () => {
+        const url = "/citizens/statistics/month"
+        try{
+            setData([]);
+            const result = await  axios.get(url,
+                {
+                    headers:
+                        {"Authorization": `Bearer ${localStorage.getItem(TOKEN)}`}
+                });
+            const statisticData = result.data;
+
+            const newObject = [];
+            for(const [key,value] of Object.entries(statisticData)){
+                newObject.push({
+                    year:key,
+                    value:value,
+                })
+            }
+            setData(newObject);
+            console.log(newObject);
+
+        }catch (err){
+            console.log("Errr");
+        }
+    }
+
+
+    useEffect(() => {
+        fetchData();
+    }, [])
+
     G2.registerShape('point', 'custom-point', {
         draw(cfg, container) {
             const point = {
