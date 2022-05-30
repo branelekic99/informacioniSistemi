@@ -28,6 +28,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
+import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
@@ -127,18 +128,17 @@ public class CitizenController {
     public boolean captcha( String token) {
         URL url = null;
         try {
-            url = new URL("https://www.google.com/recaptcha/api/siteverify");
+            url = new URL("https://www.google.com/recaptcha/api/siteverify" + "?secret=" + secret + "&response=" + token);
             URLConnection con = url.openConnection();
             HttpURLConnection http = (HttpURLConnection) con;
-            http.setRequestMethod("POST"); // PUT is another valid option
+            http.setRequestMethod("GET"); // PUT is another valid option
             http.setDoOutput(true);
+            http.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
+            http.setRequestProperty("Content-Length", "<calculated when request is sent>");
+
             http.connect();
-            OutputStream os = http.getOutputStream();
-            OutputStreamWriter osw = new OutputStreamWriter(os, "UTF-8");
-            osw.write("{ \"secret\":" + secret + "\",\"response\":\" " + token + "\"}");
-            osw.flush();
-            osw.close();
-            JsonObject jsonObject = new JsonParser().parse(new String(http.getInputStream().readAllBytes())).getAsJsonObject();
+            String stringJson = new String(http.getInputStream().readAllBytes());
+            JsonObject jsonObject = new JsonParser().parse(stringJson).getAsJsonObject();
             if (jsonObject.get("success").getAsBoolean() == true)
                 return true;
             else
