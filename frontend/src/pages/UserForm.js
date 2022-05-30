@@ -7,7 +7,6 @@ import Loader from "react-loader-spinner";
 import "../styles/user-form.css";
 
 import Captcha from "../components/Captcha";
-import {TOKEN} from "../constants/variables";
 
 const errorUsername = "Unesite Vaše ime.";
 const errorPassword = "Unesite Vaše prezime.";
@@ -22,7 +21,7 @@ const {Option} = Select;
 const UserForm = () => {
     const navigation = useNavigate();
 
-    const [formSubmitted, setFormSubmitted] = useState(false);
+    const [formSubmitted, setFormSubmitted] = useState(true);
     const [captcha, setCaptcha] = useState("");
     const [municipalitiesOptions, setMunicipalitiesOptions] = useState([]);
     const [formData, setFormData] = useState(null);

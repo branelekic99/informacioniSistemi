@@ -6,6 +6,7 @@ import axios from "axios";
 const Captcha = ({setCaptcha}) => {
 
     const handleChange = async token=>{
+        console.log(token)
         setCaptcha(token);
     }
     // const [randomNumber,setRandomNumber] = useState(Math.floor(Math.random() * 4000) + 4000);

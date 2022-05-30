@@ -1,13 +1,11 @@
 import React, {useState, useContext, useEffect} from 'react';
-import '../styles/login.css';
-import background from '../styles/icons/wp3990430.jpg';
 import {ArrowRightOutlined, DoubleRightOutlined} from "@ant-design/icons";
 import {Navigate, useNavigate} from "react-router-dom";
 import logo from "../styles/icons/logo-sr.png";
 import axios from 'axios';
 import UserContext from "../context/user/userContext";
 import {TOKEN, USER_STATUS} from "../constants/variables";
-
+import '../styles/login.css';
 const errorUsername = "* korisničko ime je obavezno";
 const errorPassword = "* lozinka je obavezna";
 const errorLogin = "* unijeti kredencijali nisu ispravni";

@@ -19,25 +19,25 @@
 
 }
 .item-box{
-    margin-bottom: 0px;
+    margin-bottom: 0px!important;
 }
 .inline-item{
-    display: inline-block;
-    width: calc(50% - 20px);
-    margin-left: 10px;
-    margin-right: 10px;
+    display: inline-block !important;
+    width: calc(50% - 20px) !important;
+    margin-left: 10px!important;
+    margin-right: 10px!important;
 }
 .block-item{
-    margin-left: 10px;
-    margin-right: 10px;
+    margin-left: 10px!important;
+    margin-right: 10px!important;
 }
 .form-submit-box{
-    width:50%;
-    margin: auto;
+    width:50%!important;
+    margin: auto!important;
 }
 .form-submit-box button{
-    background: rgb(12,64,118);
-    letter-spacing: 2px;
+    background: rgb(12,64,118)!important;
+    letter-spacing: 2px !important;
 }
 .muted-text{
     font-size: 11px;
@@ -45,7 +45,7 @@
     margin: 0px;
 }
 .bl-datepicker{
-    width: 100%;
+    width: 100%!important;
 }
 .spinner-container{
     height: 88vh;
@@ -55,29 +55,29 @@
     align-items: center;
 }
 .members-num{
-    width: 100%;
+    width: 100%!important;
 }
 @media(max-width: 48em) {
     .container{
        width:90%;
     }
     .item-box{
-        margin-bottom: 0px;
-        flex:none;
+        margin-bottom: 0px!important;
+        flex:none!important;
     }
     .form-container{
-        padding:10px
+        padding:10px;
     }
     .inline-item{
-        display: block;
-        width:90%;
-        margin: 2px auto;
+        display: block!important;
+        width:90%!important;
+        margin: 2px auto!important;
     }
     .block-item{
-        width:90%;
-        margin:10px auto;
+        width:90%!important;
+        margin:10px auto!important;
     }
     .form-submit-box{
-        margin-top: 10px;
+        margin-top: 10px!important;
     }
 }
