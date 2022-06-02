@@ -16,34 +16,35 @@ import java.util.List;
 @Data
 public class CitizenRequest {
 
-    @NotBlank
+    @NotNull
     private String firstname;
-    @NotBlank
+    @NotNull
     private String lastname;
-    @NotBlank
+    @NotNull
     private String email;
-    @NotBlank
+    @NotNull
     private String phone;
-    @NotBlank
+    @NotNull
     private String company;
-    @NotBlank
+    @NotNull
     private String year_of_birth;
-    @NotBlank
+    @NotNull
     private String year_of_arrival;
-    @NotBlank
+    @NotNull
     private String education;
-    @NotBlank
+    @NotNull
     private String workplace;
-    @NotBlank
+
     private String other;
-    @NotBlank
+
+    @NotNull
     private String num_of_family_members;
     @NotNull
     private Integer citizenship_id;
     @NotNull
     private Integer city_id;
-    @NotBlank
+    @NotNull
     private Sex sex;
-    @NotBlank
-    private String token;
+    /*@NotBlank
+    private String token;*/
 }

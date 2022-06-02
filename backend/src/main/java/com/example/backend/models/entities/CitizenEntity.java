@@ -46,16 +46,16 @@ public class CitizenEntity {
     @Column(name = "workplace", nullable = false, length = 100)
     private String workplace;
     @Basic
-    @Column(name = "other", nullable = false, length = 1000)
+    @Column(name = "other", length = 1000)
     private String other;
     @Basic
     @Column(name = "num_of_family_members", nullable = false)
     private String num_of_family_members;
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "citizenship_id", referencedColumnName = "id", nullable = true)
+    @JoinColumn(name = "citizenship_id", referencedColumnName = "id", nullable = false)
     private CitizenshipEntity citizenshipEntity;
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "city_id", referencedColumnName = "id", nullable = true)
+    @JoinColumn(name = "city_id", referencedColumnName = "id", nullable = false)
     private CityEntity cityEntity;
     @Enumerated(value=EnumType.STRING)
     @Column(name="sex")
