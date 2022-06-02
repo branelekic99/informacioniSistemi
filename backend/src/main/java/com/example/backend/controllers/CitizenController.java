@@ -21,6 +21,7 @@ import org.springframework.data.domain.*;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 
@@ -28,6 +29,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
+import javax.validation.Valid;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
@@ -59,7 +61,6 @@ public class CitizenController {
         this.entityManager = entityManager;
         this.citizenshipEntityRepository = citizenshipEntityRepository;
         this.modelMapper = modelMapper;
-        this.restTemplate = restTemplate;
     }
 
 
@@ -158,9 +159,9 @@ public class CitizenController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    CitizenEntity save(@RequestBody CitizenRequest citizenRequest) {
-        if(!captcha( citizenRequest.getToken()))
-            throw new InvalidRequestException("Invalid request, there si no confirmation of a human.");
+    CitizenEntity save(@Valid @RequestBody CitizenRequest citizenRequest) {
+        //if(!captcha( citizenRequest.getToken()))
+        //    throw new InvalidRequestException("Invalid request, there si no confirmation of a human.");
 
         CitizenEntity citizen = modelMapper.map(citizenRequest, CitizenEntity.class);
         citizen.setCitizenshipEntity(citizenshipEntityRepository.getById(citizenRequest.getCitizenship_id()));
