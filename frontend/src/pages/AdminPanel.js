@@ -18,7 +18,17 @@ const AdminPanel = () => {
 
     const [data, setData] = useState([]);
     const [isLoading, setIsLoading] = useState(false);
-    // const [permistionGranted,setUserChecking] = useState(false);
+
+    const [width, setWidth] = useState(window.innerWidth);
+    useEffect(() => {
+        const handleResize = () => {
+            setWidth(window.innerWidth);
+            console.log('resized to: ', window.innerWidth, 'x', window.innerHeight)
+        }
+        window.addEventListener('resize', handleResize);
+        return () => window.removeEventListener("resize", handleResize);
+    }, []);
+
 
     const [pageSize, setPageSize] = useState({
         width: window.innerWidth,
@@ -46,7 +56,6 @@ const AdminPanel = () => {
 
 
     function info(record) {
-        console.log("recordddddddddddddd",record);
         Modal.info({
             icon: null,
             title: <div className= "info-title"></div>,
@@ -113,7 +122,7 @@ const AdminPanel = () => {
 
             ),
             onOk() {},
-            width : "60%",
+            width : width>700?"60%":"80%",
             bodyStyle: {
                 "background-color" : "white"
             }

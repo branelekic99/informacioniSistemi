@@ -1,20 +1,36 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useState,useContext} from 'react';
 import '../styles/statistic.css';
 import {G2, Line} from '@ant-design/plots';
-import {Link} from "react-router-dom";
+import {Link, Navigate} from "react-router-dom";
 import {each, findIndex} from "@antv/util";
 import axios from "axios";
-import {TOKEN} from "../constants/variables";
+import {TOKEN, USER_STATUS} from "../constants/variables";
+import {Menu, Button} from 'antd';
+import {statisticMenu} from "../constants/statisticMenu";
+import UserContext from "../context/user/userContext";
 
 const StatisticMonthOfFilling = () => {
-    const { InteractionAction, registerInteraction, registerAction } = G2;
+    //{ label: 'item 1', key: 'item-1' }
+    const {userStatus, setUserStatus} = useContext(UserContext);
+    const {InteractionAction, registerInteraction, registerAction} = G2;
     const [data, setData] = useState([]);
+
+    const [width, setWidth] = useState(window.innerWidth);
+    useEffect(() => {
+
+        const handleResize = () => {
+            setWidth(window.innerWidth);
+            console.log('resized to: ', window.innerWidth, 'x', window.innerHeight)
+        }
+        window.addEventListener('resize', handleResize);
+        return () => window.removeEventListener("resize", handleResize);
+    }, []);
 
     const fetchData = async () => {
         const url = "/citizens/statistics/month"
-        try{
+        try {
             setData([]);
-            const result = await  axios.get(url,
+            const result = await axios.get(url,
                 {
                     headers:
                         {"Authorization": `Bearer ${localStorage.getItem(TOKEN)}`}
@@ -22,16 +38,16 @@ const StatisticMonthOfFilling = () => {
             const statisticData = result.data;
 
             const newObject = [];
-            for(const [key,value] of Object.entries(statisticData)){
+            for (const [key, value] of Object.entries(statisticData)) {
                 newObject.push({
-                    year:key,
-                    value:value,
+                    year: key,
+                    value: value,
                 })
             }
             setData(newObject);
             console.log(newObject);
 
-        }catch (err){
+        } catch (err) {
             console.log("Errr");
         }
     }
@@ -79,7 +95,7 @@ const StatisticMonthOfFilling = () => {
 
             if (evt.data) {
                 // items: 数组对象，当前 tooltip 显示的每条内容
-                const { items } = evt.data;
+                const {items} = evt.data;
                 const pointGeometries = view.geometries.filter((geom) => geom.type === 'point');
                 each(pointGeometries, (pointGeometry) => {
                     each(pointGeometry.elements, (pointElement, idx) => {
@@ -133,12 +149,12 @@ const StatisticMonthOfFilling = () => {
             const [point0, point1] = element.shape.getChildren();
             point0.stopAnimate();
             point1.stopAnimate();
-            const { r, opacity } = point0.get('attrs');
+            const {r, opacity} = point0.get('attrs');
             point0.attr({
                 r,
                 opacity,
             });
-            const { r: r1, opacity: opacity1 } = point1.get('attrs');
+            const {r: r1, opacity: opacity1} = point1.get('attrs');
             point1.attr({
                 r: r1,
                 opacity: opacity1,
@@ -197,46 +213,31 @@ const StatisticMonthOfFilling = () => {
             },
         ],
     };
-
+    if (userStatus === USER_STATUS.CHECKING)
+        return <p>loading!!!</p>
+    if (userStatus === USER_STATUS.NOT_AUTHENTICATED)
+        return <Navigate to={"/login"}/>
     return (
-        <div className={"main"}>
-            <div className={"statistic-menu"}>
-                <nav
-                    className={`${"statistic-nav"} $`}
-                >
-                    <ul className={"text"}>
-                        <li className={"text"}>
-                            <Link to="/statistic-year">
-                                <text className={"text-view"}>
-                                    Godine dolaska
-                                </text>
-                            </Link>
-                        </li>
-                        <li className={"text"}>
-                            <Link to="/statistic-age">
-                                <text className={"text-view"}>
-                                    Starosna struktura
-                                </text>
-                            </Link>
-                        </li>
-                        <li className={"text"}>
-                            <Link to="/statistic-month">
-                                <text className={"text-view"}>
-                                    Mjesečna statistika
-                                </text>
-                            </Link>
-                        </li>
-                        <li className={"text"}>
-                            <Link to="/statistic-gender">
-                                <text className={"text-view"}>
-                                    Polna struktura
-                                </text>
-                            </Link>
-                        </li>
-                    </ul>
-                </nav>
+        <div className={width > 1200 ? "main" : "main-block"}>
+            <div className={width > 1200 ? "statistic-menu" : "statistic-menu-block"}>
+                <Menu mode={width > 1200 ? "vertical" : "horizontal"} theme={"dark"}
+                      defaultSelectedKeys={['mjesecna-struktura']}
+                      style={{
+                          background: "#0C4076",
+                          fontSize: width>900?"20px":"15px",
+                      }}>
+                    {statisticMenu.map((item) => <Menu.Item key={item.key} style={{
+                        marginBottom: width > 1200 ? "20px" : "0px",
+                        fontWeight: width > 1200 ? "bold" : "none",
+                    }}>
+                        <Link to={item.url}>
+
+                            {item.label}
+                        </Link>
+                    </Menu.Item>)}
+                </Menu>
             </div>
-            <div className={"statistic-view"}>
+            <div className={width > 1200 ? "statistic-view" : "statistic-view-block"}>
                 <Line id={"view"} {...config} />;
             </div>
         </div>);

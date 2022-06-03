@@ -59,7 +59,7 @@ public class CitizenController {
         this.entityManager = entityManager;
         this.citizenshipEntityRepository = citizenshipEntityRepository;
         this.modelMapper = modelMapper;
-        this.restTemplate = restTemplate;
+    //    this.restTemplate = restTemplate;
     }
 
 
