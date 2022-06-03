@@ -4,21 +4,20 @@ import axios from "axios";
 import moment from "moment";
 import {useNavigate} from "react-router-dom";
 import Loader from "react-loader-spinner";
-import "../styles/user-form.css";
-
 import Captcha from "../components/Captcha";
+import "../styles/user-form.css";
 
 const errorUsername = "Unesite Vaše ime.";
 const errorPassword = "Unesite Vaše prezime.";
 const errorEmail = "Unesite Vašu email adresu.";
 const errorPhoneNumber = "Unesite Vaš broj telefona.";
-const errorCitizenship = "Unesite državljanstvo!";
-const errorSex = "Odaberite pol!"
-const errorCity = "Unesite mjesto življenja!";
-const errorEducation = "Unesite edukaciju!";
-const errorWorkplace = "Unesite radno mijesto!";
-const errorYearOfArrival = "Unesite godinu dolaska!";
-const errorNumberOfFamily = "Unesite broj članova domaćinstva!";
+const errorCitizenship = "Unesite državljanstvo.";
+const errorSex = "Odaberite pol."
+const errorCity = "Unesite mjesto življenja.";
+const errorEducation = "Unesite edukaciju.";
+const errorWorkplace = "Unesite radno mijesto.";
+const errorYearOfArrival = "Unesite godinu dolaska.";
+const errorNumberOfFamily = "Unesite broj članova domaćinstva.";
 
 const {Option} = Select;
 
