@@ -4,18 +4,20 @@ import axios from "axios";
 import moment from "moment";
 import {useNavigate} from "react-router-dom";
 import Loader from "react-loader-spinner";
-import "../styles/user-form.css";
-
 import Captcha from "../components/Captcha";
-import {TOKEN} from "../constants/variables";
+import "../styles/user-form.css";
 
 const errorUsername = "Unesite Vaše ime.";
 const errorPassword = "Unesite Vaše prezime.";
 const errorEmail = "Unesite Vašu email adresu.";
 const errorPhoneNumber = "Unesite Vaš broj telefona.";
-const errorCitizenship = "Unesite državljanstvo!";
-const errorSex = "Odaberite pol!"
-const errorCity = "Unesite mjesto življenja!";
+const errorCitizenship = "Unesite državljanstvo.";
+const errorSex = "Odaberite pol."
+const errorCity = "Unesite mjesto življenja.";
+const errorEducation = "Unesite edukaciju.";
+const errorWorkplace = "Unesite radno mijesto.";
+const errorYearOfArrival = "Unesite godinu dolaska.";
+const errorNumberOfFamily = "Unesite broj članova domaćinstva.";
 
 const {Option} = Select;
 
@@ -26,7 +28,7 @@ const UserForm = () => {
     const [captcha, setCaptcha] = useState("");
     const [municipalitiesOptions, setMunicipalitiesOptions] = useState([]);
     const [formData, setFormData] = useState(null);
-    const [captchaFailedMessage,setCaptchaFailedMessage] = useState("");
+    const [captchaFailedMessage, setCaptchaFailedMessage] = useState("");
 
     useEffect(() => {
         if (formSubmitted && captcha.length > 0) createNewCitizen();
@@ -156,35 +158,47 @@ const UserForm = () => {
                                    rules={[{required: true, message: errorCity}]}>
                             <Select placeholder={"Izaberite mjesto zivljenja"} showSearch allowClear
                                     filterOption={(input, option) =>
-                                         option.children.toLowerCase().includes(input.toLowerCase())
+                                        option.children.toLowerCase().includes(input.toLowerCase())
                                     }>
                                 {municipalitiesOptions.map((item) => <Option value={item.id}>{item.name}</Option>)}
                             </Select>
                         </Form.Item>
                     </Form.Item>
                     <Form.Item className={"item-box"}>
-                        <Form.Item label={"Stručna sprema"} className={"inline-item"} name={"education"}>
+                        <Form.Item label={"Stručna sprema"} className={"inline-item"} name={"education"} rules={[{
+                            required: true,
+                            message: errorEducation
+                        }]}>
                             <Input/>
                         </Form.Item>
-                        <Form.Item label={"Radno mjesto"} className={"inline-item"} name={"workplace"}>
+                        <Form.Item label={"Radno mjesto"} className={"inline-item"} name={"workplace"} rules={[{
+                            required: true,
+                            message: errorWorkplace
+                        }]}>
                             <Input/>
                         </Form.Item>
                     </Form.Item>
 
                     <Form.Item className={"item-box"}>
-                        <Form.Item label={"Godina dolaska"} className={"inline-item"} name={"year_of_arrival"}>
+                        <Form.Item label={"Godina dolaska"} className={"inline-item"} name={"year_of_arrival"} rules={[{
+                            required: true,
+                            message: errorYearOfArrival
+                        }]}>
                             <DatePicker picker={"year"} className={"bl-datepicker"}
                                         disabledDate={(current) => current > moment(new Date())}/>
                         </Form.Item>
                         <Form.Item label={"Broj članova domaćinstva"} className={"inline-item"}
-                                   name={"num_of_family_members"}
+                                   name={"num_of_family_members"} rules={[{
+                            required: true,
+                            message: errorNumberOfFamily
+                        }]}
                         >
                             <InputNumber className={"members-num"} min={1}/>
                         </Form.Item>
                     </Form.Item>
 
                     <Form.Item className={"item-box"}>
-                        <Form.Item label={"Kompanija"} className={"inline-item"} name={"company"}>
+                        <Form.Item label={"Kompanija"} className={"inline-item"} name={"company"}  rules={[{required: true, message: "Unesite kompaniju."}]}>
                             <Input/>
                         </Form.Item>
                         <Form.Item label={"Godina rođenja"} className={"inline-item"} name={"year_of_birth"}

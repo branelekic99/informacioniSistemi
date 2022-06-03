@@ -18,7 +18,17 @@ const AdminPanel = () => {
 
     const [data, setData] = useState([]);
     const [isLoading, setIsLoading] = useState(false);
-    // const [permistionGranted,setUserChecking] = useState(false);
+
+    const [width, setWidth] = useState(window.innerWidth);
+    useEffect(() => {
+        const handleResize = () => {
+            setWidth(window.innerWidth);
+            console.log('resized to: ', window.innerWidth, 'x', window.innerHeight)
+        }
+        window.addEventListener('resize', handleResize);
+        return () => window.removeEventListener("resize", handleResize);
+    }, []);
+
 
     const [pageSize, setPageSize] = useState({
         width: window.innerWidth,
@@ -46,71 +56,75 @@ const AdminPanel = () => {
 
 
     function info(record) {
-        console.log("recordddddddddddddd",record);
         Modal.info({
             icon: null,
-            title: <div className= "info-title">  </div>,
+            title: <div className= "info-title"></div>,
+            keyboard:true,
+            maskClosable:true,
             content: (
                 <div className="info-container">
                     <form className="info-form">
-                        <p>
-                            <div> {"Ime i prezime : " + record.firstname + " " + record.lastname} </div>
+                        <div className={"bl-info-box"}>
+                            <label>Ime i prezime</label>
+                            <span>{record.firstname} {record.lastname}</span>
+                        </div>
+                        <div className={"bl-info-box"}>
+                            <label>Pol</label>
+                            <span>{record.sex}</span>
+                        </div>
+                        <div className={"bl-info-box"}>
+                            <label>Godina rođenja</label>
+                            <span>{record.year_of_birth}</span>
+                        </div>
 
-                        </p>
-                        <p>
-                            <div> {"Pol : " + record.sex} </div>
-
-                        </p>
-                        <p>
-                            <div> {"Godina rođenja : " + record.year_of_birth} </div>
-                        </p>
-                        <p>
-
-                            <div> {"Državljanstvo : " + record.citizenshipEntity.country} </div>
-                        </p>
-                        <p>
-
-                            <div> {"Godina dolaska : " + record.year_of_arrival} </div>
-                        </p>
-                        <p>
-
-                            <div> {"Grad : " + record.cityEntity.name} </div>
-                        </p>
-                        <p>
-
-                            <div> {"Stručna sprema : " + record.education} </div>
-                        </p>
-                        <p>
-
-                            <div> {"Kompanija : " + record.company} </div>
-                        </p>
-                        <p>
-
-                            <div> {"Radno mjesto : " + record.workplace} </div>
-                        </p>
-                        <p>
-                            <div> {"Broj članova domaćinstva : " + record.num_of_family_members} </div>
-                        </p>
-                        <p>
-
-                            <div> {"Broj telefona : " + record.phone} </div>
-                        </p>
-                        <p>
-
-                            <div> {"Email : " + record.email} </div>
-                        </p>
-                        <p>
-
-                            <div> {"Ostalo : " + record.other} </div>
-                        </p>
+                        <div className={"bl-info-box"}>
+                            <label>Državljanstvo</label>
+                            <span>{record.citizenshipEntity.country}</span>
+                        </div>
+                        <div className={"bl-info-box"}>
+                            <label>Godina dolaska</label>
+                            <span>{record.year_of_arrival}</span>
+                        </div>
+                        <div className={"bl-info-box"}>
+                            <label>Grad</label>
+                            <span>{record.cityEntity.name}</span>
+                        </div>
+                        <div className={"bl-info-box"}>
+                            <label>Stručna sprema</label>
+                            <span>{record.education}</span>
+                        </div>
+                        <div className={"bl-info-box"}>
+                            <label>Kompanija</label>
+                            <span>{record.company}</span>
+                        </div>
+                        <div className={"bl-info-box"}>
+                            <label>Radno mjesto</label>
+                            <span>{record.workplace}</span>
+                        </div>
+                        <div className={"bl-info-box"}>
+                            <label>Broj članova domaćinstva</label>
+                            <span>{record.num_of_family_members}</span>
+                        </div>
+                        <div className={"bl-info-box"}>
+                            <label>Broj telefona</label>
+                            <span>{record.phone}</span>
+                        </div>
+                        <div className={"bl-info-box"}>
+                            <label>Email</label>
+                            <span>{record.email}</span>
+                        </div>
+                        <div className={"bl-info-box"}>
+                            <label>Ostalo</label>
+                            <span>{record.other}</span>
+                        </div>
                     </form>
                 </div>
 
             ),
             onOk() {},
-            width : "60%",
+            width : width>700?"60%":"80%",
             bodyStyle: {
-                "background-color" : "#2b5c90"
+                "background-color" : "white"
             }
         });
     }
@@ -167,20 +181,40 @@ const AdminPanel = () => {
             dataIndex: ['cityEntity', 'name'],
             key: 'cityEntity',
             width: 25,
-            filterDropdown:[
+            filterDropdown:({setSelectedKeys, selectedKeys, confirm}) => (
+
                 <div>
                     <Select
                             style={{"width" : "100%"}}
                             showSearch
                             allowClear
-                            filterOption={false}
+                            filterOption={(input, option) =>
+                                option.children.toLowerCase().includes(input.toLowerCase())
+                            }
+                            // onSelect={ (key,option) => {
+                            //     console.log("SELECTED ", selectedKeys)
+                            //     console.log(key,option)
+                            //     setSelectedKeys(option.value);
+                            //     confirm();
+                            //     console.log("SELECTED ", selectedKeys)
+                            // }}
+                            onChange={(value)=>{
+                                setSelectedKeys(value === undefined?[]:[value]);
+                                confirm();
+                            }}
+                            onPressEnter={() => {
+                                confirm()
+                            }
+
+                            }
                         >
                         {municipalitiesOptions.map((item) => <Option value={item.id}>{item.name}</Option>)}
                     </Select>
                 </div>
 
 
-            ],
+            ),
+            filterMultiple: false,
             filterIcon: ()=> {
                 return <SearchOutlined></SearchOutlined>
             }
@@ -233,6 +267,7 @@ const AdminPanel = () => {
                 }
             ],
             filterMultiple: false,
+
 
         },
         {
@@ -302,6 +337,10 @@ const AdminPanel = () => {
             baseUrl += `year_of_birth=${filtered.year_of_birth[0].year()}`
             console.log("base url after birth:  ", baseUrl);
 
+        }
+        if(filtered.cityEntity != null){
+            console.log("IZabran je grad ", filtered.cityEntity[0]);
+            baseUrl += `city_id=${filtered.cityEntity[0]}`
         }
         console.log("base url: ", baseUrl);
         return baseUrl;
