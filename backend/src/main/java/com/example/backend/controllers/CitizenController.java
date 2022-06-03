@@ -198,8 +198,8 @@ public class CitizenController {
     @GetMapping("/statistics/sex")
     public ResponseEntity statisticsSex(){
         Map<String, Object> response = new HashMap<>();
-        response.put("male", citizenEntityRepository.countSex("male"));
-        response.put("female", citizenEntityRepository.countSex("female"));
+        response.put("Muški", citizenEntityRepository.countSex("male"));
+        response.put("Ženski", citizenEntityRepository.countSex("female"));
         return new ResponseEntity(response,HttpStatus.OK);
     }
 
