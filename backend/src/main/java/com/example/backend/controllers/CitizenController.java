@@ -198,14 +198,14 @@ public class CitizenController {
     @GetMapping("/statistics/sex")
     public ResponseEntity statisticsSex(){
         Map<String, Object> response = new HashMap<>();
-        response.put("male", citizenEntityRepository.countSex("male"));
-        response.put("female", citizenEntityRepository.countSex("female"));
+        response.put("Muški", citizenEntityRepository.countSex("male"));
+        response.put("Ženski", citizenEntityRepository.countSex("female"));
         return new ResponseEntity(response,HttpStatus.OK);
     }
 
     @GetMapping("/statistics/arrival")
     public ResponseEntity statisticsArrival(){
-        Map<String, Object> response = new HashMap<>();
+        Map<String, Object> response = new LinkedHashMap<>();
         response.put("1990-1995", citizenEntityRepository.countArrival(1991,1995));
         response.put("1996-2000", citizenEntityRepository.countArrival(1996,2000));
         response.put("2001-2005", citizenEntityRepository.countArrival(2001,2005));
@@ -219,7 +219,7 @@ public class CitizenController {
 
     @GetMapping("/statistics/age")
     public ResponseEntity statisticsAge(){
-        Map<String, Object> response = new HashMap<>();
+        Map<String, Object> response = new LinkedHashMap<>();
         response.put("1-10", citizenEntityRepository.countAge(1,10));
         response.put("11-20", citizenEntityRepository.countAge(11,20));
         response.put("21-30", citizenEntityRepository.countAge(21,30));
@@ -234,7 +234,7 @@ public class CitizenController {
 
     @GetMapping("/statistics/month")
     public ResponseEntity statisticsMonth(){
-        Map<String, Object> response = new HashMap<>();
+        Map<String, Object> response = new LinkedHashMap<>();
         response.put("Jan", citizenEntityRepository.countMonth(1));
         response.put("Feb", citizenEntityRepository.countMonth(2));
         response.put("Mar", citizenEntityRepository.countMonth(3));
@@ -253,7 +253,7 @@ public class CitizenController {
 
     @GetMapping("/statistics/citizenship")
     public ResponseEntity statisticsCitizenship(){
-        Map<String, Object> response = new HashMap<>();
+        Map<String, Object> response = new LinkedHashMap<>();
         List<CitizenshipEntity> citizenships = citizenshipEntityRepository.findAll();
         for(CitizenshipEntity citizenshipEntity : citizenships)
             response.put(citizenshipEntity.getCountry(), citizenEntityRepository.countCitizenship(citizenshipEntity.getId()));
