@@ -76,7 +76,7 @@ const MapBox = () => {
                     "type":"circle",
                     "source":"points",
                     'paint': {
-                        'circle-radius': 5,
+                        'circle-radius': 10,
                         'circle-color': '#007cbf'
                     }
                 })

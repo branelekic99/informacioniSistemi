@@ -81,7 +81,7 @@ const StatisticGender = () => {
         <div className={width > 1200 ? "main" : "main-block"}>
             <div className={width > 1200 ? "statistic-menu" : "statistic-menu-block"}>
                 <Menu mode={width > 1200 ? "vertical" : "horizontal"} theme={"dark"}
-                      defaultSelectedKeys={['mjesecna-struktura']}
+                      defaultSelectedKeys={['polna-struktura']}
                       style={{
                           background: "#0C4076",
                           fontSize: width>900?"20px":"15px",
